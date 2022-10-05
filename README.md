@@ -1,2 +1,2 @@
-# Project_For_Improving_Reading_Comprehension
+# Project For Improving Reading Comprehension
 project for improving reading comprehension for kids , using Natural Language Processing
