@@ -17,15 +17,24 @@ def calculate_score(sim_matrix):
     scores = nx.pagerank(nx_graph)
     return scores
 
-def ranked_sentences(sentences, scores, n=5):
+def ranked_sentences(sentences, scores, n):
     top_scores = sorted(((scores[index],index,sentence) for index,sentence in enumerate(sentences)), reverse=True)
     top_n_sentences = sorted((index,sentence) for score,index,sentence in top_scores[:n])
     extractive_n_sentences_in_order = [sentence for index,sentence in top_n_sentences] 
-    
-    return " ".join(extractive_n_sentences_in_order)
+    return extractive_n_sentences_in_order
+
+    # return " ".join(extractive_n_sentences_in_order)
+
+def extractive_summarization(text,top_n=5):
+    model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS') 
+    sentences = text_cleaning(text)
+    vectors = model.encode(sentences) # encode sentences into vectors
+    similarities = util.cos_sim(vectors, vectors) # compute similarity between sentence vectors
+    score = calculate_score(np.array(similarities)) # compute score based page rank algorithm
+    return ' '.join(ranked_sentences(sentences,score,top_n)) # get summarization result
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     text = '''
     「새로 전학온 한병태다. 앞으로 잘 지내도록.」
     담임 선생은 그 한 마디로 소래를 끝낸 뒤 나를 뒤쪽 빈 자리에 앉게 하고 바로 수업에 들어갔다. 새로 전학온 아이에 대해 호들갑스럽게 느껴질 정도로 자랑 섞인 소개를 늘어놓던 서울 선생님들의 자상함을 상기하자 나는 야속한 느낌을 억누를 길이 없었다. 대단한 추켜세움까지는 아니더라도, 최소한 내가 가진 자랑거리는 반아이들에게 일러주어, 그게 새로 시작하는 그들과의 관계에 도움이 되기를 바랐다.
@@ -37,9 +46,5 @@ if __name__ == 'main':
     아직 같은 반이 된 지 한 시간밖에 안됐지만 그 아이만은 나도 알아볼 수 있었다! 담인 선생님과 내가 처음 교실로 들어왔을 때 차렷, 경계를 소리친 것으로 보아 급장인 듯한 아이였다. 그러나 내가 그를 엇비슷한 육십 명 가운데 금방 구분해 낼 수 있었던 것은 그가 급장이어서라기 보다는 다른 아이들과 머리통 하나는 더 있어 뵐 만큼 큰 앉은 키와 쏘는 듯한 눈빛 때문이었다.
     「한병태랬지? 이리 와봐.」
     '''
-    sentences = text_cleaning(text)
-    model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS') 
-    vectors = model.encode(sentences) # encode sentences into vectors
-    similarities = util.cos_sim(vectors, vectors) # compute similarity between sentence vectors
-    score = calculate_score(np.array(similarities))
-    print(ranked_sentences(sentences,score))
+
+    print(extractive_summarization(text))
