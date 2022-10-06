@@ -12,4 +12,5 @@
 
 ## Requirement
     pip install -U sentence-transformers
+    pip install -U scikit-learn
     pip install eunjeon 
