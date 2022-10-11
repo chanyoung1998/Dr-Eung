@@ -5,8 +5,8 @@ class TextAdmin(admin.ModelAdmin):
     list_display = ['TextID']
 
 class BookReportAdmin(admin.ModelAdmin):
-    list_display = ['UserID', 'BookID', 'Step', 'Format', 'Page', 'Complete', 'Time']
-    search_fields = ['UserID', 'BookID']
+    list_display = ['Author', 'book', 'Step', 'Format', 'Page', 'Complete', 'Time']
+    search_fields = ['Author', 'book']
     list_filter = ['Time', 'Step', 'Page', 'Complete']
     ordering = ['Time']
 

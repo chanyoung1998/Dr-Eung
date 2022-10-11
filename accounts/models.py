@@ -11,7 +11,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.Nickname
 class Ability(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, related_name='ability', on_delete=models.CASCADE, primary_key=True)
     vocabulary_score = models.IntegerField("어휘력", default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     grammar_score = models.IntegerField("문법", default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     coherence_score = models.IntegerField("응집성", default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
