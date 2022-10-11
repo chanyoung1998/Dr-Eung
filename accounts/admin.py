@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['UserID', 'Nickname', 'Ability']
+    list_display = ['username', 'Nickname', 'Ability']
     search_fields = ['Nickname']
     ordering = ['-Nickname']
 

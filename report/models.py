@@ -1,6 +1,6 @@
 from django.db import models
+from django.conf import settings
 from book.models import Book
-from accounts.models import User
 
 class Text(models.Model):
     TextID = models.CharField(primary_key=True, max_length=45)
@@ -13,7 +13,7 @@ class Text(models.Model):
 
 
 class BookReport(models.Model):
-    UserID = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='book_report', on_delete=models.CASCADE)
     BookID = models.ForeignKey(Book, on_delete=models.CASCADE, default="")
     TextID = models.OneToOneField(Text, on_delete=models.CASCADE, unique=True, null=True)
     Step = models.SmallIntegerField(default=0)
