@@ -1,15 +1,17 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(AbstractUser):
-    Nickname = models.CharField(max_length=45, null=False, default="")
+    nickname = models.CharField(max_length=45, null=False, default="")
 
     def __str__(self):
-        return self.Nickname
+        return self.nickname
+
+
 class Ability(models.Model):
     user = models.OneToOneField(User, related_name='ability', on_delete=models.CASCADE, primary_key=True)
     vocabulary_score = models.IntegerField("어휘력", default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
@@ -24,4 +26,4 @@ class Ability(models.Model):
             Ability.objects.create(user=instance)
 
     def __str__(self):
-        return self.user.Nickname + "'s ability"
+        return self.user.nickname + "'s ability"

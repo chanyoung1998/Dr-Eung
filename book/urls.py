@@ -5,5 +5,5 @@ app_name = 'book'
 
 urlpatterns = [
     path('', ReadingView.as_view()),
-    path('booklist/', BookListView.as_view()),
+    path('list/', BookListView.as_view()),
 ]

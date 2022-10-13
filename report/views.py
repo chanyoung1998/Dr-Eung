@@ -1,10 +1,19 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
 from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+
 from .models import BookReport
-from .serializer import BookReportSerializer
+from .serializer import BookReportSerializer, ReportListSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def report_list_view(request):
+    serializer = ReportListSerializer(request.user)
+    return Response(serializer.data)
 
 class ReportView(APIView):
     def get(self, request):

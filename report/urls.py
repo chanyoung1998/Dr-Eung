@@ -5,4 +5,5 @@ app_name = 'report'
 
 urlpatterns = [
     path('', ReportView.as_view()),
+    path('list/', report_list_view),
 ]
