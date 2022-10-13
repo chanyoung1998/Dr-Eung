@@ -1,7 +1,7 @@
 function login() {
     const form = document.login_form;
     const chkUsername = checkValidUsername(form);
-    const chkEmail = checkValidEmail(form);
+    const chkid = checkValidID(form);
     const chkPw = checkValidPassword(form);
     const chkPw2 = checkValidPassword2(form);
 
@@ -15,14 +15,14 @@ function login() {
         document.getElementById('alert_username').style.color = '#FF0000';
     }
 
-    if (chkEmail) {
-        document.getElementById('alert_email').innerText = "";
-        form.email.style.border = '2px solid';
-        form.email.style.borderColor = '#00D000';
+    if (chkid) {
+        document.getElementById('alert_id').innerText = "";
+        form.id.style.border = '2px solid';
+        form.id.style.borderColor = '#00D000';
     } else {
-        form.email.style.border = '2px solid';
-        form.email.style.borderColor = '#FF0000';
-        document.getElementById('alert_email').style.color = '#FF0000';
+        form.id.style.border = '2px solid';
+        form.id.style.borderColor = '#FF0000';
+        document.getElementById('alert_id').style.color = '#FF0000';
     }
 
     if (chkPw) {
@@ -44,7 +44,7 @@ function login() {
         document.getElementById('alert_password2').style.color = '#FF0000';
     }
 
-    if (chkUsername && chkEmail && chkPw && chkPw2) {
+    if (chkUsername && chkid && chkPw && chkPw2) {
         console.log('complete. form.submit();');
         //form.submit();
     }
@@ -60,10 +60,10 @@ function checkValidUsername(form) {
     return true;
 }
 
-function checkValidEmail(form) {
-    if (form.email.value == "") {
-        document.getElementById('alert_email').innerText = "아이디를 입력해주세요";
-        //form.email.focus();
+function checkValidID(form) {
+    if (form.id.value == "") {
+        document.getElementById('alert_id').innerText = "아이디를 입력해주세요";
+        //form.id.focus();
         return false;
     }
 
@@ -87,15 +87,15 @@ function checkValidPassword(form) {
     const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
     if (pw.length < 6) {
-        // 최소 6문자.
+        // 최소 6문자
         document.getElementById('alert_password').innerText = "6자 이상 입력해 주세요.";
         return false;
     } else if (pw.search(/\s/) != -1) {
-        // 공백 제거.
+        // 공백 제거
         document.getElementById('alert_password').innerText = "공백은 사용 불가능합니다.";
         return false;
     } else if (num < 0 && eng < 0 && spe < 0) {
-        // 한글과 같은 문자열 입력 방지.
+        // 한글 입력 방지
         document.getElementById('alert_password').innerText = "사용 불가능한 문자입니다.";
         return false;
     }
