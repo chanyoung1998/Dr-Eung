@@ -86,9 +86,9 @@ function checkValidPassword(form) {
     // special characters
     const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-    if (pw.length < 6) {
-        // 최소 6문자
-        document.getElementById('alert_password').innerText = "6자 이상 입력해 주세요.";
+    if (pw.length < 10) {
+        // 최소 10문자
+        document.getElementById('alert_password').innerText = "10자 이상 입력해 주세요.";
         return false;
     } else if (pw.search(/\s/) != -1) {
         // 공백 제거
