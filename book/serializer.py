@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from report.models import BookReport
-from .models import Book
+from .models import Book, LINES
 
 import kss
-LINES = 20
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:

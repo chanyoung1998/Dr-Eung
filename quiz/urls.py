@@ -4,5 +4,5 @@ from .views import *
 app_name = 'quiz'
 
 urlpatterns = [
-    path('', QuizView.as_view()),
+    path('<str:title>/<int:quiz_number>/', QuizView.as_view()),
 ]

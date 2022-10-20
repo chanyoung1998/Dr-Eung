@@ -4,4 +4,7 @@ from .models import Quiz
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = '__all__'
+        fields = ['question', 'choice', 'hint', 'type']
+
+class AnswerSerializer(serializers.Serializer):
+    answer = serializers.CharField()
