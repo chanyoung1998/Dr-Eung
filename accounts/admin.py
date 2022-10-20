@@ -7,4 +7,3 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ['-nickname']
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Ability)

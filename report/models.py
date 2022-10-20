@@ -3,6 +3,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.postgres.fields import ArrayField
 
 from book.models import Book
 
@@ -11,7 +12,12 @@ class BookReport(models.Model):
     book = models.ForeignKey(Book, related_name='report' , on_delete=models.CASCADE, default="")
     step = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
     format = models.CharField(max_length=45, blank=True)
-    keyword = models.TextField(blank=True)
+    keyword = ArrayField(
+        models.CharField(max_length=45, blank=True),
+        size=5,
+        default=list,
+        blank=True,
+    )
     page = models.SmallIntegerField(default=1, validators=[MinValueValidator(1)])
     complete = models.BooleanField(default=False)
     bookmark = models.BooleanField(default=False)

@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
-from .models import User, Ability
+from .models import User
 from report.models import BookReport
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -66,13 +66,12 @@ class ProfileSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         user = obj
 
-        ability = Ability.objects.get(user=user)
         score = {
-            "어휘력": ability.vocabulary_score,
-            "문법": ability.grammar_score,
-            "응집성": ability.coherence_score,
-            "이해력": ability.comprehension_score,
-            "유창성": ability.fluency_score,
+            "어휘력": user.ability[0],
+            "문법": user.ability[1],
+            "응집성": user.ability[2],
+            "이해력": user.ability[3],
+            "유창성": user.ability[4],
         }
 
         reports = BookReport.objects.filter(author=user).values().order_by('-time')[:3]
