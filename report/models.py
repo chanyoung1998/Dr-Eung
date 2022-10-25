@@ -13,14 +13,19 @@ class BookReport(models.Model):
     step = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
     format = models.CharField(max_length=45, blank=True)
     keyword = ArrayField(
-        models.CharField(max_length=45, blank=True),
-        size=5,
+        ArrayField(
+            models.CharField(max_length=45, blank=True),
+            size=5,
+            default=list,
+            blank=True,
+        ),
         default=list,
         blank=True,
     )
     page = models.SmallIntegerField(default=1, validators=[MinValueValidator(1)])
     complete = models.BooleanField(default=False)
     bookmark = models.BooleanField(default=False)
+    quiz_score = models.SmallIntegerField(default=0, validators=[MinValueValidator(0)])
     time = models.DateTimeField(auto_now=True)
 
     class Meta:

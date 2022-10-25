@@ -6,7 +6,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 from .models import User
-from report.models import BookReport
 
 class RegisterSerializer(serializers.ModelSerializer):
     nickname = serializers.CharField(
@@ -65,7 +64,6 @@ class ProfileSerializer(serializers.BaseSerializer):
 
     def to_representation(self, obj):
         user = obj
-
         score = {
             "어휘력": user.ability[0],
             "문법": user.ability[1],
@@ -74,7 +72,7 @@ class ProfileSerializer(serializers.BaseSerializer):
             "유창성": user.ability[4],
         }
 
-        reports = BookReport.objects.filter(author=user).values().order_by('-time')[:3]
+        reports = user.report.all().values().order_by('-time')[:3]
         recent = []
         for report in reports:
             if report['complete']:

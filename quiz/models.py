@@ -1,12 +1,13 @@
 from django.db import models
 from book.models import Book
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Quiz(models.Model):
     book = models.ForeignKey(Book, related_name='quiz', on_delete=models.CASCADE, default=0)
-    quiz_number = models.SmallIntegerField(default=0, )
+    quiz_number = models.SmallIntegerField(default=0, validators=[MinValueValidator(1)])
     question = models.CharField(max_length=255, default="")
-    answer = models.CharField(max_length=255, default="")
+    answer = models.SmallIntegerField(null=False, default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
     choice = ArrayField(
         models.CharField(max_length=255, default=""),
         size=5,
@@ -14,8 +15,7 @@ class Quiz(models.Model):
         blank=True,
     )
     hint = models.TextField(default="")
-    type = models.BooleanField("객관식", default=True)
-    chapter = models.SmallIntegerField(default=0)
+    chapter = models.SmallIntegerField(default=1, null=False)
 
     class Meta:
         constraints = [

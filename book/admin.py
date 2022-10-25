@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Book
+from .models import Book, Content
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'genre']
@@ -7,3 +7,4 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ['-title']
 
 admin.site.register(Book, BookAdmin)
+admin.site.register(Content)
