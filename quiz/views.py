@@ -12,14 +12,14 @@ class QuizView(generics.GenericAPIView):
         if not 'quiz_number' in request.GET:
             raise ParseError("문항을 찾을 수 없음")
         quiz_number = request.GET['quiz_number']
-        quiz = Quiz.objects.filter(book=title).get(chapter=chapter, quiz_number=quiz_number)
+        quiz = Quiz.objects.filter(content__book__title=title, content__chapter=chapter).get(quiz_number=quiz_number)
         serializer = QuizSerializer(quiz)
         return Response(serializer.data)
 
     def post(self, request, title, chapter):
         quiz_number = request.POST['quiz_number']
         answer = request.POST['answer']
-        quiz = Quiz.objects.filter(book=title).get(chapter=chapter, quiz_number=quiz_number)
+        quiz = Quiz.objects.filter(content__book__title=title, content__chapter=chapter).get(quiz_number=quiz_number)
         serializer = AnswerSerializer(data={
             "user": request.user,
             "quiz": quiz,

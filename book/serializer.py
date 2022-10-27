@@ -1,9 +1,7 @@
 from rest_framework import serializers
+from report.models import BookReport
+from .signals import LINES
 from .models import Book
-import kss
-from math import ceil
-
-LINES = 10
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,15 +16,16 @@ class BookSerializer(serializers.BaseSerializer):
         chapter = data['chapter']
 
         book = Book.objects.get(title=title)
+        chapter = book.content.get(chapter=chapter)
+
+        if not book.report.filter(author=user.pk):
+            BookReport.objects.create(author=user, book=book)
         report = book.report.get(author=user.pk)
-        content = book.content.get(chapter=chapter).content
 
         if report.page < page:
             report.page = page
             report.save()
 
-        paragraph = kss.split_sentences(content)
-        pages = len(paragraph)
-        contents = paragraph[(page-1) * LINES : page * LINES]
+        contents = chapter.content_lines[(page-1) * LINES : page * LINES]
         return {f"page {page}": contents,
-                "pages": ceil(pages/LINES)}
+                "pages": chapter.pages}

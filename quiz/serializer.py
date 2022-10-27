@@ -13,9 +13,9 @@ class AnswerSerializer(serializers.Serializer):
         answer = data['answer']
 
         if quiz.answer == int(answer):
-            report = quiz.book.report.get(author=user)
+            report = quiz.content.book.report.get(author=user)
             report.quiz_score += 1
             report.save()
             return "correct answer"
         else:
-            return {"hint": quiz.hint}
+            return {"hint": quiz.content.content_lines[quiz.hint[0]:quiz.hint[1]]}

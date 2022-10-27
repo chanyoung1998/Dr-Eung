@@ -1,9 +1,7 @@
 from django.db import models
 from django.conf import settings
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from book.models import Book
 
@@ -42,8 +40,3 @@ class Text(models.Model):
 
     def __str__(self):
         return f"{self.textID.author.nickname}의 감상문 - [{self.textID.book.title}]"
-
-    @receiver(post_save, sender=BookReport)
-    def create_user_ability(sender, instance, created, **kwargs):
-        if created:
-            Text.objects.create(textID=instance)
