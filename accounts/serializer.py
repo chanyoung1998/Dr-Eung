@@ -57,10 +57,6 @@ class LoginSerializer(serializers.Serializer):
             {"error": "Unable to log in with provided credentials."})
 
 class ProfileSerializer(serializers.BaseSerializer):
-    """
-    UserDB에서 현재 로그인한 유저의 정보를 받아와서 유저 정보를 전송
-    BookReportDB에서 현재 유저가 작성한 감상문을 받아와 가장 최근에 작성된 3개만 전송, 작성된게 없으면 빈 리스트를 전송
-    """
 
     def to_representation(self, obj):
         user = obj
@@ -84,6 +80,9 @@ class ProfileSerializer(serializers.BaseSerializer):
                     recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] 퀴즈 푸는중"))
                 elif report['step'] == 3:
                     recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] 감상문 작성중"))
+
+        if not recent:
+            recent = "아직 읽은 책이 없어요"
 
         return {
             "nickname": user.nickname,

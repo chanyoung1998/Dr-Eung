@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -21,4 +21,6 @@ def reading_view(request, title, chapter, page):
               'chapter': chapter,
               'page': page})
     serializer.is_valid(raise_exception=True)
+    if serializer.validated_data == -1:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(serializer.validated_data)

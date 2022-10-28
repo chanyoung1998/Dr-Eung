@@ -11,7 +11,7 @@ class User(AbstractUser):
     ability = ArrayField(
         models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]),
         size=5,
-        default=list,
+        default=list([0,0,0,0,0])
     )
 
     def __str__(self):

@@ -6,5 +6,8 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ['title', 'author', 'genre']
     ordering = ['-title']
 
+class ContentAdmin(admin.ModelAdmin):
+    ordering = ['book', 'chapter']
+
 admin.site.register(Book, BookAdmin)
-admin.site.register(Content)
+admin.site.register(Content, ContentAdmin)

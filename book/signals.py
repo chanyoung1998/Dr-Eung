@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_delete
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import *
 
@@ -7,13 +7,13 @@ from math import ceil
 
 LINES = 10
 
-@receiver(pre_save, sender=Content)
-def pre_save_chapter(sender, **kwargs):
+@receiver(post_save, sender=Content)
+def post_save_chapter(sender, **kwargs):
     chapter = kwargs['instance']
 
     if chapter.content_lines:
         return
-
+    chapter.content = "".join(chapter.content.split("\n"))
     chapter.content_lines = kss.split_sentences(chapter.content)
     chapter.pages = ceil(len(chapter.content_lines) / LINES)
     chapter.book.chapters += 1

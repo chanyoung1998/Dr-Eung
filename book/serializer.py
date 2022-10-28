@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework import status
 from report.models import BookReport
 from .signals import LINES
 from .models import Book
@@ -15,7 +16,12 @@ class BookSerializer(serializers.BaseSerializer):
         page = data['page']
         chapter = data['chapter']
 
+        if not Book.objects.filter(title=title):
+            return -1
         book = Book.objects.get(title=title)
+
+        if not book.content.filter(chapter=chapter):
+            return -1
         chapter = book.content.get(chapter=chapter)
 
         if not book.report.filter(author=user.pk):
