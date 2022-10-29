@@ -5,4 +5,4 @@ from .models import BookReport, Text
 @receiver(post_save, sender=BookReport)
 def create_text(sender, instance, created, **kwargs):
     if created:
-        Text.objects.create(textID=instance)
+        Text.objects.create(report=instance)
