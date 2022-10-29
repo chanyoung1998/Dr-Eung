@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework import status
 from report.models import BookReport
 from .signals import LINES
 from .models import Book

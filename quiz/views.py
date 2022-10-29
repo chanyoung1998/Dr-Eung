@@ -20,6 +20,9 @@ class QuizView(generics.GenericAPIView):
         return Response(serializer.data)
 
     def put(self, request, title, chapter):
+        if set(request.POST.keys()) != set(["quiz_number", "answer"]):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         quiz_number = request.POST['quiz_number']
         answer = request.POST['answer']
         quiz = Quiz.objects.filter(content__book__title=title, content__chapter=chapter).get(quiz_number=quiz_number)

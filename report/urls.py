@@ -4,6 +4,8 @@ from .views import *
 app_name = 'report'
 
 urlpatterns = [
-    path('', ReportView.as_view()),
     path('list/', report_list_view),
+    path('<str:title>/', ReportView.as_view()),
+    path('<str:title>/feedback/', FeedbackView.as_view()),
+    path('<str:title>/<int:chapter>/activity/', ActivityView.as_view()),
 ]
