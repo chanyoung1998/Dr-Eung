@@ -8,7 +8,7 @@ import numpy as np
 import itertools
 import json
 import os
-
+import re
 class KeywordExtractor():
 
     def __init__(self):
@@ -50,12 +50,12 @@ class KeywordExtractor():
         
         doc_embedding = model.encode([text]) # encode text into vector
         nouns_embedding = model.encode(nouns) # encode each nouns into vector
-        # distances = util.cos_sim(doc_embedding, nouns_embedding) # compute distances between text and each nouns
-        # keywords = [nouns[index] for index in distances.argsort()[0][-top_n:]] # extract top_n keywords
-        keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
+        distances = util.cos_sim(doc_embedding, nouns_embedding) # compute distances between text and each nouns
+        keywords = [nouns[index] for index in distances.argsort()[0][-top_n:]] # extract top_n keywords
+        # keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
 
-        # return keywords
-        return keywords_max_sum 
+        return keywords
+        # return keywords_max_sum 
          
 
     def extract_keyword_ngram(self,text,top_n=3,ngram_range=(1,2)):
@@ -77,8 +77,8 @@ if __name__ == '__main__':
     keyword = dict()
     # chapter = ''
 
-    chapter = sorted(os.listdir('../example/book/sherlockholmes')[:-1])
-    # print(chapter)
+    chapter = sorted(os.listdir('../example/book/sherlockholmes')[:-5],key=lambda x: int(re.compile('[0-9]+').findall(x)[0]))
+    print(chapter)
     for i in chapter:
         
         
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         #     keyword[i] = ke.extract_keyword(chapter,4)
         #     chapter = ''
 
-    with open('../example/book/sherlockholmes/keywords_max_sum.json','w',encoding='UTF8') as f:
+    with open('../example/book/sherlockholmes/keywords.json','w',encoding='UTF8') as f:
         json.dump(keyword, f, ensure_ascii=False, indent=4)
     
     
