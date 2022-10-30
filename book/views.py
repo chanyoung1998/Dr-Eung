@@ -14,6 +14,7 @@ class BookListView(generics.ListAPIView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def reading_view(request, title, chapter, page):
+
     serializer = BookSerializer(
         data={'user': request.user,
               'title': title,

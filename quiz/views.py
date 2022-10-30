@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -13,11 +14,9 @@ class QuizView(generics.GenericAPIView):
             raise ParseError("query is not correct - \"/?quiz_number=<int>\"")
 
         quiz_number = request.GET['quiz_number']
-        if not Quiz.objects.filter(content__book__title=title, content__chapter=chapter, quiz_number=quiz_number):
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        quiz = Quiz.objects.filter(content__book__title=title, content__chapter=chapter).get(quiz_number=quiz_number)
+        quiz = get_object_or_404(Quiz, content__book__title=title, content__chapter=chapter, quiz_number=quiz_number)
         serializer = QuizSerializer(quiz)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, title, chapter):
         if set(request.POST.keys()) != set(["quiz_number", "answer"]):
@@ -25,11 +24,11 @@ class QuizView(generics.GenericAPIView):
 
         quiz_number = request.POST['quiz_number']
         answer = request.POST['answer']
-        quiz = Quiz.objects.filter(content__book__title=title, content__chapter=chapter).get(quiz_number=quiz_number)
+        quiz = get_object_or_404(Quiz, content__book__title=title, content__chapter=chapter, quiz_number=quiz_number)
         serializer = AnswerSerializer(data={
             "user": request.user,
             "quiz": quiz,
             "answer": answer
         })
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
