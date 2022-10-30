@@ -9,6 +9,8 @@ import itertools
 import json
 import os
 import re
+
+from kss import split_sentences
 class KeywordExtractor():
 
     def __init__(self):
@@ -29,7 +31,6 @@ class KeywordExtractor():
         words_idx = list(distances.argsort()[0][-nr_candidates:])
         words_vals = [candidates[index] for index in words_idx]
         distances_candidates = distances_candidates[np.ix_(words_idx, words_idx)]
-
         # 각 키워드들 중에서 가장 덜 유사한 키워드들간의 조합을 계산
         min_sim = np.inf
         candidate = None
@@ -45,16 +46,15 @@ class KeywordExtractor():
         model = self.model 
         mecab = self.mecab
         nouns = list(set([word for word,tag in mecab.pos(text) if tag in set(['NNG','NNP']) and tag not in self.stopwords])) # get meaningful Nouns from text
-        # nouns = (list(set(mecab.nouns(text)))) 
-        # print(nouns)
-        
+
         doc_embedding = model.encode([text]) # encode text into vector
         nouns_embedding = model.encode(nouns) # encode each nouns into vector
         distances = util.cos_sim(doc_embedding, nouns_embedding) # compute distances between text and each nouns
-        keywords = [nouns[index] for index in distances.argsort()[0][-top_n:]] # extract top_n keywords
+        
+        keywords = [nouns[index] for index in distances.argsort()[0][:]] # extract top_n keywords
         # keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
 
-        return keywords
+        return keywords[::-1]
         # return keywords_max_sum 
          
 
@@ -77,23 +77,23 @@ if __name__ == '__main__':
     keyword = dict()
     # chapter = ''
 
-    chapter = sorted(os.listdir('../example/book/sherlockholmes')[:-5],key=lambda x: int(re.compile('[0-9]+').findall(x)[0]))
-    print(chapter)
-    for i in chapter:
-        
-        
+    chapter = sorted(os.listdir('../example/book/sherlockholmes')[:-7],key=lambda x: int(re.compile('[0-9]+').findall(x)[0]))
+
+    for i in chapter[:1]:
+         
         with open(f'../example/book/sherlockholmes/{i}','r',encoding='UTF8') as f:
         
             txt  = list(map(lambda x:x.strip(), f.read().split('\n')))
             text = ' '.join(txt)
             # chapter += text
             keyword[i] = ke.extract_keyword(text,4)
+            print(keyword)
         
         # if i % 5 == 0 or i == 26:
         #     keyword[i] = ke.extract_keyword(chapter,4)
         #     chapter = ''
 
-    with open('../example/book/sherlockholmes/keywords.json','w',encoding='UTF8') as f:
-        json.dump(keyword, f, ensure_ascii=False, indent=4)
+    # with open('../example/book/sherlockholmes/keywords.json','w',encoding='UTF8') as f:
+    #     json.dump(keyword, f, ensure_ascii=False, indent=4)
     
     
