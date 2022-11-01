@@ -75,7 +75,7 @@ class ExtractiveSummarizaion():
                 min_sim = sim
         if candidate == None:
             candidate = tuple(range(len(words_idx)))
-        print(candidate)
+        # print(candidate)
         return [words_vals[idx] for idx in candidate]
 
 if __name__ == '__main__':
