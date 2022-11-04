@@ -132,16 +132,16 @@ class Feedback():
             return feedback_good[0] + ' 하지만 ' +  feedback_bad[0]
 
 
+if __name__ == '__main__'
+    fb = Feedback()
+    while True:
+        txt = input()
+        if txt == 'a':
+            break      
+        print(fb.getFeedBack(txt))
 
-fb = Feedback()
-while True:
-    txt = input()
-    if txt == 'a':
-        break      
-    print(fb.getFeedBack(txt))
-
-# 표현: 문법, 어휘력, 표현의 적절성
-# 구성: 문단 내 구조의 적절성, 문단 간 구조의 적절성, 구조의 일관성,분량의 적절성
-# 내용: 주제의 명료성,설명의 구체성,프롬프트 독해력,사고의 창의성  
+    # 표현: 문법, 어휘력, 표현의 적절성
+    # 구성: 문단 내 구조의 적절성, 문단 간 구조의 적절성, 구조의 일관성,분량의 적절성
+    # 내용: 주제의 명료성,설명의 구체성,프롬프트 독해력,사고의 창의성  
 
 

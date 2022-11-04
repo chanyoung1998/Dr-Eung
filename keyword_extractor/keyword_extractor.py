@@ -54,7 +54,7 @@ class KeywordExtractor():
         keywords = [nouns[index] for index in distances.argsort()[0][:]] # extract top_n keywords
         # keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
 
-        return keywords[::-1]
+        return keywords[-top_n:]
         # return keywords_max_sum 
          
 
@@ -75,7 +75,6 @@ if __name__ == '__main__':
 
     ke = KeywordExtractor()
     keyword = dict()
-    # chapter = ''
 
     chapter = sorted(os.listdir('../example/book/sherlockholmes')[:-7],key=lambda x: int(re.compile('[0-9]+').findall(x)[0]))
 
