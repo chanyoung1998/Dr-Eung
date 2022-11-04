@@ -132,7 +132,7 @@ class Feedback():
             return feedback_good[0] + ' 하지만 ' +  feedback_bad[0]
 
 
-if __name__ == '__main__'
+if __name__ == '__main__':
     fb = Feedback()
     while True:
         txt = input()
