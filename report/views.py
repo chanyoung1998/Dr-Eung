@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
-from .models import *
 from .serializer import *
 
 @api_view(['GET'])
@@ -58,8 +57,8 @@ class ReportView(generics.GenericAPIView):
 
         original = request.POST["original"]
         serializer = WritingTextSerializer(data={
-            "text":text,
-            "original":original
+            "text": text,
+            "original": original
         })
         serializer.is_valid(raise_exception=True)
 

@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
 from .models import Book
-from .serializer import BookSerializer, BookListSerializer
+from .serializer import *
 
 class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -23,4 +23,15 @@ def reading_view(request, title, chapter, page):
     serializer.is_valid(raise_exception=True)
     if serializer.validated_data == -1:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(serializer.validated_data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def highlight_view(request, title, chapter, page):
+    serializer = HighlightIndexSerializer(
+        data={'title': title,
+              'chapter': chapter,
+              'page': page})
+    serializer.is_valid(raise_exception=True)
     return Response(serializer.validated_data)

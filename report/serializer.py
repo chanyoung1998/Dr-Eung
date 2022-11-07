@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from .apps import ReportConfig
 
 from random import randrange
 
@@ -77,6 +78,8 @@ class WritingTextSerializer(serializers.Serializer):
     def to_internal_value(self, data):
         text = data["text"]
         text.original = data["original"]
+        text.correct = ReportConfig.model.spellCheck(text.original)
+        text.feedback = ReportConfig.model.getFeedBack(text.correct)
         text.save()
         return "감상문이 저장되었습니다"
 

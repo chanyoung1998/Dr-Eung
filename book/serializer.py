@@ -1,12 +1,17 @@
+from abc import ABC
+
 from rest_framework import serializers
 from report.models import BookReport
+from .apps import BookConfig
 from .signals import LINES
 from .models import Book
+
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ('title', 'author', 'genre')
+
 
 class BookSerializer(serializers.BaseSerializer):
     def to_internal_value(self, data):
@@ -21,7 +26,7 @@ class BookSerializer(serializers.BaseSerializer):
 
         if not book.content.filter(chapter=chapter):
             return -1
-        chapter = book.content.get(chapter=chapter)
+        content_chapter = book.content.get(chapter=chapter)
 
         if not book.report.filter(author=user.pk):
             BookReport.objects.create(author=user, book=book)
@@ -31,6 +36,29 @@ class BookSerializer(serializers.BaseSerializer):
             report.page = page
             report.save()
 
-        contents = chapter.content_lines[(page-1) * LINES : page * LINES]
+        contents = content_chapter.content_lines[(page - 1) * LINES:page * LINES]
+
+        if len(book.keywords) < chapter * 3:
+            keyword = BookConfig.models["keyword_extractor"].extract_keyword(content_chapter.content, 3)
+            for k in keyword:
+                book.keywords.append(k)
+            book.save()
+
         return {f"page {page}": contents,
-                "pages": chapter.pages}
+                "pages": content_chapter.pages}
+
+
+class HighlightIndexSerializer(serializers.Serializer):
+
+    def to_internal_value(self, data):
+        title = data['title']
+        page = data['page']
+        chapter = data['chapter']
+
+        book = Book.objects.get(title=title)
+        chapter = book.content.get(chapter=chapter)
+        contents = chapter.content_lines[(page - 1) * LINES:page * LINES]
+        summary_index = BookConfig.model["summerizer"].extractive_summarization(contents, 3)
+        index = [(page - 1) * LINES + i for i in summary_index]
+
+        return {"index": index}
