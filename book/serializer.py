@@ -44,8 +44,9 @@ class BookSerializer(serializers.BaseSerializer):
                 book.keywords.append(k)
             book.save()
 
-        return {f"page {page}": contents,
-                "pages": content_chapter.pages}
+        return {"page": contents,
+                "pages": content_chapter.pages,
+                "chapters": book.chapters}
 
 
 class HighlightIndexSerializer(serializers.Serializer):

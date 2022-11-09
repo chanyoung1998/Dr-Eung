@@ -75,11 +75,9 @@ class Feedback():
         return sentences
 
     def preprocessing(self, text):
-        return self.essay_to_sentences(
-            txt.replace('<span>', '').replace('</span>', '').replace('\n', '').replace('\t', ''))
+        return self.essay_to_sentences(text)
 
     def getScore(self, text):
-
         essays = self.preprocessing(text)
         inputs = self.tokenizer.batch_encode_plus(essays, is_split_into_words=True)
         ids_new = pad_sequences(inputs['input_ids'],
@@ -96,6 +94,7 @@ class Feedback():
         return model_outputs.tolist()[0]
 
     def getFeedBack(self, text, age=11):
+        print(text)
         scores = list(map(lambda x: math.floor(3 * x), self.getScore(text)))
 
         feedback_dict = {0: 0, 1: 0, 2: 0, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2}
@@ -126,8 +125,8 @@ class Feedback():
             return feedback_good[0] + ' 하지만 ' + feedback_bad[0]
 
     def spellCheck(self, txt):
-        return spell_checker.check(txt)
-#
+        return ''.join(spell_checker.check(txt).as_dict()['checked'])
+# #
 #
 #
 # class Feedback:

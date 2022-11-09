@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-#49#nou%klq(wf2cbr%w1@izbi-+-9wm41utvmipk*j(!5e_5(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','7e93-125-141-90-169.jp.ngrok.io']
 
+CSRF_TRUSTED_ORIGINS = ['https://7e93-125-141-90-169.jp.ngrok.io']
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
     'accounts',
     'quiz',
     'book',
