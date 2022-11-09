@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import torch
+import numpy as np
 import math
 import random
+# from kobert.utils import get_tokenizer
 from gluonnlp.data import SentencepieceTokenizer
-from .pyhanspellmaster.hanspell import spell_checker
 
 # tensorflow
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel       
 
 from kss import split_sentences
 
@@ -17,13 +18,13 @@ from kss import split_sentences
 # 피드백 모델
 class Feedback():
     def __init__(self):
-        self.MAXLEN = 50
+        self.MAXLEN = 100
         self.device = 'cpu' if torch.cuda.is_available() else 'cpu'
         self.embeding_model = AutoModel.from_pretrained('monologg/kobert').to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
-        self.sp = SentencepieceTokenizer('./model/kobert_news_wiki_ko_cased-1087f8699e.spiece', num_best=2)
-        self.model = tf.keras.models.load_model('./model/kobert_model2.h5')
-
+        self.sp = SentencepieceTokenizer('/home/impala/Desktop/Dr-Eung/report/model/kobert_news_wiki_ko_cased-1087f8699e.spiece', num_best=2)
+        self.model = tf.keras.models.load_model('/home/impala/Desktop/Dr-Eung/report/model/kobert_model2.h5')
+        print("feedback model created")
         self.feedback_list = {
             0: {3: '글을 문법에 따라 참 잘 작성했어요. ', 2: '글을 문법에 따라 잘 작성했어요. 그렇지만 틀린 부분을 확인하고 더 정확하게 작성할 수 있도록 노력해보세요.',
                 1: '글에 문법적 오류가 조금 많아요. 엉박사님의 맞춤법 교정을 참고해 보세요.',
