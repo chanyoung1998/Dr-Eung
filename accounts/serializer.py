@@ -68,7 +68,7 @@ class ProfileSerializer(serializers.BaseSerializer):
             "유창성": user.ability[4],
         }
 
-        reports = user.report.all().values().order_by('-time')[:3]
+        reports = user.report.all().values().order_by('-time')[:5]
         recent = []
         for report in reports:
             if report['complete']:

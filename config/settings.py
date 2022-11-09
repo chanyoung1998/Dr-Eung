@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#49#nou%klq(wf2cbr%w1@izbi-+-9wm41utvmipk*j(!5e_5(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['9f58-121-157-55-117.jp.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -82,11 +82,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'PORT': '5432',
+
+        # RDS
         'NAME': 'DR_EUNG',
         'USER': 'dr_eung',
         'PASSWORD': 'dreungadmin',
         'HOST': 'dreungdb.ctkufdr8jsrj.ap-northeast-2.rds.amazonaws.com',
-        'PORT': '5432',
+
+        # # local
+        # 'NAME': 'Dr.Eung',
+        # 'USER': 'dr-eung',
+        # 'PASSWORD': 'dr-eungadmin',
+        # 'HOST': '127.0.0.1',
     }
 }
 

@@ -19,10 +19,13 @@ class QuizView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, title, chapter):
-        if set(request.POST.keys()) != set(["quiz_number", "answer"]):
+        if not 'quiz_number' in request.GET:
+            raise ParseError("query is not correct - \"/?quiz_number=<int>\"")
+
+        if not "answer" in request.POST:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        quiz_number = request.POST['quiz_number']
+        quiz_number = request.GET['quiz_number']
         answer = request.POST['answer']
         quiz = get_object_or_404(Quiz, content__book__title=title, content__chapter=chapter, quiz_number=quiz_number)
         serializer = AnswerSerializer(data={

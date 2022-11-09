@@ -6,6 +6,7 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     genre = models.CharField(max_length=45)
     chapters = models.IntegerField(default=0)
+    description = models.CharField(max_length=255)
     keywords = ArrayField(
         models.CharField(max_length=255),
         default=list,

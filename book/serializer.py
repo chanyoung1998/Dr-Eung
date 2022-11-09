@@ -17,7 +17,7 @@ class BookSerializer(serializers.BaseSerializer):
     def to_internal_value(self, data):
         user = data['user']
         title = data['title']
-        page = data['page']
+        page = int(data['page'])
         chapter = data['chapter']
 
         if not Book.objects.filter(title=title):
@@ -52,13 +52,13 @@ class HighlightIndexSerializer(serializers.Serializer):
 
     def to_internal_value(self, data):
         title = data['title']
-        page = data['page']
+        page = int(data['page'])
         chapter = data['chapter']
 
         book = Book.objects.get(title=title)
         chapter = book.content.get(chapter=chapter)
         contents = chapter.content_lines[(page - 1) * LINES:page * LINES]
-        summary_index = BookConfig.model["summerizer"].extractive_summarization(contents, 3)
+        summary_index = BookConfig.models["summerizer"].extractive_summarization(contents, 3)
         index = [(page - 1) * LINES + i for i in summary_index]
 
         return {"index": index}

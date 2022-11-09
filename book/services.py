@@ -97,7 +97,7 @@ class KeywordExtractor():
                           '자신', '안', '어떤', '내', '경우', '명', '생각', '시간', '그녀', '다시', '이런', '앞', '보이', '번', '나', '다른',
                           '어떻', '여자', '개', '들', '사실', '이렇', '점', '싶', '말', '정도', '좀', '원', '잘', '통하', '소리', '놓'}
 
- 
+
     def max_sum_sim(self, doc_embedding, candidate_embeddings, candidates, top_n, nr_candidates):
         # 문서와 각 키워드들 간의 유사도
         distances = util.cos_sim(doc_embedding, candidate_embeddings)
@@ -151,10 +151,10 @@ class KeywordExtractor():
         return keywords
 
 # class KeywordExtractor():
-
+#
 #     def __init__(self):
 #         print("keyword model created")
-
+#
 #     def extract_keyword(self, text, top_n=3):
 #         keyword = ['keyword1','keyword2','keyword3']
 #         return keyword

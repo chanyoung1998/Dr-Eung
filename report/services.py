@@ -10,9 +10,10 @@ from gluonnlp.data import SentencepieceTokenizer
 # tensorflow
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from transformers import AutoTokenizer, AutoModel       
+from transformers import AutoTokenizer, AutoModel
 
 from kss import split_sentences
+from .pyhanspellmaster.hanspell import spell_checker
 
 
 # 피드백 모델
@@ -126,16 +127,16 @@ class Feedback():
 
     def spellCheck(self, txt):
         return spell_checker.check(txt)
-
-
-
+#
+#
+#
 # class Feedback:
 #     def __init__(self):
 #         print("feedback model created")
-
+#
 #     def getFeedBack(self, txt):
 #         feedback = "feedback returned"
 #         return feedback
-
+#
 #     def spellCheck(self, txt):
 #         return ''.join(spell_checker.check(txt).as_dict()['checked'])
