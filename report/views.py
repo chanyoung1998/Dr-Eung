@@ -57,6 +57,7 @@ class ReportView(generics.GenericAPIView):
 
         original = request.POST["original"]
         serializer = WritingTextSerializer(data={
+            "user": request.user,
             "text": text,
             "original": original
         })

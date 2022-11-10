@@ -4,14 +4,22 @@ from .apps import ReportConfig
 
 from random import randrange
 
+GENRE = {"소설": 0, "수필": 1, "희곡": 2, "전기": 3, "비문학": 4}
+
 QUESTION_SET = {
-    "keyword": ("keyword question 1", "keyword question 2", "keyword question 3"),
-    "summary": ("summary question 1", "summary question 2", "summary question 3"),
-    "feeling": ("feeling question 1", "feeling question 2", "feeling question 3")
+    "keyword": ("이번 단원에서 가장 기억에 남는 단어는 무엇이었나요?", "이번 단원에서 가장 중요하다고 생각하는 단어를 적어보세요!",
+                "이번 단원에서 가장 인상깊었던 키워드는 무엇이었나요?", "이번 단원에서는 무엇이 가장 기억에 남나요?"),
+    "reason": "왜 그렇게 생각했나요?",
+    "summary": ("이번 단원에서 있었던 일을 한 문장으로 정리해 보세요!", "앞에서 적은 키워드를 생각하면서 이번 단원을 요약 해 보세요!",
+                "이번 단원에서 가장 기억에 남는 내용을 적어보세요!", "이번 단원에서 어떤 일이 있었는지 엉박사에게 설명 해 보세요!"),
+    "feeling": ("이번 단원을 읽고 어떤 생각이 들었나요? 자유롭게 적어보세요!", "앞에서 적은 키워드에 대해서 어떻게 생각하는지 적어보세요!",
+                "앞에서 적은 내용을 떠올리면서 느낀점을 간단하게 정리 해 보세요!", "이번 단원을 읽고 드는 생각을 자유롭게 적어보세요!")
 }
-KEYWORD = 3
-SUMMARY = 3
-FEELING = 3
+KEYWORD = 4
+SUMMARY = 4
+FEELING = 4
+
+MAX_SCORE = 3
 
 class ReportListSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
@@ -41,6 +49,7 @@ class ActivitySerializer(serializers.Serializer):
 
         return {
             "keyword": QUESTION_SET["keyword"][keyword_question],
+            "reason": QUESTION_SET["reason"],
             "summary": QUESTION_SET["summary"][summary_question],
             "feeling": QUESTION_SET["feeling"][feeling_question]
         }
@@ -50,10 +59,10 @@ class ActivitySerializer(serializers.Serializer):
         content = data["content"]
 
         if set(content.keys()) == set(["keyword", "reason", "summary", "feeling"]):
-            activity.keyword=content["keyword"]
-            activity.reason=content["reason"]
-            activity.summary=content["summary"]
-            activity.feeling=content["feeling"]
+            activity.keyword = content["keyword"]
+            activity.reason = content["reason"]
+            activity.summary = content["summary"]
+            activity.feeling = content["feeling"]
             activity.save()
             return "다음 챕터로"
 
@@ -62,25 +71,56 @@ class ActivitySerializer(serializers.Serializer):
 
 class WritingTextSerializer(serializers.Serializer):
     def to_representation(self, obj):
+        text = obj
         activities = {}
         for activity in obj.activity.all():
             activities[str(activity.chapter)] = {
-                QUESTION_SET["keyword"][activity.question_set[0]]: activity.keyword,
-                "reason": activity.reason,
-                QUESTION_SET["summary"][activity.question_set[1]]: activity.summary,
-                QUESTION_SET["feeling"][activity.question_set[2]]: activity.feeling
+                "keyword": [QUESTION_SET["keyword"][activity.question_set[0]], activity.keyword],
+                "reason": [QUESTION_SET["reason"], activity.reason],
+                "summary": [QUESTION_SET["summary"][activity.question_set[1]], activity.summary],
+                "feeling": [QUESTION_SET["feeling"][activity.question_set[2]], activity.feeling]
             }
+
+        text.report.step = 3
+        text.report.save()
+
         return {
-            "original": obj.original,
+            "original": text.original,
             "activities": activities
         }
 
     def to_internal_value(self, data):
         text = data["text"]
         text.original = data["original"]
-        text.correct = ReportConfig.model.spellCheck(text.original)
-        text.feedback = ReportConfig.model.getFeedBack(text.correct)
+
+        correct = ReportConfig.model.spellCheck(text.original)
+        text.correct = correct["correct"]
+
+        feedback = ReportConfig.model.getFeedBack(text.correct)
+        text.feedback = feedback["feedback"]
+
         text.save()
+
+        user = data["user"]
+
+        score = [
+            int(text.report.quiz_score/(text.report.book.chapters * 5) * 100),  # 퀴즈 점수
+            correct["score"],                                                   # 맞춤법 점수
+            int((sum(feedback["score"][:3]) / (3 * MAX_SCORE)) * 100),                          # 표현 점수
+            int((sum(feedback["score"][3:7]) / (4 * MAX_SCORE)) * 100),                       # 구성 점수
+            int((sum(feedback["score"][7:]) / (4 * MAX_SCORE)) * 100),                        # 내용 점수
+        ]
+        user.updateScore(score)
+
+        if text.report.complete == False:
+            user.genres[GENRE[text.report.book.genre]] += 1
+
+        user.save()
+
+        report = text.report
+        report.complete = True
+        report.save()
+
         return "감상문이 저장되었습니다"
 
 class TextSerializer(serializers.ModelSerializer):

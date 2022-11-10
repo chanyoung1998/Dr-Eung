@@ -1,16 +1,14 @@
-from abc import ABC
-
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 from report.models import BookReport
 from .apps import BookConfig
 from .signals import LINES
-from .models import Book
-
+from .models import *
 
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('title', 'author', 'genre')
+        fields = ('title', 'author', 'genre', 'description')
 
 
 class BookSerializer(serializers.BaseSerializer):
@@ -20,19 +18,27 @@ class BookSerializer(serializers.BaseSerializer):
         page = int(data['page'])
         chapter = data['chapter']
 
-        if not Book.objects.filter(title=title):
-            return -1
-        book = Book.objects.get(title=title)
+        book = get_object_or_404(Book, title=title)
 
-        if not book.content.filter(chapter=chapter):
-            return -1
-        content_chapter = book.content.get(chapter=chapter)
+        if page == 0:
+            chapter -= 1
+            content_chapter = get_object_or_404(Content, chapter=chapter, book__title=title)
+            page = content_chapter.pages
+        else:
+            content_chapter = get_object_or_404(Content, chapter=chapter, book__title=title)
 
         if not book.report.filter(author=user.pk):
             BookReport.objects.create(author=user, book=book)
         report = book.report.get(author=user.pk)
 
-        if report.page < page:
+        if report.step == 2:
+            report.step = 1
+            report.page = 1
+            if report.curr_chapter < chapter:
+                report.curr_chapter = chapter
+            report.save()
+
+        if report.curr_chapter == chapter and report.page < page:
             report.page = page
             report.save()
 

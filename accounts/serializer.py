@@ -64,31 +64,71 @@ class ProfileSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         user = obj
         score = {
-            "어휘력": user.ability[0],
-            "문법": user.ability[1],
-            "응집성": user.ability[2],
-            "이해력": user.ability[3],
-            "유창성": user.ability[4],
+            "이해력": user.ability[0],
+            "맞춤법": user.ability[1],
+            "표현": user.ability[2],
+            "구성": user.ability[3],
+            "내용": user.ability[4],
+        }
+
+        n = sum(user.genres)
+        genre_score = {
+            "소설": int((user.genres[0] / n) * 100),
+            "수필": int((user.genres[1] / n) * 100),
+            "희곡": int((user.genres[2] / n) * 100),
+            "전기": int((user.genres[3] / n) * 100),
+            "비문학": int((user.genres[4] / n) * 100),
         }
 
         reports = user.report.all().values().order_by('-time')[:5]
         recent = []
         for report in reports:
             if report['complete']:
-                recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] 감상문 작성 완료"))
+                recent.append(
+                    {
+                        "id": report['book_id'],
+                        "date": report['time'].strftime('%Y-%m-%d'),
+                        "time": report['time'].strftime('%H:%M'),
+                        "state": "감상문 작성 완료"}
+                )
             else:
                 if report['step'] == 1:
-                    recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] {report['page']}p 읽는중"))
+                    recent.append(
+                        {
+                            "id": report['book_id'],
+                            "date": report['time'].strftime('%Y-%m-%d'),
+                            "time": report['time'].strftime('%H:%M'),
+                            "state": f"{report['curr_chapter']}단원 {report['page']}p 읽는중"}
+                    )
                 elif report['step'] == 2:
-                    recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] 퀴즈 푸는중"))
+                    recent.append(
+                        {
+                            "id": report['book_id'],
+                            "date": report['time'].strftime('%Y-%m-%d'),
+                            "time": report['time'].strftime('%H:%M'),
+                            "state": f"{report['curr_chapter']}단원 퀴즈 푸는중"}
+                    )
                 elif report['step'] == 3:
-                    recent.append((report['time'].strftime('%Y-%m-%d %H:%M'), f"[{report['book_id']}] 감상문 작성중"))
-
-        if not recent:
-            recent = "아직 읽은 책이 없어요"
+                    recent.append(
+                        {
+                            "id": report['book_id'],
+                            "date": report['time'].strftime('%Y-%m-%d'),
+                            "time": report['time'].strftime('%H:%M'),
+                            "state": "감상문 작성 중"}
+                    )
 
         return {
-            "nickname": user.nickname,
-            "ability": score,
-            "recent": recent
+            "profile": {
+                "name": user.name,
+                "nickname": user.nickname,
+                "school": user.school,
+                "introduction": user.introduction,
+            },
+            "score": {
+                "ability": score,
+                "genres": genre_score,
+            },
+            "activities": {
+                "recent": recent
+            }
         }

@@ -90,17 +90,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'PORT': '5432',
 
-        # RDS
-        'NAME': 'DR_EUNG',
-        'USER': 'dr_eung',
-        'PASSWORD': 'dreungadmin',
-        'HOST': 'dreungdb.ctkufdr8jsrj.ap-northeast-2.rds.amazonaws.com',
+        # # RDS
+        # 'NAME': 'DR_EUNG',
+        # 'USER': 'dr_eung',
+        # 'PASSWORD': 'dreungadmin',
+        # 'HOST': 'dreungdb.ctkufdr8jsrj.ap-northeast-2.rds.amazonaws.com',
 
-        # # local
-        # 'NAME': 'Dr.Eung',
-        # 'USER': 'dr-eung',
-        # 'PASSWORD': 'dr-eungadmin',
-        # 'HOST': '127.0.0.1',
+        # local
+        'NAME': 'Dr.Eung',
+        'USER': 'dr-eung',
+        'PASSWORD': 'dr-eungadmin',
+        'HOST': '127.0.0.1',
     }
 }
 

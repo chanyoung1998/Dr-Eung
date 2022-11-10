@@ -16,6 +16,12 @@ class QuizView(generics.GenericAPIView):
         quiz_number = request.GET['quiz_number']
         quiz = get_object_or_404(Quiz, content__book__title=title, content__chapter=chapter, quiz_number=quiz_number)
         serializer = QuizSerializer(quiz)
+
+        report = request.user.report.get(book__title=title)
+        if report.step == 1:
+            report.step = 2
+            report.save()
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, title, chapter):
