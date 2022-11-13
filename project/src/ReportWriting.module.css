@@ -1,0 +1,78 @@
+.reportWritingLayout {
+  display: grid;
+  grid-template-columns: 10vw 90vw;
+  height: 100vh;
+}
+
+.reportWritingLayout .innerLayout{
+  max-width: 1400px;
+  width: 1200px;
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+  margin: 0 auto;
+}
+
+
+
+.chapters {
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  background-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0) 5%
+  );
+}
+
+.chapters::-webkit-scrollbar {
+  display: none;
+}
+
+.mymodal {
+  width: 50vw; /* Occupy the 90% of the screen width */
+  max-width: 50vw;
+}
+
+.mymodal div {
+  border-radius: 30px;
+  margin: 3px;
+}
+
+.notepad {
+
+  background-image: -webkit-linear-gradient(
+    top,
+    transparent,
+    transparent 1.76em,
+    #d4e6ce 0
+  );
+  font-size: 1em!important;
+  background-size: 100% 1.85em;
+  width: 50%;
+  height: 50%;
+  
+}
+
+
+
+
+
+
+
+ .notes {
+    font-size : 25px;
+    
+    /* font-size: 0.9em; */
+    background-attachment: local;
+    background-image:
+      linear-gradient(to right, white 10px, transparent 10px),
+      linear-gradient(to left, white 10px, transparent 10px),
+      repeating-linear-gradient(white, white 2em, #ccc 2em, #ccc 2.1em, white 2.1em);
+    line-height: 2em;
+    padding: 8px 10px;
+    margin: 3% 1%;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px gray;
+  }
