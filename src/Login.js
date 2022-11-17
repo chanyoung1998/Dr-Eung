@@ -1,11 +1,12 @@
 import styles from "./Login.module.css";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import Input from "./Input"
+
 import axios from "axios";
-import owl from './img/owl.png'
-import leftimg from './img/loginleft.png'
-import rightimg from './img/loginright.png'
+import owl from "./img/owl.png";
+import leftimg from "./img/loginleft.png";
+import rightimg from "./img/loginright.png";
 
 /*
   해야되는거
@@ -31,30 +32,8 @@ function Login() {
 
   const token = "";
 
-  const handleInput = (field, input) => {
-    setInput({
-      ...inputField,
-      [field]: input,
-    });
-  };
-
-  const handleFocusBorder = (border) => {
-    setActiveBorder({
-      ...activeBorder,
-      [border]: true,
-    });
-  };
-
-  const handleBlurBorder = (border, field) => {
-    if (!field) {
-      setActiveBorder({
-        ...activeBorder,
-        [border]: false,
-      });
-    }
-  };
-
   const handleLogin = () => {
+    console.log(idInput, passwordInput)
     axios
       .post(LOGIN_API_URL, { username: idInput, password: passwordInput })
       .then((data) => {
@@ -78,9 +57,7 @@ function Login() {
 
       <div className={styles.center}>
         <div className={styles.innercontainer}>
-          <div
-            className={styles.logoimg}
-          >
+          <div className={styles.logoimg}>
             <img src={owl}></img>
           </div>
 
@@ -90,51 +67,44 @@ function Login() {
                 <h2>엉박사</h2>
               </div>
               <div className={styles.idInput}>
-                <div
-                  className={
-                    idBorder
-                      ? `${styles.inputdiv} ${styles.one} ${styles.focus}`
-                      : `${styles.inputdiv} ${styles.one} `
-                  }
-                >
-                  <FontAwesomeIcon icon={faUser} className={styles.i} />
-                  <div className={styles.div}>
-                    <h5>아이디</h5>
-                    <input
-                      type="text"
-                      onChange={(e) => handleInput("idInput", e.target.value)}
-                      onFocus={() => handleFocusBorder("idBorder")}
-                      onBlur={(e) =>
-                        handleBlurBorder("idBorder", e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
+                <Input
+                  border={{
+                    name: "idBorder",
+                    field: idBorder,
+                    state: activeBorder,
+                    func: setActiveBorder,
+                  }}
+                  input={{
+                    name: "idInput",
+                    field: idInput,
+                    state: inputField,
+                    func: setInput,
+                  }}
+                  icon={faUser}
+                  name="아이디"
+                  type="text"
+                />
               </div>
 
               <div className={styles.pwInput}>
-                <div
-                  className={
-                    passwordBorder
-                      ? `${styles.inputdiv} ${styles.pass} ${styles.focus}`
-                      : `${styles.inputdiv} ${styles.pass} `
-                  }
-                >
-                  <FontAwesomeIcon icon={faLock} className={styles.i} />
-                  <div className={styles.div}>
-                    <h5>비밀번호</h5>
-                    <input
-                      type="password"
-                      onChange={(e) =>
-                        handleInput("passwordInput", e.target.value)
-                      }
-                      onFocus={() => handleFocusBorder("passwordBorder")}
-                      onBlur={(e) =>
-                        handleBlurBorder("passwordBorder", e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
+                <Input
+                  activeBorder={activeBorder}
+                  border={{
+                    name: "passwordBorder",
+                    field: passwordBorder,
+                    state: activeBorder,
+                    func: setActiveBorder,
+                  }}
+                  input={{
+                    name: "passwordInput",
+                    field: passwordInput,
+                    state: inputField,
+                    func: setInput,
+                  }}
+                  icon={faLock}
+                  name="비밀번호"
+                  type="password"
+                />
               </div>
               <div className={styles.btns}>
                 <a href={REGISTER_URL} className={styles.register}>
