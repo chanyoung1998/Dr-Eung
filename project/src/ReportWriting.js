@@ -11,8 +11,8 @@ function ReportWriting() {
   let param = useParams();
   let title = param.title;
   
-
-
+  let 형식 = ['형식1','형식2','형식3','형식4','형식5','형식6'];
+  let [형식번호,set형식번호] = useState(0);
   let [tab, setTab] = useState(1);
   let [show, setShow] = useState(false);
   let [chapters, setChapters] = useState([1, 2, 3, 4, 5]);
@@ -46,6 +46,9 @@ function ReportWriting() {
         setData([d.data]);
       });
   }, []);
+
+
+
   return (
     <div className={styles.reportWritingLayout}>
       <ReportModal
@@ -80,8 +83,19 @@ function ReportWriting() {
         </Nav>
       </div>
       <div className={styles.innerLayout}>
-        <p align="left" className={styles.notes}>{data[0].original}</p>
-        <textarea className={styles.notes} style={{borderColor:"white"}}></textarea>
+        <div style={{margin:"auto"}}>
+          {
+            형식.map(function(e,i){
+              return(
+                i == 형식번호? <button className={`${styles.button} ${styles.clicked}`} onClick={()=>{set형식번호(i)}}>{e}</button> : <button className={styles.button} onClick={()=>{set형식번호(i)}}>{e}</button>
+              )
+            })
+            
+          }
+          
+        </div>
+        <p align="left" className={styles.notes}>각 형식에 대한 예시를 보여주는 부분</p>
+        {/* <textarea className={styles.notes} style={{borderColor:"white"} }></textarea> */}
       </div>
     </div>
   );

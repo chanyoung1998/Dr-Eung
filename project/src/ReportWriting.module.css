@@ -4,15 +4,13 @@
   height: 100vh;
 }
 
-.reportWritingLayout .innerLayout{
+.reportWritingLayout .innerLayout {
   max-width: 1400px;
-  width: 1200px;
+  width: 80vw;
   display: grid;
-  grid-template-rows: 3fr 1fr;
+  grid-template-rows: 0.5fr 3fr;
   margin: 0 auto;
 }
-
-
 
 .chapters {
   overflow-y: auto;
@@ -41,38 +39,80 @@
 }
 
 .notepad {
-
   background-image: -webkit-linear-gradient(
     top,
     transparent,
     transparent 1.76em,
     #d4e6ce 0
   );
-  font-size: 1em!important;
+  font-size: 1em !important;
   background-size: 100% 1.85em;
   width: 50%;
   height: 50%;
-  
+}
+
+.notes {
+  font-size: 25px;
+
+  /* font-size: 0.9em; */
+  background-attachment: local;
+  background-image: linear-gradient(to right, white 10px, transparent 10px),
+    linear-gradient(to left, white 10px, transparent 10px),
+    repeating-linear-gradient(
+      white,
+      white 2em,
+      #ccc 2em,
+      #ccc 2.1em,
+      white 2.1em
+    );
+  line-height: 2em;
+  padding: 8px 10px;
+  margin: 3% 1%;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px gray;
+}
+
+/* <!-- HTML !-->
+<button class="button-74" role="button">Button 74</button> */
+
+/* CSS */
+.button {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 20px;
+}
+
+.button:hover {
+  background-color: #E1C591;
+}
+
+.clicked,
+.button:active  {
+  background-color: #E1C591;
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
 }
 
 
 
 
-
-
-
- .notes {
-    font-size : 25px;
-    
-    /* font-size: 0.9em; */
-    background-attachment: local;
-    background-image:
-      linear-gradient(to right, white 10px, transparent 10px),
-      linear-gradient(to left, white 10px, transparent 10px),
-      repeating-linear-gradient(white, white 2em, #ccc 2em, #ccc 2.1em, white 2.1em);
-    line-height: 2em;
-    padding: 8px 10px;
-    margin: 3% 1%;
-    border-radius: 20px;
-    box-shadow: 5px 5px 5px gray;
+@media (min-width: 768px) {
+  .button {
+    min-width: 120px;
+    padding: 0 25px;
   }
+}

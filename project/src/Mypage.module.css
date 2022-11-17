@@ -1,0 +1,168 @@
+
+.card {
+  background: RGB(243, 206, 163);
+  border-radius: 50px;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  width: 30vw;
+  
+  
+  /* height: 250px; */
+  height: 300px;
+  display: flex;
+  flex-direction: row;
+
+  position: relative;
+  /* height: 200px; */ 
+
+  
+}
+.card h2 {
+  margin: 0;
+  padding: 0 1rem;
+}
+.card .title {
+  padding: 1rem;
+  text-align: right;
+  color: #e36f6b;
+  font-weight: bold;
+  font-size: 20px;
+}
+.card .desc {
+  padding: 0.5rem 1rem;
+  font-size: 18px;
+}
+.card .actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+.card svg {
+  width: 30px;
+  height: 30px;
+}
+
+.imgAvatar {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  border-radius: 50%;
+  border: 6px solid white;
+  background-image: linear-gradient(-60deg, #f0b5a0 0%, #f4d03f 100%);
+  top: 5%;
+  left: 5%;
+}
+.imgAvatar2 {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  border-radius: 50%;
+  border: 6px solid white;
+  background-image: linear-gradient(-60deg, #d98465 0%, #b28e00 100%);
+  top: 5%;
+  left: 5%;
+}
+
+
+/* .cardText {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+} */
+
+.titleTotal {
+  padding: 1em 1.5em 1em 1.5em;
+}
+
+/* path {
+  fill: white;
+} */
+
+/* .img-portada {
+  width: 100%;
+} */
+
+
+.button {
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #e17774;
+  cursor: pointer;
+  transition:.5s;
+  
+}
+.button:hover{
+    color: #a65845  ;
+    transform: rotate(22deg)
+}
+
+.layout{
+    display: grid;
+
+    grid-template-columns: 3fr 1fr;
+    /* column-gap: 5vw; */
+    height: 90vh;
+    
+}
+.layout .innerLayout{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 5vh;
+    
+}
+
+.innerinnerLayput{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.status{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  
+}
+.tabArea {
+  /* background: red; */
+  
+  width:14vw;
+  height: 150px;
+  border-radius: 12vw 12vw 0 0;
+  float: left;
+  
+  
+  
+}
+.tabArea2 {
+  /* background: red; */
+  width:14vw;
+  height: 100px;
+  border-radius: 12vw 12vw 0 0;
+  /* transform: translate(13vw,0); */
+  float: left;
+}
+.graphArea{
+  
+
+  width: 30vw;
+  height:300px;
+  display: inline-block;
+  border-radius: 50px;
+  position: relative;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+
+ 
+}
+
+.graphArea2{
+  
+
+  width: 30vw;
+  height:300px;
+  display: inline-block;
+  border-radius: 50px;
+  position: relative;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  
+}
+

@@ -1,0 +1,19 @@
+#wrap {
+  width: 230px;
+  overflow: hidden;
+  border-radius: 0 10px 0 0;
+}
+#navlink h1{
+    font-size: 40px;
+}
+#navlink {
+  background-color: rgb(248, 217, 160);
+  color: #b2b2b2;
+  height: 70px;
+  border-radius: 10px 0 0 0;
+
+  transform: skew(-20deg) translate(25px, 0px);
+
+  border-right: 15px solid transparent;
+}
+
