@@ -84,9 +84,6 @@ button:active{
     grid-template-columns: 1fr 1fr;
 }
 
-.report{
-}
-
 .notes {
     font-size: 1.5rem;
     background-attachment: local;
@@ -140,13 +137,30 @@ button:active{
 	margin-bottom: -13px;
 }
 
+.feedback > img{
+    position: absolute;
+    left: 95%;
+    top: 95%;
+    transform: translate(-100%, -100%);
+    width: 25%;
+    min-width: 130px;
+}
+
 .images{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
 .leftimg{
+    position: relative;
+}
 
+.leftimg img{
+    position: absolute;
+    left: 10%;
+    top: 90%;
+    transform: translate(0%, -100%);
+    width: 90%;
 }
 
 .rightimg{
@@ -155,7 +169,56 @@ button:active{
 
 .rightimg img{
     position: absolute;
+    top: 90%;
     left: 90%;
-    transform: translate(-100%);
+    transform: translate(-100%, -100%);
     height: 90%;
+    min-height: 250px;
+}
+
+@media screen  and (max-width: 1500px){
+    .rightimg img{
+      height: 70%;
+    };
+  }
+
+
+@media screen  and (max-width: 1100px){
+    .leftimg{
+        display: none;
+    }
+
+    .images{
+        grid-template-columns: 1fr;
+    }
+
+    .rightimg img{
+        height: 70%;
+    };
+    }
+
+@media screen  and (max-width: 750px){
+    .titlebar{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .contents{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+@media screen  and (max-width: 380px){
+    :root{
+        font-size: 12px;
+    }
+
+    .correctbtnbox > button{
+        width: 130px;
+    }
+
+    .titleright > button{
+        width: 110px;
+    }
 }
