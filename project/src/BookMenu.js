@@ -163,7 +163,7 @@ function BookMenu() {
         <Row>
           <Col md={{ span: 3 }}>
             <div className={`${styles.speechBubble} ${styles.fixed2}`}>{books[selectedIndex].description}</div>
-            <img src={owl} style={{width:"100%" ,height:"60%",}}/>
+            <img src={owl} style={{width:"100%" ,height:"60%"}}/>
           </Col>
           <Col md={{ span: 6 }}>
             <div>

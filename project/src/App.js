@@ -9,7 +9,8 @@ import ReportMenu from "./ReportMenu.js";
 import Read from "./Read.js";
 import ReportWriting from "./ReportWriting.js";
 import Quiz from "./Quiz.js";
-import Feedback from "./Feedback.js"
+import Feedback from "./Feedback.js";
+import Activity from "./Activity.js";
 function App() {
   
   let navigate = useNavigate();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/reading/:title/:chapter/:page" element={<Read/>}/>
         <Route path="/writing/:title" element={<ReportWriting/>}/>
         <Route path="/quiz/:title/:chapter" element={<Quiz/>}/>
+        <Route path="/activity/:title/:chapter" element={<Activity/>}/>
         <Route path="/feedback/:title" element={<Feedback/>}/>
       </Routes>
     </div>

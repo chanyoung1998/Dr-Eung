@@ -11,14 +11,13 @@ import {
   Container,
   Row,
   Col,
-  InputGroup,
-  Form,
-  Dropdown,
-  DropdownButton,
+  Button
+
 } from "react-bootstrap";
 import styles from "./Mypage.module.css";
 
 import ApexCharts from "react-apexcharts";
+import owl from "./img/owl.png";
 
 function Mypage() {
   let [ability, setAbility] = useState(0);
@@ -26,31 +25,44 @@ function Mypage() {
   return (
     <div className={styles.layout}>
       <div className={styles.innerLayout}>
-        <div className={styles.innerinnerLayput}>
+        <div className={styles.innerinnerLayout} align='left'>
           <Profile />
 
-          <div style={{margin: "30px auto 0" }}>
+          <div style={{ margin: "30px auto 0" }} >
             {ability === 0 ? (
-              <div>
+              <div className={styles.statuslayout} style={{ background: "none" }} >
                 <div
                   className={styles.graphArea}
-                  style={{ background: "#FFE9A0" }}
+                  // style={{ background: "#FFE9A0" }}
                 >
                   <div className={styles.status}>
                     <CustomRadar
-                      data={[90, 80, 30, 20,50]}
-                      categories={["소설", "자기개발", "수필", "경제","모라"]}
+                      data={[90, 80, 30, 20, 50]}
+                      categories={["소설", "수필", "자기개발", "경제", "문학"]}
                     />
+                  </div>
+                </div>
+                <div
+                  className={styles.graphArea2}
+                  // style={{ background: "#E4E0CE" }}
+                >
+                  <div className={styles.status}>
+                    <div className={styles.status}>
+                      <CustomRadar
+                        data={[90, 80, 30, 20,50]}
+                        categories={["독해력", "어휘력", "내용", "문법","능력5"]}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className={styles.status}>
+              <div className={styles.graphArea2}>
                 <div
-                  className={styles.graphArea2}
-                  style={{ background: "#E4E0CE" }}
+                  className={styles.status}
+                  // style={{ background: "#E4E0CE" }}
                 >
-                  <div className={styles.imgAvatar2}></div>
+                  {/* <div className={styles.imgAvatar2}></div> */}
                   <div className={styles.status}>
                     <CustomRadar
                       data={[90, 80, 30, 20]}
@@ -66,7 +78,10 @@ function Mypage() {
           <RecentActivity />
         </div>
       </div>
-      <div></div>
+      <div className={styles.owlcustomlayout}>
+        <img src={owl} className={styles.owlcustomimg}/>
+        <div ><Button id={styles.ReadButton} style={{ marginTop:"3%"}} size="lg">꾸미러 가기</Button></div>
+      </div>
     </div>
   );
 }
@@ -77,8 +92,8 @@ function Profile() {
   return (
     <div style={{ margin: "30px auto 0" }}>
       {/* <h2>자기소개</h2> */}
-      <div className={styles.card} >
-        <div className={styles.imgAvatar}></div>
+      <div className={styles.card}>
+        {/* <div className={styles.imgAvatar}></div> */}
         <div className={styles.cardText}>
           <div className={styles.titleTotal}>
             <div className={styles.title}>척척박사</div>
@@ -139,15 +154,14 @@ function RecentActivity() {
       status: "120p 읽는 중",
     },
   ]);
-
+  
   return (
-    <div>
+    <div className={styles.recentactivity}>
       <Col md={{ span: 12 }}>
         <div
           style={{
             marginLeft: "5%",
             marginRight: "5%",
-            fontSize: "25px",
             // background: "#d57440",
             borderRadius: "10px",
           }}
@@ -312,14 +326,15 @@ function CustomRadar(props) {
       },
     },
   };
-
+  const width = screen.width / 5;
   return (
     <ApexCharts
       options={state.options}
       series={state.series}
       type="radar"
-      width={300}
-      height={300}
+      //전체 넓이의 1/5
+      width={width}
+      height={width} 
     />
   );
 }

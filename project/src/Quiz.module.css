@@ -1,19 +1,217 @@
-#wrap {
-  width: 230px;
-  overflow: hidden;
-  border-radius: 0 10px 0 0;
-}
-#navlink h1{
-    font-size: 40px;
-}
-#navlink {
-  background-color: rgb(248, 217, 160);
-  color: #b2b2b2;
-  height: 70px;
-  border-radius: 10px 0 0 0;
-
-  transform: skew(-20deg) translate(25px, 0px);
-
-  border-right: 15px solid transparent;
-}
-
+.container {
+    width: 60vw;
+    height: 60vh;
+  
+    position: absolute;
+    top: 15%;
+    left: 25vw;
+  }
+  
+  #wrap {
+    width: 12vw;
+    overflow: hidden;
+    border-radius: 0 10px 0px 0;
+    position: relative;
+  }
+  #navlink h1 {
+    font-size: 35px;
+    padding-right: 10px;
+  }
+  #navlink {
+    /* border: solid; */
+    /* border-color: white; */
+  
+    background-color: rgb(248, 217, 160);
+    color: #919191;
+    height: 8vh;
+    z-index: -1;
+  
+    border-radius: 10px 0 0 0;
+    transform: skew(-25deg) translate(12%, 0px);
+    border-right: 15px solid transparent;
+  }
+  
+  .leftmove0 {
+    transform: translate(-5%);
+  }
+  
+  .leftmove1 {
+    transform: translate(-30%);
+  }
+  
+  .leftmove2 {
+    transform: translate(-60%);
+  }
+  
+  .leftmove3 {
+    transform: translate(-90%);
+  }
+  
+  .leftmove4 {
+    transform: translate(-120%);
+  }
+  
+  /* 선택 되었을 때 */
+  
+  .leftmove0_2 {
+    transform: translate(-5%);
+    z-index: 2;
+  }
+  
+  .leftmove1_2 {
+    transform: translate(-30%);
+    z-index: 2;
+  }
+  
+  .leftmove2_2 {
+    transform: translate(-60%);
+    z-index: 2;
+  }
+  
+  .leftmove3_2 {
+    transform: translate(-90%);
+    z-index: 2;
+  }
+  
+  .leftmove4_2 {
+    transform: translate(-120%);
+    z-index: 2;
+  }
+  
+  .content {
+    /* 60vw - 12vw * 120% */
+    width: 45.6vw;
+    height: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-rows: 0.5fr 60px 2fr ;
+    row-gap: 5px;
+    background-color: #f1a661;
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .content {
+    font-size: 30px;
+  }
+  
+  .content .choicelayer {
+    background-color: #fff7e9;
+    border-radius: 15px;
+    font-size: 25px;
+    overflow-y: scroll;
+    padding: 10px;
+  }
+  
+  .content .choicelayer p {
+    padding: 2%;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .content .choicelayer p:hover {
+    background-color: #cac3b7;
+  }
+  
+  .content .choicelayer p img {
+    position: absolute;
+    top: 2%;
+    left: 4%;
+  }
+  
+  .leaf {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    /* transform: translate(-20px,-10px); */
+    transform: translate(-10%, -30%);
+  }
+  .branch {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    /* transform: translate(-20px,-10px); */
+    transform: translate(-50%);
+  }
+  
+  .bulblayout{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+  }
+  .submitlayout{
+    display: flex;
+    justify-content: right;
+    align-items: right;
+  }
+  .submiticon{
+    width: 50px;
+    height: 50px;
+    transform: translate(0,8px);
+    transition-property: all;
+    transition-duration: 0.5s;
+  }
+  .submiticon:hover{
+    width: 80px;
+    height: 80px;
+    transform: translate(10px,-15px);
+  }
+  
+  .bulb {
+    width: 50px;
+    height: 50px;
+    transition-property: all;
+    transition-duration: 0.5s;
+  }
+  .bulb:hover{
+    width: 80px;
+    height: 80px;
+    transform: translate(-10px,-15px);
+  }
+  /* 아래의 모든 코드는 영역::코드로 사용 */
+  
+  .content .choicelayer::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+    background-clip: content-box;
+  }
+  
+  .content .choicelayer::-webkit-scrollbar-thumb {
+    height: 10px; /* 스크롤바의 길이 */
+    background: rgba(235, 219, 172, 0.8); /* 스크롤바의 색상 */
+  
+    border-radius: 10px;
+  }
+  
+  
+  
+  .mymodal {
+    width: 50vw; 
+    
+    max-width: 50vw;
+  
+  
+    
+  }
+  .mymodal p{
+    max-height: 50vh;
+    overflow-y: scroll;
+    font-size: 25px;
+  }
+  .mymodal p::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+    background-clip: content-box;
+  }
+  
+  .mymodal p::-webkit-scrollbar-thumb {
+    height: 10px; /* 스크롤바의 길이 */
+    background: rgba(235, 219, 172, 0.8); /* 스크롤바의 색상 */
+  
+    border-radius: 10px;
+  }
+  
+  
+  
+  .mymodal div {
+    border-radius: 30px;
+    margin: 3px;
+  }
+  

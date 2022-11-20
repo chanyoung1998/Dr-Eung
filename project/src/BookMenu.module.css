@@ -12,7 +12,8 @@
 
 
 .selected{
-    color:#61dafb;
+  color:rgb(146, 66, 66);
+    /* color:#61dafb; */
   }
   
 .nonSelected{
