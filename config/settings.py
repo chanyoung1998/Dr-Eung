@@ -25,11 +25,13 @@ SECRET_KEY = 'django-insecure-#49#nou%klq(wf2cbr%w1@izbi-+-9wm41utvmipk*j(!5e_5(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '127.0.0.1','7e93-125-141-90-169.jp.ngrok.io']
+ALLOWED_HOSTS = ['*', '127.0.0.1','a8d0-165-194-17-239.jp.ngrok.io']
 
-CSRF_TRUSTED_ORIGINS = ['https://7e93-125-141-90-169.jp.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://a8d0-165-194-17-239.jp.ngrok.io']
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -90,17 +92,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'PORT': '5432',
 
-        # # RDS
-        # 'NAME': 'DR_EUNG',
-        # 'USER': 'dr_eung',
-        # 'PASSWORD': 'dreungadmin',
-        # 'HOST': 'dreungdb.ctkufdr8jsrj.ap-northeast-2.rds.amazonaws.com',
+        # RDS
+        'NAME': 'DR_EUNG',
+        'USER': 'dr_eung',
+        'PASSWORD': 'dreungadmin',
+        'HOST': 'dreungdb.ctkufdr8jsrj.ap-northeast-2.rds.amazonaws.com',
 
-        # local
-        'NAME': 'Dr.Eung',
-        'USER': 'dr-eung',
-        'PASSWORD': 'dr-eungadmin',
-        'HOST': '127.0.0.1',
+        # # local
+        # 'NAME': 'Dr.Eung',
+        # 'USER': 'dr-eung',
+        # 'PASSWORD': 'dr-eungadmin',
+        # 'HOST': '127.0.0.1',
     }
 }
 
