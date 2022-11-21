@@ -196,7 +196,7 @@
 
 .owlcustomlayout{
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0.5fr;
   height: 100%;
   transform: translate(0,15%);
   
@@ -209,6 +209,7 @@
   transform: translate(0,10%);
   
 }
+
 
 #ReadButton{
   color: black;

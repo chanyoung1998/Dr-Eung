@@ -22,7 +22,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import owl from './img/owl.png'
 import { useNavigate} from "react-router-dom";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 
 function BookMenu() {
   let navigate = useNavigate();
@@ -141,10 +141,11 @@ function BookMenu() {
       complete: false,
     },
   ]);
-  const BASE_URL = "https://a8d0-165-194-17-239.jp.ngrok.io";
+  const BASE_URL = useSelector((state)=>state.BASE_URL);
+  console.log(BASE_URL)
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/book/list/`, {
+      .get(`${BASE_URL}book/list/`, {
         headers: {
           Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
         },

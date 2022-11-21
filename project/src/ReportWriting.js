@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import styles from "./ReportWriting.module.css";
 import { susa } from "susa-js";
 import axios from "axios";
-
+import {useSelector} from "react-redux";
 function ReportWriting() {
   let param = useParams();
   let title = param.title;
@@ -31,10 +31,10 @@ function ReportWriting() {
   ]);
 
 
-  const BASE_URL = "https://a8d0-165-194-17-239.jp.ngrok.io";
+  const BASE_URL = useSelector((state)=>state.BASE_URL);
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/report/${title}/`, {
+      .get(`${BASE_URL}report/${title}/`, {
         headers: {
           Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
         },

@@ -17,16 +17,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Read.module.css";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 
-const BASE_URL = "https://a8d0-165-194-17-239.jp.ngrok.io";
+
 function Read() {
   let param = useParams();
   let title = param.title;
   let curchapter = Number(param.chapter);
   let curpage = Number(param.page);
 
-
+  const BASE_URL = useSelector((state)=>state.BASE_URL);
   let navigate = useNavigate();
 
   let [LeftTexts, setLeftTexts] = useState([]);
@@ -34,7 +35,7 @@ function Read() {
   let [totalchapters, setTotalchapters] = useState(0);
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/book/${title}/${curchapter}/?page=${curpage}`, {
+      .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage}`, {
         headers: {
           Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
         },

@@ -18,7 +18,7 @@ import styles from "./Mypage.module.css";
 
 import ApexCharts from "react-apexcharts";
 import owl from "./img/owl.png";
-
+import book from "./img/book.png";
 function Mypage() {
   let [ability, setAbility] = useState(0);
 
@@ -81,6 +81,7 @@ function Mypage() {
       <div className={styles.owlcustomlayout}>
         <img src={owl} className={styles.owlcustomimg}/>
         <div ><Button id={styles.ReadButton} style={{ marginTop:"3%"}} size="lg">꾸미러 가기</Button></div>
+        
       </div>
     </div>
   );

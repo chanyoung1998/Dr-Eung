@@ -11,10 +11,14 @@ import ReportWriting from "./ReportWriting.js";
 import Quiz from "./Quiz.js";
 import Feedback from "./Feedback.js";
 import Activity from "./Activity.js";
+
+
+
+// const BASE_URL = "http://3.38.215.109:8000/";
 function App() {
   
   let navigate = useNavigate();
-
+  
   return (
     <div className="App">
       <Routes>
