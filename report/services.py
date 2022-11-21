@@ -25,8 +25,8 @@ class Feedback():
         self.device = 'cpu' if torch.cuda.is_available() else 'cpu'
         self.embeding_model = AutoModel.from_pretrained('monologg/kobert').to(self.device)
         self.tokenizer = AutoTokenizer.from_pretrained('monologg/kobert')
-        self.sp = SentencepieceTokenizer(ROOT_DIR + '/model/kobert_news_wiki_ko_cased-1087f8699e.spiece', num_best=2)
-        self.model = tf.keras.models.load_model(ROOT_DIR + '/model/kobert_model2.h5')
+        self.sp = SentencepieceTokenizer(ROOT_DIR + '/report/model/kobert_news_wiki_ko_cased-1087f8699e.spiece', num_best=2)
+        self.model = tf.keras.models.load_model(ROOT_DIR + '/report/model/kobert_model2.h5')
         print("feedback model created")
         self.feedback_list = {
             0: {3: '글을 문법에 따라 참 잘 작성했어요. ', 2: '글을 문법에 따라 잘 작성했어요. 그렇지만 틀린 부분을 확인하고 더 정확하게 작성할 수 있도록 노력해보세요.',
