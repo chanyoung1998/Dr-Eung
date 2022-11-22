@@ -30,8 +30,8 @@ class ReportListSerializer(serializers.BaseSerializer):
         for i, report in enumerate(reports):
             result[str(i+1)] = {
                 "책 제목": report['book_id'],
-                "작성완료": report['complete'],
-                "즐겨찾기": report['bookmark']
+                "감상문 제목": report['title'],
+                # 이미지 주소: report.book.img
             }
 
         return result

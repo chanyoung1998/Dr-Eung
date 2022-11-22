@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from report.models import BookReport
 from .apps import BookConfig
-from .signals import LINES
+from .signals import LINES, LETTERS
 from .models import *
 
 class BookListSerializer(serializers.ModelSerializer):
@@ -10,6 +10,21 @@ class BookListSerializer(serializers.ModelSerializer):
         model = Book
         fields = ('title', 'author', 'genre', 'description')
 
+class BookSearchSerializer(serializers.Serializer):
+    def to_internal_value(self, data):
+        title = data["title"]
+        user = data["user"]
+        book = get_object_or_404(Book, title=title)
+        report = get_object_or_404(BookReport, title=title, author=user)
+
+        return {
+            "title": book.title,
+            "author": book.author,
+            "genre": book.genre,
+            "description": book.description,
+            "bookmark": report.bookmark,
+            "complete": report.complete
+        }
 
 class BookSerializer(serializers.BaseSerializer):
     def to_internal_value(self, data):
@@ -30,6 +45,7 @@ class BookSerializer(serializers.BaseSerializer):
         if not book.report.filter(author=user.pk):
             BookReport.objects.create(author=user, book=book)
         report = book.report.get(author=user.pk)
+        report.bookmark = True
 
         if report.step == 2:
             report.step = 1
@@ -42,7 +58,8 @@ class BookSerializer(serializers.BaseSerializer):
             report.page = page
             report.save()
 
-        contents = content_chapter.content_lines[(page - 1) * LINES:page * LINES]
+        # contents = content_chapter.content_lines[(page - 1) * LINES:page * LINES]
+        contents = content_chapter.content[(page - 1) * LETTERS: page * LETTERS]
 
         if len(book.keywords) < chapter * 3:
             keyword = BookConfig.models["keyword_extractor"].extract_keyword(content_chapter.content, 3)

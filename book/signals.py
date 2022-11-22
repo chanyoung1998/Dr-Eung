@@ -6,6 +6,7 @@ import kss
 from math import ceil
 
 LINES = 10
+LETTERS = 220
 
 @receiver(post_save, sender=Content)
 def post_save_chapter(sender, **kwargs):
@@ -15,7 +16,7 @@ def post_save_chapter(sender, **kwargs):
         return
     chapter.content = "".join(chapter.content.split("\n"))
     chapter.content_lines = kss.split_sentences(chapter.content)
-    chapter.pages = ceil(len(chapter.content_lines) / LINES)
+    chapter.pages = ceil(len(chapter.content) / LETTERS)
     chapter.book.chapters += 1
 
     chapter.save()

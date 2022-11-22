@@ -12,6 +12,7 @@ class Book(models.Model):
         default=list,
         blank=True,
     )
+    # img = models.URLField()
 
     def __str__(self):
         return self.title
