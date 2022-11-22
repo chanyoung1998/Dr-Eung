@@ -130,5 +130,5 @@ class ProfileSerializer(serializers.BaseSerializer):
             },
             "activities": {
                 "recent": recent
-            }
+            },
         }

@@ -6,24 +6,26 @@ from .signals import LINES, LETTERS
 from .models import *
 
 class BookListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Book
         fields = ('title', 'author', 'genre', 'description')
 
+    def to_representation(self, instance):
+        data = super(BookListSerializer, self).to_representation(instance)
+        print(data)
+        return
+
 class BookSearchSerializer(serializers.Serializer):
     def to_internal_value(self, data):
-        title = data["title"]
-        user = data["user"]
+        title = data
         book = get_object_or_404(Book, title=title)
-        report = get_object_or_404(BookReport, title=title, author=user)
 
         return {
             "title": book.title,
             "author": book.author,
             "genre": book.genre,
             "description": book.description,
-            "bookmark": report.bookmark,
-            "complete": report.complete
         }
 
 class BookSerializer(serializers.BaseSerializer):

@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import *
 
+import re
 import kss
 from math import ceil
 
@@ -14,7 +15,8 @@ def post_save_chapter(sender, **kwargs):
 
     if chapter.content_lines:
         return
-    chapter.content = "".join(chapter.content.split("\n"))
+    # chapter.content = "".join(chapter.content.split("\n\r"))
+    chapter.content = "".join(re.split('[\n\r]', chapter.content))
     chapter.content_lines = kss.split_sentences(chapter.content)
     chapter.pages = ceil(len(chapter.content) / LETTERS)
     chapter.book.chapters += 1

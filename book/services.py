@@ -152,11 +152,15 @@ class KeywordExtractor():
         return keywords
 
 # class KeywordExtractor():
-
+#
 #     def __init__(self):
 #         print("keyword model created")
-
+#
 #     def extract_keyword(self, text, top_n=3):
 #         keyword = ['keyword1','keyword2','keyword3']
 #         return keyword
+#
+# class ExtractiveSummarizaion():
+#     def extractive_summarization(self, sentences, top_n=5):
+#         return [1,2,3]
 

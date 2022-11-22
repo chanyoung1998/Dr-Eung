@@ -19,7 +19,7 @@ class User(AbstractUser):
         size=5,                                     # 소설, 수필, 희곡, 전기, 비문학
         default=list([0,0,0,0,0])
     )
-    tier = models.SmallIntegerField(default=0)
+    tier = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def updateScore(self, score):
         n = len(self.report.filter(complete=True))
@@ -27,9 +27,20 @@ class User(AbstractUser):
             self.ability[i] = (self.ability[i] / scale(n-1) + score[i]) // (n+1)
             self.ability[i] *= scale(n)
 
+        if sum(self.genres) >= 100 and sum(self.score) / 5 >= 80:
+            self.tier = 5
+        elif sum(self.genres) >= 70 and sum(self.score) / 5 >= 60:
+            self.tier = 4
+        elif sum(self.genres) >= 40 and sum(self.score) / 5 >= 30:
+            self.tier = 3
+        elif sum(self.genres) >= 15 and sum(self.score) / 5 >= 15:
+            self.tier = 2
+        elif sum(self.genres) >= 5:
+            self.tier = 1
+
+
     def __str__(self):
         return self.nickname
-
 
 def scale(x):
     return (-exp(-(x+1)/10 + log(100)) + 100) / 100

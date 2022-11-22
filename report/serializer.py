@@ -21,6 +21,7 @@ FEELING = 4
 
 MAX_SCORE = 3
 
+
 class ReportListSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         user = obj
@@ -28,13 +29,16 @@ class ReportListSerializer(serializers.BaseSerializer):
 
         result = {}
         for i, report in enumerate(reports):
-            result[str(i+1)] = {
+            result[str(i + 1)] = {
                 "책 제목": report['book_id'],
                 "감상문 제목": report['title'],
+                "bookmark": report['bookmark'],
+                "complete": report['complete'],
                 # 이미지 주소: report.book.img
             }
 
         return result
+
 
 class ActivitySerializer(serializers.Serializer):
 
@@ -68,6 +72,7 @@ class ActivitySerializer(serializers.Serializer):
 
         else:
             return -1
+
 
 class WritingTextSerializer(serializers.Serializer):
     def to_representation(self, obj):
@@ -104,26 +109,36 @@ class WritingTextSerializer(serializers.Serializer):
         user = data["user"]
 
         score = [
-            int(text.report.quiz_score/(text.report.book.chapters * 5) * 100),  # 퀴즈 점수
-            correct["score"],                                                   # 맞춤법 점수
-            int((sum(feedback["score"][:3]) / (3 * MAX_SCORE)) * 100),                          # 표현 점수
-            int((sum(feedback["score"][3:7]) / (4 * MAX_SCORE)) * 100),                       # 구성 점수
-            int((sum(feedback["score"][7:]) / (4 * MAX_SCORE)) * 100),                        # 내용 점수
+            int(text.report.quiz_score / (text.report.book.chapters * 5) * 100),    # 퀴즈 점수
+            correct["score"],                                                       # 맞춤법 점수
+            int((sum(feedback["score"][:3]) / (3 * MAX_SCORE)) * 100),              # 표현 점수
+            int((sum(feedback["score"][3:7]) / (4 * MAX_SCORE)) * 100),             # 구성 점수
+            int((sum(feedback["score"][7:]) / (4 * MAX_SCORE)) * 100),              # 내용 점수
         ]
         user.updateScore(score)
 
-        if text.report.complete == False:
+        if text.report.complete is False:
             user.genres[GENRE[text.report.book.genre]] += 1
 
         user.save()
 
         report = text.report
+        report.title = data["title"]
+        report.format = data["format"]
         report.complete = True
         report.save()
 
         return "감상문이 저장되었습니다"
 
+
 class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = Text
         exclude = ['report']
+
+class ReportSerializer(serializers.ModelSerializer):
+    contents = TextSerializer()
+
+    class Meta:
+        model = BookReport
+        fields = ['format', 'title', 'contents']

@@ -138,19 +138,19 @@ class Feedback():
         }
 
 
-
+#
 # class Feedback:
 #     def __init__(self):
 #         print("feedback model created")
-
+#
 #     def getFeedBack(self, txt):
 #         feedback = {
 #             "feedback": "feedback returned",
 #             "score": [3,3,3,3,3,3,3,3,3,3,3]
 #         }
-
+#
 #         return feedback
-
+#
 #     def spellCheck(self, txt):
 #         checked = spell_checker.check(txt).as_dict()
 #         return {

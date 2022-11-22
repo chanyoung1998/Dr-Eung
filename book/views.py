@@ -22,10 +22,7 @@ def book_search_view(request):
     if not 'title' in request.GET:
         raise ParseError("query is not correct - \"/?title=<str>\"")
     title = request.GET['title']
-    serializer = BookSearchSerializer({
-        "title": title,
-        "user": request.user
-    })
+    serializer = BookSearchSerializer(data=title)
     serializer.is_valid(raise_exception=True)
     if serializer.validated_data:
         return Response(serializer.validated_data)

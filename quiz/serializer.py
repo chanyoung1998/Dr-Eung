@@ -21,3 +21,4 @@ class AnswerSerializer(serializers.Serializer):
             return "정답입니다!"
         else:
             return {"hint": quiz.content.content_lines[quiz.hint[0]:quiz.hint[1]]}
+

@@ -11,7 +11,7 @@ class BookReport(models.Model):
     title = models.CharField(max_length=255, blank=True, default="")
     step = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
     curr_chapter = models.SmallIntegerField(default=1)
-    format = models.CharField(max_length=45, blank=True) # 숫자로 변경
+    format = models.CharField(max_length=45, blank=True)
     page = models.SmallIntegerField(default=1, validators=[MinValueValidator(1)])
     complete = models.BooleanField(default=False)
     bookmark = models.BooleanField(default=False)

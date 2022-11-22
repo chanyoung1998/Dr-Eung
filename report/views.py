@@ -59,7 +59,9 @@ class ReportView(generics.GenericAPIView):
         serializer = WritingTextSerializer(data={
             "user": request.user,
             "text": text,
-            "original": original
+            "original": original,
+            "title": request.POST["title"],
+            "format": request.POST["format"]
         })
         serializer.is_valid(raise_exception=True)
 
@@ -69,6 +71,6 @@ class ReportView(generics.GenericAPIView):
 class FeedbackView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, title):
-        text = get_object_or_404(BookReport, author=request.user, book__title=title).contents
-        serializer = TextSerializer(text)
+        report = get_object_or_404(BookReport, author=request.user, book__title=title)
+        serializer = ReportSerializer(report)
         return Response(serializer.data, status=status.HTTP_200_OK)
