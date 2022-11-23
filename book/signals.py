@@ -7,7 +7,7 @@ import kss
 from math import ceil
 
 LINES = 10
-LETTERS = 220
+LETTERS = 266
 
 @receiver(post_save, sender=Content)
 def post_save_chapter(sender, **kwargs):

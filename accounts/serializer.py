@@ -131,4 +131,5 @@ class ProfileSerializer(serializers.BaseSerializer):
             "activities": {
                 "recent": recent
             },
+            "tier": user.tier
         }
