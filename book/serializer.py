@@ -11,10 +11,6 @@ class BookListSerializer(serializers.ModelSerializer):
         model = Book
         fields = ('title', 'author', 'genre', 'description')
 
-    def to_representation(self, instance):
-        data = super(BookListSerializer, self).to_representation(instance)
-        print(data)
-        return
 
 class BookSearchSerializer(serializers.Serializer):
     def to_internal_value(self, data):
