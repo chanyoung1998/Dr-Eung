@@ -79,8 +79,10 @@ class HighlightIndexSerializer(serializers.Serializer):
 
         book = Book.objects.get(title=title)
         chapter = book.content.get(chapter=chapter)
-        contents = chapter.content_lines[(page - 1) * LINES:page * LINES]
+        # contents = chapter.content_lines[(page - 1) * LINES:page * LINES]
+        contents = chapter.cotent[(page - 1) * LETTERS: page * LETTERS].split(".")
         summary_index = BookConfig.models["summerizer"].extractive_summarization(contents, 3)
-        index = [(page - 1) * LINES + i for i in summary_index]
 
-        return {"index": index}
+        # index = [(page - 1) * LINES + i for i in summary_index]
+
+        return {"index": summary_index}
