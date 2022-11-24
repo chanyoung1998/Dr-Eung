@@ -42,8 +42,8 @@ def reading_view(request, title, chapter):
               'chapter': chapter,
               'page': page})
     serializer.is_valid(raise_exception=True)
-    if serializer.validated_data == -1:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    if serializer.validated_data["status"] == 404:
+        return Response(serializer.validated_data, status=status.HTTP_404_NOT_FOUND)
     return Response(serializer.validated_data)
 
 

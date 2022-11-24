@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
+from django.core.exceptions import ValidationError
+from django.http import Http404
 from report.models import BookReport
 from .apps import BookConfig
 from .signals import LINES, LETTERS
@@ -38,7 +40,11 @@ class BookSerializer(serializers.BaseSerializer):
             content_chapter = get_object_or_404(Content, chapter=chapter, book__title=title)
             page = content_chapter.pages
         else:
-            content_chapter = get_object_or_404(Content, chapter=chapter, book__title=title)
+            try:
+                content_chapter = book.content.get(chapter=chapter)
+            except Content.DoesNotExist:
+                return {"status": 404, 
+                        "max_chapters": book.chapters}
 
         if not book.report.filter(author=user.pk):
             BookReport.objects.create(author=user, book=book)
@@ -56,7 +62,6 @@ class BookSerializer(serializers.BaseSerializer):
             report.page = page
             report.save()
 
-        # contents = content_chapter.content_lines[(page - 1) * LINES:page * LINES]
         contents = content_chapter.content[(page - 1) * LETTERS: page * LETTERS]
 
         if len(book.keywords) < chapter * 3:
@@ -67,7 +72,8 @@ class BookSerializer(serializers.BaseSerializer):
 
         return {"page": contents,
                 "pages": content_chapter.pages,
-                "chapters": book.chapters}
+                "chapters": book.chapters,
+                "status": 200}
 
 
 class HighlightIndexSerializer(serializers.Serializer):
@@ -79,10 +85,7 @@ class HighlightIndexSerializer(serializers.Serializer):
 
         book = Book.objects.get(title=title)
         chapter = book.content.get(chapter=chapter)
-        # contents = chapter.content_lines[(page - 1) * LINES:page * LINES]
         contents = chapter.content[(page - 1) * LETTERS: page * LETTERS].split(".")
         summary_index = BookConfig.models["summerizer"].extractive_summarization(contents, 3)
-
-        # index = [(page - 1) * LINES + i for i in summary_index]
 
         return {"index": summary_index}
