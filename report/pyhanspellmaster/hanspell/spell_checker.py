@@ -40,10 +40,6 @@ def check(text):
             result.append(checked)
         return result
 
-    # 최대 500자까지 가능.
-    if len(text) > 1000:
-        return Checked(result=False)
-
     payload = {
         '_callback': 'window.__jindo2_callback._spellingCheck_0',
         'q': text
