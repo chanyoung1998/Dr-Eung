@@ -131,7 +131,9 @@ class Feedback():
         return result
 
     def spellCheck(self, txt):
-        checked = spell_checker.check(txt).as_dict()
+        checked = dict()
+        for i in range(len(txt) // 1000):
+            checked.update(spell_checker.check(txt[(i-1) * 1000: i * 1000]).as_dict())
         return {
             "correct": ''.join(checked["checked"]),
             "score": int((1 - checked["errors"] / len(checked["words"])) * 100)
