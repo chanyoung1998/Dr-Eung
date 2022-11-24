@@ -7,6 +7,7 @@ import math
 import random
 # from kobert.utils import get_tokenizer
 from gluonnlp.data import SentencepieceTokenizer
+from collections import OrderedDict
 
 # tensorflow
 import tensorflow as tf
@@ -131,9 +132,22 @@ class Feedback():
         return result
 
     def spellCheck(self, txt):
-        checked = dict()
-        for i in range(len(txt) // 1000):
-            checked.update(spell_checker.check(txt[(i-1) * 1000: i * 1000]).as_dict())
+        checked = {
+                    "checked": "",
+                    "errors": 0,
+                    "words": OrderedDict()
+                }
+        n = math.ceil(len(txt)/1000)
+        for i in range(n):
+            if i == n - 1:
+                tmp = spell_checker.check(txt[i * 1000: -1]).as_dict()
+            else:
+                tmp = spell_checker.check(txt[i * 1000: (i+1) * 1000]).as_dict()
+            
+            checked["checked"] += tmp["checked"]
+            checked["errors"] += tmp["errors"]
+            checked["words"].update(tmp["words"])
+            print(checked)
         return {
             "correct": ''.join(checked["checked"]),
             "score": int((1 - checked["errors"] / len(checked["words"])) * 100)
