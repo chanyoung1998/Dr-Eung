@@ -5,10 +5,10 @@
 }
 
 .reportWritingLayout .innerLayout {
-  max-width: 1400px;
+  max-width: 1000px;
   width: 80vw;
   display: grid;
-  grid-template-rows: 0.5fr 3fr;
+  grid-template-rows: 1fr 3fr 1fr;
   margin: 0 auto;
 }
 
@@ -36,6 +36,7 @@
 .mymodal div {
   border-radius: 30px;
   margin: 3px;
+  border:0;
 }
 
 /* .notepad {
@@ -51,32 +52,69 @@
   height: 50%;
 } */
 
-.notes {
-  font-size: 25px;
 
-  /* font-size: 0.9em; */
-  background-attachment: local;
-  background-image: linear-gradient(to right, white 10px, transparent 10px),
-    linear-gradient(to left, white 10px, transparent 10px),
-    repeating-linear-gradient(
-      white,
-      white 2em,
-      #ccc 2em,
-      #ccc 2.1em,
-      white 2.1em
-    );
-  line-height: 2em;
+
+:root {
+  --bg-color: rgba(255, 255, 255, 0.952);
+  --bg-transparent: rgba(255, 255, 255, 0);
+  --border-color: #7a7b7d;
+}
+
+.note {
+  background: white;
+  overflow-y:scroll ;
   padding: 8px 10px;
   margin: 3% 1%;
   border-radius: 20px;
   box-shadow: 5px 5px 5px gray;
+  
+  
+  background-attachment: local;
+  font-size: 25px;
+  line-height: 2em;
+  /* border: 2px solid var(--border-color); */
+  background-image: -webkit-linear-gradient(
+      top,
+      var(--border-color) 0%,
+      var(--border-color) 2px,
+      var(--bg-transparent) 2px,
+      var(--bg-transparent) 100%
+  );
+  background-image: linear-gradient(
+      to bottom,
+      var(--border-color) 0%,
+      var(--border-color) 2px,
+      var(--bg-transparent) 2px,
+      var(--bg-transparent) 100%
+  );
+  background-size: 100% 2em;
 }
+
+.note > p {
+  margin: 0;
+  padding: 0 4px;
+}
+
+.note::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+  background-clip: content-box;
+}
+
+.note::-webkit-scrollbar-thumb {
+  height: 10px; /* 스크롤바의 길이 */
+  background: rgba(235, 219, 172, 0.8); /* 스크롤바의 색상 */
+
+  border-radius: 10px;
+}
+
+
 
 /* <!-- HTML !-->
 <button class="button-74" role="button">Button 74</button> */
 
-/* CSS */
-.button {
+/* CSS */ 
+.button ,
+.buttonmodal {
   background-color: #fbeee0;
   border: 2px solid #422800;
   border-radius: 30px;
@@ -85,7 +123,7 @@
   cursor: pointer;
   display: inline-block;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
   padding: 0 18px;
   line-height: 50px;
   text-align: center;
@@ -93,26 +131,72 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin: 20px;
+  /* margin: 20px; */
+  margin: 20px auto;
+
+}
+.button{
+  width: 140px;
+  height: 100px;
 }
 
+.buttonmodal:hover,
 .button:hover {
   background-color: #E1C591;
 }
 
 .clicked,
+.buttonmodal:active,
 .button:active  {
   background-color: #E1C591;
   box-shadow: #422800 2px 2px 0 0;
   transform: translate(2px, 2px);
 }
 
+.buttonmodal{
+  width: 120px;
+  height: 50px;
+}
 
+/* .from1  */
 
+@media(max-width: 2000px){
+  .formsLayout{
+    
+    display: grid;
+    grid-template-areas:
+		"btn1 btn2 btn3"
+    "btn4 btn5 btn6"
+    "btn7 btn8 btn9";
+  }
+  .btn1{
+    
+    grid-area: btn1;
+  }
+  .btn2{
+    
+    grid-area: btn2;
+  }
+  .btn3{
+    grid-area: btn3;
+  }
+  .btn4{
+    grid-area: btn4;
+  }
 
-@media (min-width: 768px) {
-  .button {
-    min-width: 120px;
-    padding: 0 25px;
+  .btn5{
+    grid-area: btn5;
+  }
+  .btn6{
+    grid-area: btn6;
+  }
+  .btn7{
+    grid-area: btn7;
+  }
+  .btn8{
+    grid-area: btn8;
+  }
+  .btn9{
+    grid-area: btn9;
   }
 }

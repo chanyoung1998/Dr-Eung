@@ -11,10 +11,10 @@ import ReportWriting from "./ReportWriting.js";
 import Quiz from "./Quiz.js";
 import Feedback from "./Feedback.js";
 import Activity from "./Activity.js";
+import Login from "./Login";
+import Register from "./Register";
+import Writeform from "./Writeform.js"
 
-
-
-// const BASE_URL = "http://3.38.215.109:8000/";
 function App() {
   
   let navigate = useNavigate();
@@ -22,9 +22,15 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<HomeElement/>} />
+        <Route path="/" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        
+        <Route path="/home" element={<HomeElement/>} />
         <Route path="/reading/:title/:chapter/:page" element={<Read/>}/>
-        <Route path="/writing/:title" element={<ReportWriting/>}/>
+
+        <Route path="/writing/:title" element={<ReportWriting/>}>
+          <Route path="form/:formnum" element={<Writeform/>}/>
+        </Route>
         <Route path="/quiz/:title/:chapter" element={<Quiz/>}/>
         <Route path="/activity/:title/:chapter" element={<Activity/>}/>
         <Route path="/feedback/:title" element={<Feedback/>}/>

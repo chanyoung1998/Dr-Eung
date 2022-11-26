@@ -7,6 +7,7 @@
 body{
   font-family: 'Miwonfont';
   background: #FFF7E9;
+  word-break: keep-all;
 }
 
 @font-face {
@@ -29,3 +30,4 @@ body{
   left: 0;
   right: 0;
 }
+

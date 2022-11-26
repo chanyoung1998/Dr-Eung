@@ -1,5 +1,5 @@
 /*eslint-disable */
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -9,6 +9,7 @@ import {
   Form,
   DropdownButton,
   Dropdown,
+  Modal,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,157 +20,66 @@ import {
 import { faBookmark as faBookmark } from "@fortawesome/free-regular-svg-icons";
 import styles from "./BookMenu.module.css";
 import InfiniteScroll from "react-infinite-scroller";
-import owl from './img/owl.png'
-import { useNavigate} from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import owl from "./img/owl.png";
 function BookMenu() {
   let navigate = useNavigate();
   let [selectedIndex, setSelectedIndex] = useState(0);
-  let [books, setBooks] = useState([
-    {
-      title: "어린왕자",
-      author: "생택쥐 베리",
-      genre: "문학",
-      check: false,
-      complete: false,
-    },
-    {
-      title: "셜록홈즈",
-      author: "아서코난도일",
-      genre: "소설",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "어린왕자",
-      author: "생택쥐 베리",
-      genre: "문학",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "셜록홈즈",
-      author: "코난도일",
-      genre: "소설",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "어린왕자",
-      author: "생택쥐 베리",
-      genre: "문학",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "셜록홈즈",
-      author: "코난도일",
-      genre: "소설",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "셜록홈즈",
-      author: "코난도일",
-      genre: "소설",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-    {
-      title: "어린왕자",
-      author: "생택쥐 베리",
-      genre: "문학",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "셜록홈즈",
-      author: "코난도일",
-      genre: "소설",
-      check: false,
-      complete: true,
-    },
-    {
-      title: "나는부자",
-      author: "찬",
-      genre: "수필",
-      check: true,
-      complete: false,
-    },
-  ]);
-  const BASE_URL = useSelector((state)=>state.BASE_URL);
-  console.log(BASE_URL)
+  let [books, setBooks] = useState([]);
+  let [reports, setReports] = useState([]);
+  let [show, setShow] = useState(false);
+  let [searchedbook, setSearchedbook] = useState({});
+  let [next, setNext] = useState(null);
+  const BASE_URL = useSelector((state) => state.BASE_URL);
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     axios
-      .get(`${BASE_URL}book/list/`, {
-        headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-        },
-      })
-      .then((data) => {
-        setBooks(data.data)
-      });
+      .all([
+        axios.get(`${BASE_URL}book/list/`, {
+          headers: {
+            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          },
+        }),
+        axios.get(`${BASE_URL}report/list/`, {
+          headers: {
+            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          },
+        }),
+      ])
+
+      .then(
+        axios.spread((res1, res2) => {
+          setNext(res1.data.next);
+          setBooks(res1.data.results);
+          setReports(Object.values(res2.data));
+          // console.log(res1.data.results);
+          // console.log(Object.values(res2.data));
+          setLoading(false);
+        })
+      );
   }, []);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-
-
+      <SearchResultModal show={show} setShow={setShow} book={searchedbook} />
       <Container style={{ marginTop: "5%" }}>
         <Row>
           <Col md={{ span: 3 }}>
-            <div className={`${styles.speechBubble} ${styles.fixed2}`}>{books[selectedIndex].description}</div>
-            <img src={owl} style={{width:"100%" ,height:"60%"}}/>
+            <div className={`${styles.speechBubble}`}>
+              {books[selectedIndex].description}
+            </div>
+            <img src={owl} style={{ width: "100%", height: "60%" }} />
           </Col>
           <Col md={{ span: 6 }}>
             <div>
-              
-
               <div>
                 <Container style={{ marginBottom: "1%" }}>
                   <Row>
@@ -182,9 +92,29 @@ function BookMenu() {
                       <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
                     </Col>
                     <Col md={{ span: 9 }} style={{ padding: "0px" }}>
-                      <InputGroup>
+                      <InputGroup
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            axios
+                              .get(
+                                `${BASE_URL}book/search/?title=${e.target.value}`,
+                                {
+                                  headers: {
+                                    Authorization:
+                                      "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                                  },
+                                }
+                              )
+                              .then((res) => {
+                                // console.log(res.data)
+                                setSearchedbook(res.data);
+                                setShow(true);
+                              });
+                          }
+                        }}
+                      >
                         <Form.Control
-                          placeholder="내 책 찾으러 가기"
+                          placeholder="책의 제목을 입력해주세요!"
                           aria-label="search"
                           aria-describedby="search"
                         />
@@ -195,8 +125,9 @@ function BookMenu() {
                         id={styles.dropdownItemButton}
                         title="보여주기"
                       >
-                        {/* <Dropdown.ItemText>기준</Dropdown.ItemText> */}
                         <Dropdown.Item
+                          id={styles.itembutton}
+                          style={{ fontSize: "15px" }}
                           as="button"
                           onClick={() => {
                             let newArray = [...books];
@@ -215,14 +146,22 @@ function BookMenu() {
                         </Dropdown.Item>
 
                         <Dropdown.Item
+                          id={styles.itembutton}
+                          style={{ fontSize: "15px" }}
                           as="button"
                           onClick={() => {
                             console.log("책갈피만");
                           }}
                         >
-                          책갈피만
+                          책갈피
                         </Dropdown.Item>
-                        <Dropdown.Item as="button">임시저장만</Dropdown.Item>
+                        <Dropdown.Item
+                          id={styles.itembutton}
+                          style={{ fontSize: "15px" }}
+                          as="button"
+                        >
+                          작성 완료
+                        </Dropdown.Item>
                       </DropdownButton>
                     </Col>
                   </Row>
@@ -248,7 +187,7 @@ function BookMenu() {
                         책갈피
                       </Col>
                       <Col md={{ span: 2 }} style={{ margin: "auto" }}>
-                        저장
+                        완료
                       </Col>
                     </Row>
                   </Container>
@@ -256,42 +195,56 @@ function BookMenu() {
                   <div className={styles.pane}>
                     <InfiniteScroll
                       pageStart={0}
-                      loadMore={() => {}}
+                      loadMore={() => {
+                        if (next != null) {
+                          axios
+                            .get(`${next}`, {
+                              headers: {
+                                Authorization:
+                                  "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                              },
+                            })
+                            .then((res) => {
+                              console.log('더더더')
+                              let temp = [...books, ...res.data.results];
+                              setNext(res.data.next);
+                              setBooks(temp);
+                            });
+                        }
+                      }}
                       hasMore={true || false}
                       useWindow={false}
                       loader={
                         <div key="loading" className="loader">
-                          책을 가져오고 있어요 ...
+                          {next ? "책을 가져오고 있어요 ..." : ""}
                         </div>
                       }
                     >
-                      
-                          <div
-                            style={{
-                              background: "#E1C591",
-                              borderBottomLeftRadius: "10px",
-                              borderBottomRightRadius: "10px",
-                              padding: "5px",
-                            }}
-                          >
-                            {books.map(function (book, index) {
-                              return (
-                                <div>
-                                  <Book
-                                    books={books}
-                                    book={book}
-                                    index={index}
-                                    setSelectedIndex={setSelectedIndex}
-                                    selectedIndex={selectedIndex}
-                                    setBooks={setBooks}
-                                  />
-                                  <hr className={styles.bookhr} />
-                                </div>
-                              );
-                            })}
-                          </div>
-                        
-                      
+                      <div
+                        style={{
+                          background: "#E1C591",
+                          borderBottomLeftRadius: "10px",
+                          borderBottomRightRadius: "10px",
+                          padding: "5px",
+                        }}
+                      >
+                        {books.map(function (book, index) {
+                          return (
+                            <div>
+                              <Book
+                                books={books}
+                                book={book}
+                                index={index}
+                                setSelectedIndex={setSelectedIndex}
+                                selectedIndex={selectedIndex}
+                                setBooks={setBooks}
+                                reports={reports}
+                              />
+                              <hr className={styles.bookhr} />
+                            </div>
+                          );
+                        })}
+                      </div>
                     </InfiniteScroll>
                   </div>
                 </div>
@@ -299,30 +252,33 @@ function BookMenu() {
             </div>
           </Col>
 
-          <Col  md={{ span: 3 }}>
-            
+          <Col md={{ span: 3 }}>
+            <div className={styles.fixed1}>
+              <StockedBook />
+              <StockedBook />
+            </div>
           </Col>
         </Row>
         <Row>
-          <Col md={{span:3}}> </Col>
-          <Col md={{span:6}} align="right">
-          <Button id={styles.ReadButton} style={{ marginTop:"3%"}} size="lg" onClick={()=>{navigate(`/reading/${books[selectedIndex].title}/1/1`)}}>책 읽으러 가기</Button>
+          <Col md={{ span: 3 }}> </Col>
+          <Col md={{ span: 6 }} align="right">
+            <Button
+              id={styles.ReadButton}
+              style={{ marginTop: "3%" }}
+              size="lg"
+              onClick={() => {
+                navigate(`/reading/${books[selectedIndex].title}/1/1`);
+              }}
+            >
+              책 읽으러 가기
+            </Button>
           </Col>
-          <Col md={{span:3}}></Col>
-        
+          <Col md={{ span: 3 }}></Col>
         </Row>
       </Container>
-
-      <div className={styles.fixed1}>
-        <StockedBook /><StockedBook />
-      </div>
-                            
-      
     </div>
   );
 }
-
-export default BookMenu;
 
 function Book({
   books,
@@ -331,12 +287,27 @@ function Book({
   setSelectedIndex,
   selectedIndex,
   setBooks,
+  reports,
 }) {
   let selected = index == selectedIndex ? styles.selected : styles.nonSelected;
 
-  let [bookmark, setBookmark] = useState(
-    book.check == true ? chekcedBookmark : faBookmark
-  );
+  // let [bookmark, setBookmark] = useState(
+  //   // book.check == true ? chekcedBookmark : faBookmark
+  //   faBookmark
+  // );
+  let bookmark = faBookmark;
+  let complete = false;
+  for (let index = 0; index < reports.length; ++index) {
+    if (reports[index]["책 제목"] == book["title"]) {
+      if (!reports[index]["complete"]) {
+        bookmark = chekcedBookmark;
+      } else {
+        bookmark = chekcedBookmark;
+        complete = true;
+      }
+      break;
+    }
+  }
   return (
     <div
       className={`${selected} ${styles.book}`}
@@ -347,44 +318,37 @@ function Book({
         margin: "10px 2px 0px 2px",
         padding: "10px",
         borderRadius: "10px",
+        fontSize: "18px",
       }}
     >
-      
-        <Row>
-          <Col md={{ span: 4 }} style={{ margin: "auto" }}>
-            {book.title}
-          </Col>
-          <Col md={{ span: 4 }} style={{ margin: "auto" }}>
-            {book.author}
-          </Col>
-          <Col md={{ span: 2 }} style={{ margin: "auto" }}>
-            <FontAwesomeIcon
-              icon={bookmark}
-              onClick={() => {
-                let newArray = [...books];
+      <Row>
+        <Col md={{ span: 4 }} style={{ margin: "auto" }}>
+          {book.title}
+        </Col>
+        <Col md={{ span: 4 }} style={{ margin: "auto" }}>
+          {book.author}
+        </Col>
+        <Col md={{ span: 2 }} style={{ margin: "auto" }}>
+          <FontAwesomeIcon
+            icon={bookmark}
+            // onClick={() => {
+            //   let newArray = [...books];
 
-                newArray[index].check == true
-                  ? setBookmark(faBookmark)
-                  : setBookmark(chekcedBookmark);
-                newArray[index].check =
-                  newArray[index].check == true ? false : true;
-                setBooks(newArray);
-
-
-              }}
-            />
-          </Col>
-          <Col md={{ span: 2 }} style={{ margin: "auto" }}>
-            {book.complete == true ? <FontAwesomeIcon icon={faCheck} /> : ""}
-          </Col>
-        </Row>
-      
+            //   newArray[index].check == true
+            //     ? setBookmark(faBookmark)
+            //     : setBookmark(chekcedBookmark);
+            //   newArray[index].check =
+            //     newArray[index].check == true ? false : true;
+            //   setBooks(newArray);
+            // }}
+          />
+        </Col>
+        <Col md={{ span: 2 }} style={{ margin: "auto" }}>
+          {complete == true ? <FontAwesomeIcon icon={faCheck} /> : ""}
+        </Col>
+      </Row>
     </div>
   );
-}
-
-{
-  /* <Col md={{span:2}} style={{margin:"auto"}}> <Button style={{margin:"5px" , padding:"5px" ,backgroundColor: '#E38B29', borderColor: '#0B0C10',color:'black'}}>책 읽기</Button>{' '}</Col> */
 }
 
 function StockedBook() {
@@ -416,7 +380,44 @@ function StockedBook() {
         <div className={styles.ribbonCut8}></div>
         <div className={styles.ribbonCut9}></div>
       </div>
-      
     </div>
   );
 }
+
+function SearchResultModal({ show, setShow, book }) {
+  let navigate = useNavigate();
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        dialogClassName={styles.mymodal}
+      >
+        <Modal.Header closeButton style={{ background: "#FFF7E9" }}>
+          <Modal.Title>
+            <h2>{book["title"]} </h2>
+            <h5>{book["author"]}</h5>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#FFF7E9" }}>
+          {book["description"]}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            id={styles.ReadButton}
+            size="lg"
+            onClick={() => {
+              setShow(false);
+              navigate(`/reading/${book["title"]}/1/1`);
+            }}
+          >
+            책 읽으러 가기
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
+export default BookMenu;

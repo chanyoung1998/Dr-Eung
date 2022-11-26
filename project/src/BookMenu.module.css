@@ -26,7 +26,9 @@ background-color: #FFD384;
     background-color: white;
     border-color: rgb(218, 221, 224);
 }
-  
+#itembutton:active{
+  background-color: rgb(167, 167, 167);
+}
 
 .bookImage{
     width: 150px;
@@ -42,6 +44,12 @@ background-color: #FFD384;
     margin-top: 1px;
     
   }
+  :root {
+    --bg-color: rgba(255, 255, 255, 0.952);
+    --bg-transparent: rgba(255, 255, 255, 0);
+    --border-color: #7a7b7d;
+  }
+  
 
   .book{
     
@@ -50,7 +58,11 @@ background-color: #FFD384;
     background: white;
     border-radius: 32px 4px 4px 32px;
     box-shadow: inset 4px 6px 0px 0px #E4E0CE;  
-    background-image: linear-gradient(to bottom, transparent 6px, #E4E0CE 8px, transparent 8px, transparent 12px, #E4E0CE 12px, transparent 14px, transparent 18px,#E4E0CE 18px, transparent 20px, transparent 24px, #E4E0CE 24px, transparent 26px, transparent 30px, #E4E0CE 30px, transparent 32px, transparent 36px, #E4E0CE 36px, transparent 38px, transparent 42px, #E4E0CE 42px, transparent 44px, transparent 48px, #E4E0CE 48px, transparent 50px);     
+    background-image: linear-gradient(to bottom, transparent 6px, #E4E0CE 8px, transparent 10px, transparent 12px, #E4E0CE 12px, transparent 14px, transparent 18px,#E4E0CE 18px, transparent 20px, transparent 24px, #E4E0CE 24px, transparent 26px, transparent 30px, #E4E0CE 30px, transparent 32px, transparent 36px, #E4E0CE 36px, transparent 38px, transparent 42px, #E4E0CE 42px, transparent 44px, transparent 48px, #E4E0CE 48px, transparent 50px,transparent 52px,#E4E0CE 54px, transparent 56px, transparent 60px, #E4E0CE 62px, transparent 64px,transparent 66px, #E4E0CE 68px, transparent 70px,transparent 73px, #E4E0CE 76px, transparent 79px,transparent 81px, #E4E0CE 85px, transparent 87px);     
+    /* background-image: linear-gradient(to bottom, transparent 0% 1% #E4E0CE 2% 3% transparent 3% 4%); */
+    background-repeat: repeat;
+ 
+
   }
 
   .bg{
@@ -343,27 +355,22 @@ background-color: #FFD384;
 }
 
 .fixed1{
-  position: fixed;
-  right: 10%;
-  bottom:0%;
+  transform: translate(10%,30%);
+
 }
 
-/* .fixed2{
-  position: fixed;
-  left: 5%;
-  bottom:30%;
-}
- */
 
 .speechBubble {
+  
 	position: relative;
 	background: #ece5c6;
 	border-radius: 50px;
-  width: 250px;
-  height: 250px;
+  width: 80%;
+  height: 50%;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  
   
 }
 
@@ -381,3 +388,13 @@ background-color: #FFD384;
 	margin-bottom: -13px;
 }
 
+.mymodal {
+  width: 30vw; /* Occupy the 90% of the screen width */
+  max-width: 50vw;
+}
+
+.mymodal div {
+  border-radius: 30px;
+  margin: 3px;
+  border:0;
+}

@@ -4,7 +4,7 @@
   cursor: pointer;
   backface-visibility: visible;
   display:inline-block;
-  height: 200px;
+  height: 260px;
   margin-right: 15%;
   margin-left: 15%;
   
@@ -21,7 +21,7 @@
 .page6 {
   transform-style: preserve-3d;
   position: absolute;
-  width: 150px;
+  width: 200px;
   height: 100%;
   top: 0;
   left: 0;
@@ -79,55 +79,55 @@
 .book:hover .front {
   transform: rotateY(-160deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
   
 }
 
 .book:hover .page1 {
   transform: rotateY(-150deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
 
 }
 
 .book:hover .page2 {
   transform: rotateY(-30deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
   
 }
 
 .book:hover .page3 {
   transform: rotateY(-140deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
 
 }
 
 .book:hover .page4 {
   transform: rotateY(-40deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
   
 }
 
 .book:hover .page5 {
   transform: rotateY(-130deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
   
 }
 
 .book:hover .page6 {
   transform: rotateY(-50deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
-  height: 220px;
+  height: 280px;
   
 }
 
 .book:hover .back {
   transform: rotateY(-20deg) scale(1.1);
-  height: 220px;
+  height: 280px;
   
 }
 
@@ -170,5 +170,37 @@ p.title{
 padding:5% 10% 5% 5%;
 white-space: normal;
 line-height: 1.2;
+font-size: 20px;
+
+
 }
 
+.container{
+  position: relative;
+  height: 80vh;
+}
+.bookimg{
+  position: absolute;
+  top:25%;
+  left:0%;
+  /* transform: translate(-30%,-50%); */
+
+  width: 90%;
+  height: 80%;
+  /* height: 300px; */
+  /* min-width: 350px; */
+
+}
+
+
+
+#itembutton:active{
+  
+  background-color: rgb(167, 167, 167);
+}
+
+
+@media (max-width: 900px) {
+
+  
+}

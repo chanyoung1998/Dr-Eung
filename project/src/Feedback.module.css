@@ -1,5 +1,294 @@
-.layout{
+.container{
     display: grid;
+    height: 100vh;
+    grid-template-rows: 1fr 9fr;
+}
 
+.titlebar{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.titleleft{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 10px;
+    background-color: #deb887;
+    border-radius: 15px;
+    min-height: 70px;
+
+}
+
+.titlebox{
+    position: relative;
+}
+
+.titlebox > .title{
+    position: absolute;
+    left: 3%;
+    top: 50%;
+    transform: translate(0%, -50%);
+    font-size: 2.5rem;
+}
+
+.correctbtnbox{
+    position: relative;
+}
+
+button{
+    font-family: 'Miwonfont';
+    font-size: 1.8rem;
+    text-align: center;
+    background-color: #e1c591;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    transition: .5s;
+}
+
+button:hover{
+    background-color: #caa257;
+}
+
+button:active{
+    background-color: #9e7529;
+    transition: .1s;
+}
+
+.correctbtnbox > button{
+    position: absolute;
+    left: 97%;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    height:70%;
+    width: 180px;
+    min-height: 50px;
+}
+
+.titleright{
+    position: relative;
+}
+
+.titleright > button{
+    position: absolute;
+    left: 98%;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    height: 60%;
+    width: 150px;
+    min-height: 50px;
+}
+
+.contents{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    white-space: pre-line;
+    width:100vw;
+}
+
+.notes {
+    overflow-y:scroll ;
+    font-size: 1.5rem;
+    background-attachment: local;
+    background-image: linear-gradient(to right, white 10px, transparent 10px),
+      linear-gradient(to left, white 10px, transparent 10px),
+      repeating-linear-gradient(
+        white,
+        white 2em,
+        #ccc 2em,
+        #ccc 2.1em,
+        white 2.1em
+      );
+    line-height: 2em;
+    padding: 8px 10px;
+    margin: 3% 1%;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px gray;
+    height: 84vh;
+}
+.notes::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+    background-clip: content-box;
+  }
+  
+  .notes::-webkit-scrollbar-thumb {
+    height: 10px; /* 스크롤바의 길이 */
+    background: rgba(235, 219, 172, 0.8); /* 스크롤바의 색상 */
+  
+    border-radius: 10px;
+  }
+  
+.comment{
+    display: grid;
+    grid-template-rows: 1.3fr 1fr;
+}
+
+.feedback {
+    position: relative;
+    background: #eee6c4;
+    border-radius: 50px;
+    width: 94%;
+    height: 85%;
+    margin: 3% 3%;
+    margin-right: 3%;
+    margin-bottom: 3%;
+    padding-top: 3%;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.feedback:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 80%;
+	width: 0;
+	height: 0;
+	border: 13px solid transparent;
+	border-top-color: #d8cc94;
+	border-bottom: 0;
+	margin-left: -13px;
+	margin-bottom: -13px;
+}
+
+.feedback > img{
+    position: absolute;
+    left: 95%;
+    top: 95%;
+    transform: translate(-100%, -100%);
+    width: 25%;
+    min-width: 130px;
+}
+
+.images{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.leftimg{
+    position: relative;
+}
+
+.leftimg img{
+    position: absolute;
+    left: 10%;
+    top: 90%;
+    transform: translate(0%, -100%);
+    width: 90%;
+}
+
+.rightimg{
+    position: relative;
+}
+
+.rightimg img{
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    transform: translate(-100%, -100%);
+    height: 90%;
+    min-height: 250px;
+}
+
+:root {
+    --bg-color: rgba(255, 255, 255, 0.952);
+    --bg-transparent: rgba(255, 255, 255, 0);
+    --border-color: #7a7b7d;
+}
+
+.note {
+    background: white;
+    overflow-y:scroll ;
+    padding: 8px 10px;
+    margin: 3% 1%;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px gray;
+    height: 84vh;
     
+    background-attachment: local;
+    font-size: 20px;
+    line-height: 2em;
+    /* border: 2px solid var(--border-color); */
+    background-image: -webkit-linear-gradient(
+        top,
+        var(--border-color) 0%,
+        var(--border-color) 2px,
+        var(--bg-transparent) 2px,
+        var(--bg-transparent) 100%
+    );
+    background-image: linear-gradient(
+        to bottom,
+        var(--border-color) 0%,
+        var(--border-color) 2px,
+        var(--bg-transparent) 2px,
+        var(--bg-transparent) 100%
+    );
+    background-size: 100% 2em;
+}
+
+.note > p {
+    margin: 0;
+    padding: 0 4px;
+}
+
+.note::-webkit-scrollbar {
+    width: 10px; /* 스크롤바의 너비 */
+    background-clip: content-box;
+  }
+  
+  .note::-webkit-scrollbar-thumb {
+    height: 10px; /* 스크롤바의 길이 */
+    background: rgba(235, 219, 172, 0.8); /* 스크롤바의 색상 */
+  
+    border-radius: 10px;
+  }
+  
+
+
+
+@media screen  and (max-width: 1500px){
+    .rightimg img{
+      height: 70%;
+    };
+  }
+
+
+@media screen  and (max-width: 1100px){
+    .leftimg{
+        display: none;
+    }
+
+    .images{
+        grid-template-columns: 1fr;
+    }
+
+    .rightimg img{
+        height: 70%;
+    };
+    }
+
+@media screen  and (max-width: 750px){
+    .titlebar{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .contents{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+@media screen  and (max-width: 380px){
+    :root{
+        font-size: 12px;
+    }
+
+    .correctbtnbox > button{
+        width: 130px;
+    }
+
+    .titleright > button{
+        width: 110px;
+    }
 }

@@ -7,155 +7,142 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  Container,
-  Row,
-  Col,
-  Button
+import { Container, Row, Col, Button } from "react-bootstrap";
 
-} from "react-bootstrap";
+import axios from "axios";
+import { useSelector } from "react-redux";
+
 import styles from "./Mypage.module.css";
-
 import ApexCharts from "react-apexcharts";
 import owl from "./img/owl.png";
-import book from "./img/book.png";
-function Mypage() {
-  let [ability, setAbility] = useState(0);
+import owl1 from "./img/owl1.png";
+import owl2 from "./img/owl2.png";
+import owl3 from "./img/owl3.png";
+import owl4 from "./img/owl4.png";
+import owl5 from "./img/owl5.png";
+import owl6 from "./img/owl6.png";
 
+
+
+function Mypage() {
+  const BASE_URL = useSelector((state) => state.BASE_URL);
+
+  let [profile, setProfile] = useState({});
+  const [ability, setAbility] = useState([]);
+  const [score1, setScore1] = useState([0, 0, 0, 0, 0]);
+  const [genres, setGenres] = useState([]);
+  const [score2, setScore2] = useState([0, 0, 0, 0, 0]);
+  const [tier,setTier] = useState(0);
+  const owlimg = [owl1,owl2,owl3,owl4,owl5,owl6][tier];
+  let [activities, setActivities] = useState([
+    {
+      id: "어린왕자",
+      date: "2022/10/13",
+      time: "10:23",
+      state: "21p 읽는중",
+    },
+  ]);
+  const [isLoading,setLoading] = useState(true);
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}MyPage/`, {
+        headers: {
+          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+        },
+      })
+      .then((data) => {
+        console.log(data.data);
+        setProfile(data.data.profile);
+        setAbility(Object.keys(data.data.score.ability));
+        setScore1(Object.values(data.data.score.ability));
+        setGenres(Object.keys(data.data.score.genres));
+        setScore2(Object.values(data.data.score.genres));
+        setActivities(data.data.activities.recent);
+        setTier(data.data.tier)
+        setLoading(false);
+        
+      });
+  }, []);
+
+  if (isLoading){
+    return <div>Loading...</div>
+  }
+
+  
   return (
     <div className={styles.layout}>
       <div className={styles.innerLayout}>
-        <div className={styles.innerinnerLayout} align='left'>
-          <Profile />
+        <div className={styles.innerinnerLayout} align="left">
+          <Profile profile={profile} />
 
-          <div style={{ margin: "30px auto 0" }} >
-            {ability === 0 ? (
-              <div className={styles.statuslayout} style={{ background: "none" }} >
-                <div
-                  className={styles.graphArea}
-                  // style={{ background: "#FFE9A0" }}
-                >
-                  <div className={styles.status}>
-                    <CustomRadar
-                      data={[90, 80, 30, 20, 50]}
-                      categories={["소설", "수필", "자기개발", "경제", "문학"]}
-                    />
-                  </div>
+          <div style={{ margin: "30px auto 0" }}>
+            <div className={styles.statuslayout} style={{ background: "none" }}>
+              <div
+                className={styles.graphArea}
+                // style={{ background: "#FFE9A0" }}
+              >
+                <div className={styles.status}>
+                  <CustomRadar data={score1} categories={ability} />
                 </div>
-                <div
-                  className={styles.graphArea2}
-                  // style={{ background: "#E4E0CE" }}
-                >
+              </div>
+              <div
+                className={styles.graphArea2}
+                // style={{ background: "#E4E0CE" }}
+              >
+                <div className={styles.status}>
                   <div className={styles.status}>
-                    <div className={styles.status}>
-                      <CustomRadar
-                        data={[90, 80, 30, 20,50]}
-                        categories={["독해력", "어휘력", "내용", "문법","능력5"]}
-                      />
-                    </div>
+                    <CustomRadar data={score2} categories={genres} />
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className={styles.graphArea2}>
-                <div
-                  className={styles.status}
-                  // style={{ background: "#E4E0CE" }}
-                >
-                  {/* <div className={styles.imgAvatar2}></div> */}
-                  <div className={styles.status}>
-                    <CustomRadar
-                      data={[90, 80, 30, 20]}
-                      categories={["독해력", "어휘력", "내용", "문법", ,]}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
         <div>
-          <RecentActivity />
+          <RecentActivity activities={activities}/>
         </div>
       </div>
       <div className={styles.owlcustomlayout}>
-        <img src={owl} className={styles.owlcustomimg}/>
-        <div ><Button id={styles.ReadButton} style={{ marginTop:"3%"}} size="lg">꾸미러 가기</Button></div>
-        
+        <img src={owlimg} className={styles.owlcustomimg} />
+        <div>
+          <Button id={styles.ReadButton} style={{ marginTop: "3%" }} size="lg">
+            꾸미러 가기
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Mypage;
-
-function Profile() {
+function Profile({ profile }) {
   return (
     <div style={{ margin: "30px auto 0" }}>
       {/* <h2>자기소개</h2> */}
       <div className={styles.card}>
         {/* <div className={styles.imgAvatar}></div> */}
-        <div className={styles.cardText}>
-          <div className={styles.titleTotal}>
-            <div className={styles.title}>척척박사</div>
 
-            <div>
-              <h2>정찬영</h2>
+        <div className={styles.title}>{profile.nickname}</div>
+        <div className={styles.title}>{profile.school}</div>
 
-              <div className={styles.desc}>
-                Morgan has collected ants since they were six years old and now
-                has many dozen ants but none in their pants.
-              </div>
-              <div className={styles.actions}>
-                <button className={styles.button}>
-                  <FontAwesomeIcon icon={faHeart} />
-                </button>
-                <button className={styles.button}>
-                  <FontAwesomeIcon icon={faUserFriends} />
-                </button>
-              </div>
-            </div>
-          </div>
+        <h2>{profile.name}</h2>
+
+        <div className={styles.desc}>{profile.introduction}</div>
+        <div className={styles.actions}>
+          <button className={styles.button}>
+            <FontAwesomeIcon icon={faHeart} />
+          </button>
+          <button className={styles.button}>
+            <FontAwesomeIcon icon={faUserFriends} />
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-function RecentActivity() {
-  let [activities, setActivities] = useState([
-    {
-      title: "어린왕자",
-      date: "2022/10/13",
-      time: "10:23",
-      status: "21p 읽는중",
-    },
-    {
-      title: "걱정을 걸어 두는 나무",
-      date: "2022/10/12",
-      time: "10:23",
-      status: "감상문 작성 완료",
-    },
-    {
-      title: "다리 위의 집",
-      date: "2022/10/11",
-      time: "10:23",
-      status: "퀴즈 푸는 중",
-    },
-    {
-      title: "다리 위의 집",
-      date: "2022/10/11",
-      time: "10:23",
-      status: "퀴즈 푸는 중",
-    },
-    {
-      title: "헤리포터와 불의잔",
-      date: "2022/09/11",
-      time: "10:23",
-      status: "120p 읽는 중",
-    },
-  ]);
-  
+function RecentActivity({activities}) {
+ 
+
   return (
     <div className={styles.recentactivity}>
       <Col md={{ span: 12 }}>
@@ -192,22 +179,23 @@ function RecentActivity() {
                   borderEndEndRadius: "10px",
                 }}
               >
-                {activities.map(function (activity, i) {
-                  let bgColor = i % 2 == 0 ? "#E4E0CE" : "";
-                  let curStatus = activity.status;
+                {
+                activities.map(function (activity, i) {
+                  let bgColor = i % 2 == 0 ? "#FDEEDC" : "";
+                  let curStatus = activity.state ? activity.state : '';
                   let curStatusBg = "";
                   let curStatusfc = "";
                   if (curStatus.includes("읽는중")) {
-                    curStatusBg = "rgba(253, 253, 189,0.5)";
-                    curStatusfc = "#FFD36E";
+                    curStatusBg = "#E3C770";
+                    curStatusfc = "#285430";
                   } else if (curStatus.includes("퀴즈")) {
-                    curStatusBg = "rgba(200, 255, 212,0.5)";
+                    curStatusBg = "#FECD70";
                     curStatusfc = "#00FFD1";
                   } else if (curStatus.includes("완료")) {
-                    curStatusBg = "rgba(184, 232, 252,0.5)";
+                    curStatusBg = "#FFAE6D";
                     curStatusfc = "#00D7FF";
                   } else {
-                    curStatusBg = "rgba(177, 175, 255,0.5)";
+                    curStatusBg = "#F3E0B5";
                     curStatusfc = "#C70A80";
                   }
 
@@ -221,7 +209,7 @@ function RecentActivity() {
                         }}
                       >
                         <Col md={{ span: 4 }} style={{ margin: "auto" }}>
-                          {activity.title}
+                          {activity.id}
                         </Col>
                         <Col md={{ span: 2 }} style={{ margin: "auto" }}>
                           {activity.date}
@@ -232,13 +220,13 @@ function RecentActivity() {
                         <Col md={{ span: 3 }} style={{ margin: "auto" }}>
                           <div
                             style={{
-                              color: `${curStatusfc}`,
+                              // color: `${curStatusfc}`,
                               background: `${curStatusBg}`,
                               borderRadius: "30px",
                               margin: "5%",
                             }}
                           >
-                            {activity.status}
+                            {activity.state}
                           </div>
                         </Col>
                       </Row>
@@ -259,7 +247,6 @@ function CustomRadar(props) {
     series: [
       {
         name: "장르",
-
         data: props.data,
       },
     ],
@@ -327,7 +314,7 @@ function CustomRadar(props) {
       },
     },
   };
-  const width = screen.width / 5;
+  const width = document.documentElement.clientWidth / 6;
   return (
     <ApexCharts
       options={state.options}
@@ -335,7 +322,7 @@ function CustomRadar(props) {
       type="radar"
       //전체 넓이의 1/5
       width={width}
-      height={width} 
+      height={width}
     />
   );
 }
@@ -350,3 +337,4 @@ function CustomRadar(props) {
 // className={styles.tabArea2}
 // style={{ background: "#E4E0CE" }}
 // ></div>
+export default Mypage;
