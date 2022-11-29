@@ -21,10 +21,8 @@ import owl3 from "./img/owl3.png";
 import owl4 from "./img/owl4.png";
 import owl5 from "./img/owl5.png";
 import owl6 from "./img/owl6.png";
-import default_profile from "./img/profile.png"
+import default_profile from "./img/profile.png";
 import { Navigate, useNavigate } from "react-router-dom";
-
-
 
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
@@ -34,8 +32,8 @@ function Mypage() {
   const [score1, setScore1] = useState([0, 0, 0, 0, 0]);
   const [genres, setGenres] = useState([]);
   const [score2, setScore2] = useState([0, 0, 0, 0, 0]);
-  const [tier,setTier] = useState(0);
-  const owlimg = [owl1,owl2,owl3,owl4,owl5,owl6][tier];
+  const [tier, setTier] = useState(0);
+  const owlimg = [owl1, owl2, owl3, owl4, owl5, owl6][tier];
   let [activities, setActivities] = useState([
     {
       id: "어린왕자",
@@ -44,7 +42,7 @@ function Mypage() {
       state: "21p 읽는중",
     },
   ]);
-  const [isLoading,setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${BASE_URL}MyPage/`, {
@@ -60,17 +58,15 @@ function Mypage() {
         setGenres(Object.keys(data.data.score.genres));
         setScore2(Object.values(data.data.score.genres));
         setActivities(data.data.activities.recent);
-        setTier(data.data.tier)
+        setTier(data.data.tier);
         setLoading(false);
-        
       });
   }, []);
 
-  if (isLoading){
-    return <div>Loading...</div>
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  
   return (
     <div className={styles.layout}>
       <div className={styles.innerLayout}>
@@ -101,13 +97,14 @@ function Mypage() {
           </div>
         </div>
         <div>
-          <RecentActivity activities={activities}/>
+          <RecentActivity activities={activities} />
         </div>
       </div>
       <div className={styles.owlcustomlayout}>
         {/* <img src={owlimg} className={styles.owlcustomimg} /> */}
         <div className={styles.owlcustomimg}></div>
-        <div>
+
+        <div className={styles.btndiv}>
           <Button id={styles.ReadButton} style={{ marginTop: "3%" }} size="lg">
             꾸미러 가기
           </Button>
@@ -146,8 +143,7 @@ function Profile({ profile }) {
   );
 }
 
-function RecentActivity({activities}) {
- 
+function RecentActivity({ activities }) {
   let navigate = useNavigate();
   return (
     <div className={styles.recentactivity}>
@@ -185,10 +181,9 @@ function RecentActivity({activities}) {
                   borderEndEndRadius: "10px",
                 }}
               >
-                {
-                activities.map(function (activity, i) {
+                {activities.map(function (activity, i) {
                   let bgColor = i % 2 == 0 ? "#FDEEDC" : "";
-                  let curStatus = activity.state ? activity.state : '';
+                  let curStatus = activity.state ? activity.state : "";
                   let curStatusBg = "";
                   let curStatusfc = "";
                   if (curStatus.includes("읽는")) {
@@ -200,12 +195,12 @@ function RecentActivity({activities}) {
                   } else if (curStatus.includes("완료")) {
                     curStatusBg = "#FFAE6D";
                     curStatusfc = "#00D7FF";
-                  }else if(curStatus.includes("활동")){
+                  } else if (curStatus.includes("활동")) {
                     curStatusBg = "#F6AE99";
                     curStatusfc = "#00D7FF";
                   }
                   // 독후감 작성
-                  else { 
+                  else {
                     curStatusBg = "#F3E0B5";
                     curStatusfc = "#C70A80";
                   }
@@ -228,27 +223,40 @@ function RecentActivity({activities}) {
                         <Col md={{ span: 3 }} style={{ margin: "auto" }}>
                           {activity.time}
                         </Col>
-                        <Col className={styles.activitystatus} md={{ span: 3 }} style={{ margin: "auto" }} onClick={()=>{
-                          if(curStatus.includes("완료")){
-                            navigate(`/feedback/${activity.id}`)
-                          }
-                          //읽는 중
-                          else if(activity.info.state == 1){
-                            navigate(`/reading/${activity.id}/${activity.info.current_chapter}/${activity.info.current_page}`)
-                          }
-                          //퀴즈
-                          else if(activity.info.state == 2){
-                            navigate(`/quiz/${activity.id}/${activity.info.current_chapter}`)
-                          }
-                          //활동(단원별 내용 작성)
-                          else if(activity.info.state == 3){
-                            navigate(`/activity/${activity.id}/${activity.info.current_chapter}`)
-                          }
-                          //독후감 작성(단원별 내용 작성)
-                          else if(activity.info.state == 4){
-                            navigate(`/writing/${activity.id}/form/${activity.info.format}`)
-                          }
-                        }}>
+                        <Col
+                          className={styles.activitystatus}
+                          md={{ span: 3 }}
+                          style={{ margin: "auto" }}
+                          onClick={() => {
+                            if (curStatus.includes("완료")) {
+                              navigate(`/feedback/${activity.id}`);
+                            }
+                            //읽는 중
+                            else if (activity.info.state == 1) {
+                              navigate(
+                                `/reading/${activity.id}/${activity.info.current_chapter}/${activity.info.current_page}`
+                              );
+                            }
+                            //퀴즈
+                            else if (activity.info.state == 2) {
+                              navigate(
+                                `/quiz/${activity.id}/${activity.info.current_chapter}`
+                              );
+                            }
+                            //활동(단원별 내용 작성)
+                            else if (activity.info.state == 3) {
+                              navigate(
+                                `/activity/${activity.id}/${activity.info.current_chapter}`
+                              );
+                            }
+                            //독후감 작성(단원별 내용 작성)
+                            else if (activity.info.state == 4) {
+                              navigate(
+                                `/writing/${activity.id}/form/${activity.info.format}`
+                              );
+                            }
+                          }}
+                        >
                           <div
                             style={{
                               // color: `${curStatusfc}`,

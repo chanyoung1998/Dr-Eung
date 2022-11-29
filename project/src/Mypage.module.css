@@ -195,9 +195,11 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: translate(0, 10%);
+  transform: translate(0, 20%);
 }
-
+.btndiv{
+  position: relative;
+}
 #ReadButton {
   position: absolute;
   top: 80%;
