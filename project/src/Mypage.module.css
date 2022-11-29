@@ -175,7 +175,7 @@
   grid-template-rows: 1fr 1fr;
   height: 97%;
   /* transform: translate(0, 15%); */
-  background-image: url("./img/bg4.png");
+  background-image: url("./img/bg5.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -191,6 +191,10 @@
 .owlcustomimg {
   width: 20vw;
   height: 40vh;
+  background-image: url("./img/owl2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   transform: translate(0, 10%);
 }
 
