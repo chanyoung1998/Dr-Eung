@@ -158,11 +158,14 @@
   grid-template-rows: 1fr 1fr;
   height: 97%;
   /* transform: translate(0, 15%); */
-  background-image: url("./img/bg1.png");
+  background-image: url("./img/bg4.png");
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 20px solid white; 
   border-radius: 50px;
   overflow: hidden;
+
   margin:30px 30px 0 ;
   box-shadow: 5px 5px 0px rgba(183, 130, 90, 0.3);
 }
@@ -170,7 +173,15 @@
 .owlcustomimg {
   width: 25vw;
   height: 40vh;
+  z-index: 30;
   transform: translate(0, 10%);
+  
+  
+  background-image: url("./img/owl2.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #ReadButton {

@@ -104,7 +104,8 @@ function Mypage() {
         </div>
       </div>
       <div className={styles.owlcustomlayout}>
-        <img src={owlimg} className={styles.owlcustomimg} />
+        {/* <img src={owlimg} className={styles.owlcustomimg} /> */}
+        <div className={styles.owlcustomimg}></div>
         <div>
           <Button id={styles.ReadButton} style={{ marginTop: "3%" }} size="lg">
             꾸미러 가기
