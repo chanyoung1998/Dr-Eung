@@ -1,5 +1,6 @@
 import styles from "./Register.module.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   faUser,
   faLock,
@@ -13,13 +14,9 @@ import axios from "axios";
 import leftimg from "./img/loginleft.png";
 import rightimg from "./img/loginright.png";
 
-/*
-  해야되는거
-  3. 시작버튼 누르면 api호출
- */
 function Register() {
   // const LOGIN_URL = "#";
-  const REGISTER_API_URL = "https://d7f6-121-157-55-117.jp.ngrok.io/register/";
+  const REGISTER_API_URL = "http://3.38.215.109";
 
   const [inputField, setInput] = useState({
     idInput: "",
@@ -52,6 +49,9 @@ function Register() {
   } = inputField;
 
   const [page, setPage] = useState(1);
+  const [idCheck, setIdCheck] = useState(false);
+
+  let navigate = useNavigate()
 
   const handleRegister = () => {
     let clear = document.getElementsByTagName("input");
@@ -59,6 +59,8 @@ function Register() {
     if (page === 1) {
       if (!idInput) {
         alert("아이디를 입력하세요");
+      } else if (!idCheck) {
+        alert("아이디 중복체크를 해 주세요");
       } else if (!passwordInput) {
         alert("비밀번호를 입력하세요");
       } else if (!passwordCheckInput || passwordInput != passwordCheckInput) {
@@ -72,36 +74,54 @@ function Register() {
         setPage(2);
       }
     } else {
-      if (!nicknameInput) {
-        alert("닉네임을 입력하세요");
-      } else if (!schoolInput) {
-        alert("학교를 입력하세요");
-      } else {
-        axios
-          .post(REGISTER_API_URL, {
-            username: idInput,
-            password: passwordInput,
-            password2: passwordCheckInput,
-            name: nameInput,
-            nickname: nicknameInput,
-            school: schoolInput,
-            introduction: introductionInput
-          })
-          .then((data) => {
-            if (data.status === 201) {
-              for (let i = 0; i < clear.length; i++) {
-                clear[i].value = "";
-              }
-              //로그인페이지로ㄱㄱ
-            } else {
-              alert("이미 존재하는 회원입니다.");
+      axios
+        .post(REGISTER_API_URL + "/register/", {
+          username: idInput,
+          password: passwordInput,
+          password2: passwordCheckInput,
+          name: nameInput,
+          nickname: nicknameInput,
+          school: schoolInput,
+          introduction: introductionInput,
+        },  {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((data) => {
+          console.log(data)
+          if (data.status === 201) {
+            for (let i = 0; i < clear.length; i++) {
+              clear[i].value = "";
             }
-          })
-          .catch(() => {
-            alert("서버가 불안정합니다. 잠시후에 다시 시도 해주세요");
-          });
-      }
+            alert("회원가입에 성공했습니다!")
+            navigate("/");
+          } else {
+            alert("이미 존재하는 회원입니다.");
+          }
+        })
+        .catch(() => {
+          alert("서버가 불안정합니다. 잠시후에 다시 시도 해주세요");
+        });
     }
+  };
+
+  const handleIdCheck = () => {
+    setIdCheck(true);
+    axios
+      .get(REGISTER_API_URL + "/register/id?id=" + inputField.idInput)
+      .then((data) => {
+        console.log(data)
+        if (!data.data) {
+          alert("사용 가능한 아이디입니다.");
+          setIdCheck(true);
+        } else {
+          alert("중복되는 아이디입니다.");          
+        }
+      })
+      .catch(() => {
+        alert("잘못된 요청입니다.");
+      });
   };
 
   return (
@@ -114,17 +134,26 @@ function Register() {
           <div className={styles.title}>
             <h2>회원가입</h2>
           </div>
-
-          <InputBox
-            page={page}
-            border={[activeBorder, setActiveBorder]}
-            input={[inputField, setInput]}
-          />
-
-          <div className={styles.btns}>
-            <btn className={styles.btn} onClick={() => handleRegister()}>
-              {page === 1 ? "다음으로" : "가입하기"}
-            </btn>
+          <div className={styles.tmp}>
+            <div>
+              <InputBox
+                page={page}
+                border={[activeBorder, setActiveBorder]}
+                input={[inputField, setInput]}
+                setIdCheck={setIdCheck}
+                url={REGISTER_API_URL}
+              />
+              <div className={styles.btns}>
+                <btn className={styles.btn} onClick={() => handleRegister()}>
+                  {page === 1 ? "다음으로" : "가입하기"}
+                </btn>
+              </div>
+            </div>
+            <button
+              onClick={() => (page === 1 ? handleIdCheck() : handleRegister())}
+            >
+              {page === 1 ? "중복체크" : "건너뛰기"}
+            </button>
           </div>
         </div>
       </div>

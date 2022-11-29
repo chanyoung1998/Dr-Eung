@@ -223,7 +223,7 @@ function RecentActivity({activities}) {
                         <Col md={{ span: 3 }} style={{ margin: "auto" }}>
                           {activity.time}
                         </Col>
-                        <Col md={{ span: 3 }} style={{ margin: "auto" }} onClick={()=>{
+                        <Col className={styles.activitystatus} md={{ span: 3 }} style={{ margin: "auto" }} onClick={()=>{
                           if(curStatus.includes("완료")){
                             navigate(`/feedback/${activity.id}`)
                           }

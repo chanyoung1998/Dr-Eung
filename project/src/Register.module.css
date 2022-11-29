@@ -94,6 +94,29 @@ body{
   transition: .1s;
 }
 
+.tmp{
+  display: grid;
+  grid-template-columns: 85% 15%;
+}
+
+.tmp button{
+  width: 65px;
+  height: 10%;
+  margin-top: 40px;
+  margin-left: 5px;
+  font-size: 1em;
+  color: #999;
+  background-color: transparent;
+}
+
+.tmp button:hover{
+  color: #caa257;
+}
+.tmp button:active{
+  color: #9e7529;
+  transition: .1s;
+}
+
 @media screen  and (max-width: 1000px){
   .left img{
     display: none;
@@ -102,4 +125,5 @@ body{
   .right img{
     display: none;
   };
+
 }

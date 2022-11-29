@@ -398,3 +398,24 @@ background-color: #FFD384;
   margin: 3px;
   border:0;
 }
+
+.bookmarkmodal{
+  width:30vw;
+}
+.bookmarkmodal div {
+  border-radius: 30px;
+  margin: 3px;
+  border:0;
+}
+.bookmarkbutton{
+  transform: translate(-20%,0);
+}
+.bookmark{
+  transition: all;
+  transition-duration:0.3s ;
+}
+
+.bookmark:hover{
+  transform: scale(1.2);
+}
+

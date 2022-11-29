@@ -57,7 +57,7 @@ function BookMenu() {
           setBooks(res1.data.results);
           setReports(Object.values(res2.data));
           // console.log(res1.data.results);
-          // console.log(Object.values(res2.data));
+          console.log(res2.data);
           setLoading(false);
         })
       );
@@ -205,7 +205,7 @@ function BookMenu() {
                               },
                             })
                             .then((res) => {
-                              console.log('더더더')
+                              console.log("더더더");
                               let temp = [...books, ...res.data.results];
                               setNext(res.data.next);
                               setBooks(temp);
@@ -290,15 +290,15 @@ function Book({
   reports,
 }) {
   let selected = index == selectedIndex ? styles.selected : styles.nonSelected;
-
-  // let [bookmark, setBookmark] = useState(
-  //   // book.check == true ? chekcedBookmark : faBookmark
-  //   faBookmark
-  // );
+  
   let bookmark = faBookmark;
   let complete = false;
+  let info = {};
+  let [bookmarkmodalshow,setBookmarkmodalshow] = useState(false);
+
   for (let index = 0; index < reports.length; ++index) {
     if (reports[index]["책 제목"] == book["title"]) {
+      info = reports[index]["info"];
       if (!reports[index]["complete"]) {
         bookmark = chekcedBookmark;
       } else {
@@ -308,6 +308,7 @@ function Book({
       break;
     }
   }
+
   return (
     <div
       className={`${selected} ${styles.book}`}
@@ -329,19 +330,19 @@ function Book({
           {book.author}
         </Col>
         <Col md={{ span: 2 }} style={{ margin: "auto" }}>
-          <FontAwesomeIcon
-            icon={bookmark}
-            // onClick={() => {
-            //   let newArray = [...books];
-
-            //   newArray[index].check == true
-            //     ? setBookmark(faBookmark)
-            //     : setBookmark(chekcedBookmark);
-            //   newArray[index].check =
-            //     newArray[index].check == true ? false : true;
-            //   setBooks(newArray);
-            // }}
-          />
+          <Bookmarkmodal show={bookmarkmodalshow} setShow={setBookmarkmodalshow} bookmark={bookmark} book={book} info={info} complete={complete}/>
+          {bookmark == chekcedBookmark ? (
+            <FontAwesomeIcon
+              className={styles.bookmark}
+              icon={bookmark}
+              onClick={() => {
+                setBookmarkmodalshow(true);
+              }}
+              
+            />
+          ) : (
+            <FontAwesomeIcon icon={bookmark} />
+          )}
         </Col>
         <Col md={{ span: 2 }} style={{ margin: "auto" }}>
           {complete == true ? <FontAwesomeIcon icon={faCheck} /> : ""}
@@ -413,6 +414,68 @@ function SearchResultModal({ show, setShow, book }) {
             }}
           >
             책 읽으러 가기
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
+
+function Bookmarkmodal({ show, setShow,bookmark,book,info,complete }) {
+  let navigate = useNavigate();
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        dialogClassName={styles.mymodal}
+      >
+        <Modal.Header closeButton style={{ background: "#FFF7E9" }}>
+          <Modal.Title>
+            <h2>{book["title"]} </h2>
+            <h5>{book["author"]}</h5>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ background: "#FFF7E9" }}>
+          {book["description"]}
+        </Modal.Body> 
+        <Modal.Footer>
+          <Button
+            id={styles.ReadButton}
+            // className={styles.bookmarkbutton}
+            size="lg"
+            onClick={() => {
+              setShow(false);
+              if (bookmark == chekcedBookmark) {
+                if (complete) {
+                  navigate(`/feedback/${book["title"]}`);
+                }
+                //읽는 중
+                else if (info.state == 1) {
+                  navigate(
+                    `/reading/${book["title"]}/${info.current_chapter}/${info.current_page}`
+                  );
+                }
+                //퀴즈
+                else if (info.state == 2) {
+                  navigate(`/quiz/${book["title"]}/${info.current_chapter}`);
+                }
+                //활동(단원별 내용 작성)
+                else if (info.state == 3) {
+                  navigate(
+                    `/activity/${book["title"]}/${info.current_chapter}`
+                  );
+                }
+                //독후감 작성(단원별 내용 작성)
+                else if (info.state == 4) {
+                  navigate(`/writing/${book["title"]}/form/${info.format}`);
+                }
+              }
+            }}
+          >
+            최근 활동으로 바로가기
           </Button>
         </Modal.Footer>
       </Modal>
