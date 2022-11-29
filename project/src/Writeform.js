@@ -7,6 +7,7 @@ import styles from "./Writeform.module.css";
 import { susa } from "susa-js";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import owl from "./img/owl.png";
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -19,27 +20,46 @@ function Writefrom() {
   const formnum = param.formnum;
   const title = param.title;
   const BASE_URL = useSelector((state) => state.BASE_URL);
-
+  const [progress, setProgress] = useState(60);
   return (
-    <div className={styles.outercontainer}>
-      {
-        [
-          <Form0 title={title} BASE_URL={BASE_URL} />,
-          <Form1 title={title} BASE_URL={BASE_URL} />,
-          <Form2 title={title} BASE_URL={BASE_URL} />,
-          <Form3 title={title} BASE_URL={BASE_URL} />,
-          <Form4 title={title} BASE_URL={BASE_URL} />,
-          <Form5 title={title} BASE_URL={BASE_URL} />,
-          <Form6 title={title} BASE_URL={BASE_URL} />,
-          <Form7 title={title} BASE_URL={BASE_URL} />,
-          <Form8 title={title} BASE_URL={BASE_URL} />,
-        ][formnum]
-      }
-    </div>
+    <>
+      {" "}
+      <div className={styles.ProgressContainer}>
+        <ul>
+          <div>단원별 활동</div>
+          <li>
+            <span
+              className={`${styles.bar}`}
+              style={{ width: `${progress}%` }}
+            />
+            <img
+              className={styles.bar_img}
+              src={owl}
+              style={{ left: `${progress + 20}%` }}
+            />
+          </li>
+        </ul>
+      </div>
+      <div className={styles.outercontainer}>
+        {
+          [
+            <Form0 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form1 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form2 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form3 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form4 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form5 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form6 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form7 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form8 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+          ][formnum]
+        }
+      </div>
+    </>
   );
 }
 
-function Form0({ title, BASE_URL }) {
+function Form0({ title, BASE_URL,progress,setProgress }) {
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "주인공 또는 작가의 마음을 유추할 수 있는 질문을 적어보고 이에 대한 자신의 생각을 적어보세요!",
@@ -52,11 +72,11 @@ function Form0({ title, BASE_URL }) {
   ];
   const 예시 = [
     "",
-    "  OO는 왜? ",
-    "나도 OO처럼 ~ 경험이 있나?",
-    "",
-    "내가 OO라면 ",
-    "이 책에서 가장 ~ ",
+    "예시)만복이는 왜 장군의 떡집을 보고 그냥 지나쳤을까?",
+    "예시)나도 만복이처럼 착한일을 한 경험이 있나?",
+    "예시)장군이도 '장군이네 떡집' 덕분에 만복이처럼 좋은 친구가 될까?",
+    "예시)내가 만복이라면 떡을 먹기위해 어떤 노력을 했을까?",
+    "예시)이 책에서 가장 기억에 남는 장면은 무엇일까?",
     "",
     "앞에서 작성한 질문들을 다시 떠올려 보세요!",
   ];
@@ -101,6 +121,7 @@ function Form0({ title, BASE_URL }) {
             ></textarea>
             <textarea
               className={styles.notes}
+              placeholder="답변)"
               onChange={(e) => {
                 let temp = { ...작성내용 };
                 temp[`질문${질문번호}`][`내용${질문번호}`] = e.target.value;
@@ -122,7 +143,8 @@ function Form0({ title, BASE_URL }) {
       </div>
       <button
         className={styles.button}
-        onClick={() => {
+        onClick={() => {  
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -131,7 +153,6 @@ function Form0({ title, BASE_URL }) {
                 original:
                   작성내용.제목0 +
                   "\n\n" +
-                 
                   작성내용.질문1.인터뷰1 +
                   "\n\n" +
                   작성내용.질문1.내용1 +
@@ -184,15 +205,15 @@ function Form0({ title, BASE_URL }) {
   );
 }
 
-function Form1({ title, BASE_URL }) {
+function Form1({ title, BASE_URL,progress,setProgress }) {
   const 질문 = [
     "누구에게 편지를 쓸지 생각해보세요! 책속에 등장하는 인물뿐만 아니라 무생물이나 동물에게도 적용할 수 있어요!",
     "편지의 제목을 작성해 볼까요?",
     "본격적으로 편지를 작성해 볼까요? 솔직하게 대화를 나누어 보세요",
   ];
   const 예시 = [
-    "멋있는 OO에게 , 모든 것을 주었던 나무에게",
-    "아낌없이 주는 나무를 읽고",
+    "예시)멋있는 OO에게 , 모든 것을 주었던 나무에게",
+    "예시)아낌없이 주는 나무를 읽고",
     [
       "첫 인사로 시작해 보세요! 계절 인사도 좋아요.",
       "안부를 먼저 물어보는건 어때요?",
@@ -243,6 +264,7 @@ function Form1({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -277,7 +299,7 @@ function Form1({ title, BASE_URL }) {
     </>
   );
 }
-function Form2({ title, BASE_URL }) {
+function Form2({ title, BASE_URL ,progress,setProgress}) {
   const 질문 = [
     ["감상문의 제목을 적어보세요!", "비교할 책 제목이 뭔가요?"],
     "먼저 간단하게 읽은 책에 대해 설명해 주세요!",
@@ -338,7 +360,9 @@ function Form2({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
+            
             console.log("제출");
             axios.post(
               `${BASE_URL}report/${title}/`,
@@ -378,14 +402,14 @@ function Form2({ title, BASE_URL }) {
   );
 }
 
-function Form3({ title, BASE_URL }) {
+function Form3({ title, BASE_URL,progress,setProgress }) {
   const 질문 = [
     "책에서 인상 깊었던 구절이 있나요? 시의 제목을 생각해보세요!",
     "작품의 정경을 그려보며 나 스스로가 그 속에 동화된 기분을 느껴보세요!",
     ,
   ];
   const 예시 = [
-    "",
+    "예시)나쁜마음은 싫어-백설공주를 읽고",
     "등장 인물과 함께 어울려 대화를 나누는 모습을 상상해보면서 감정을 떠올려 보세요! ",
   ];
 
@@ -397,7 +421,7 @@ function Form3({ title, BASE_URL }) {
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} style={{top:"60%"}}>
         <>
           <h3 align="left">{질문[0]}</h3>
           <textarea
@@ -424,6 +448,7 @@ function Form3({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -455,13 +480,13 @@ function Form3({ title, BASE_URL }) {
   );
 }
 
-function Form4({ title, BASE_URL }) {
+function Form4({ title, BASE_URL,progress,setProgress }) {
   const 질문 = [
     "비평문의 제목을 적어보세요!",
     "책을 읽고 새롭게 알게된 사실이나 생각의 변화가 있었나요?",
   ];
   const 예시 = [
-    "",
+    "예시)로미오와 줄리엣 작품과 작품해설을 읽고",
     "책을 읽으면서 동의하거나 그렇지 못한 내용이 있나요? 구체적인 근거와 함께 적어보세요!",
   ];
 
@@ -508,6 +533,7 @@ function Form4({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -539,7 +565,7 @@ function Form4({ title, BASE_URL }) {
   );
 }
 
-function Form5({ title, BASE_URL }) {
+function Form5({ title, BASE_URL ,progress,setProgress}) {
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "자유롭게 독후감상문을 적어보세요!",
@@ -588,6 +614,7 @@ function Form5({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -619,7 +646,7 @@ function Form5({ title, BASE_URL }) {
   );
 }
 
-function Form6({ title, BASE_URL }) {
+function Form6({ title, BASE_URL ,progress,setProgress }) {
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "책을 선택하게 된 이유나 계기가 있나요? 그리고 책이 다루고 있는 내용에 대해 평소에 관심이 얼마나 있었나요?",
@@ -628,7 +655,7 @@ function Form6({ title, BASE_URL }) {
     "책을 다 읽고 난 후 깨닫거나 느낀 점에 대해 적어보세요! 그리고 더 알고 싶은 정보와 새롭게 생긴 궁금증이 있나요?",
   ];
   const 예시 = [
-    "",
+    "예시)안녕 달팽이를 읽고, 신비한 달팽이",
     [
       "책을 읽기 전에 책을 통해 알고 싶어 했던 정보가 있나요?",
       "도서의 표지나 제목을 보고 받은 느낌을 적어보세요!",
@@ -683,6 +710,7 @@ function Form6({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -720,7 +748,7 @@ function Form6({ title, BASE_URL }) {
     </>
   );
 }
-function Form7({ title, BASE_URL }) {
+function Form7({ title, BASE_URL,progress,setProgress }) {
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "책의 줄거리를 적어볼까요? 중요한 내용이나 전체 줄거리를 요약해도 좋아요!",
@@ -771,6 +799,7 @@ function Form7({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -809,7 +838,7 @@ function Form7({ title, BASE_URL }) {
   );
 }
 
-function Form8({ title, BASE_URL }) {
+function Form8({ title, BASE_URL ,progress,setProgress}) {
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "무엇을 바꿔 쓸지 적어보고 이유도 적어보세요!",
@@ -817,7 +846,7 @@ function Form8({ title, BASE_URL }) {
     "바꾸기 후에 내용은 무엇인가요? ",
   ];
   const 예시 = [
-    "",
+    "예시)'다이고로야 고마워' 바꿔 쓰기",
     "이야기의 끝 부분~, 일이 일어난 시간이나 장소~, 작품 속에서 일어난 일~",
   ];
   let [작성내용, set작성내용] = useState({
@@ -862,6 +891,7 @@ function Form8({ title, BASE_URL }) {
       <button
         className={styles.button}
         onClick={() => {
+          setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(

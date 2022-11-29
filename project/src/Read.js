@@ -9,7 +9,7 @@ import {
   Link,
 } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button, Dropdown,DropdownButton } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -17,8 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Read.module.css";
 import axios from "axios";
-import { useSelector,useDispatch } from "react-redux";
-// import {changeMAXCHAPTERS} from "./store.js";
+import { useSelector} from "react-redux";
 
 
 function Read() {
@@ -27,16 +26,18 @@ function Read() {
   let curchapter = Number(param.chapter);
   let curpage = Number(param.page);
 
-  const BASE_URL = useSelector((state)=>state.BASE_URL);
-  // const MAX_CHAPTERS = useSelector((state)=>state.MAX_CHAPTERS);
+  const BASE_URL = useSelector((state) => state.BASE_URL);
+
   let navigate = useNavigate();
-  // let dispatch = useDispatch();
+
   let [LeftTexts, setLeftTexts] = useState([]);
   let [RightTexts, setRightTexts] = useState([]);
   let [totalpages, setTotalpages] = useState(0);
   let [totalchapters, setTotalchapters] = useState(0);
-
-  const [isLoading,setLoading] = useState(true);
+  let [highlightIndexLeft, setHighlightLeft] = useState([]);
+  let [highlightIndexRight, setHighlightRight] = useState([]);
+  let [isHighlight, setIsHighlight] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage}`, {
@@ -45,66 +46,106 @@ function Read() {
         },
       })
       .then((data) => {
-        
         setLeftTexts(data.data.page);
         setTotalpages(data.data.pages);
         setTotalchapters(data.data.chapters);
-        // dispatch(changeMAXCHAPTERS(data.data.chapters))
-        
       })
-      .catch((error)=>{
+      .catch((error) => {
         navigate(`/writing/${title}`);
       });
-    
-      axios
-      .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage+1}`, {
+
+    axios
+      .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage + 1}`, {
+        headers: {
+          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+        },
+      })
+      .then((data) => {
+        setRightTexts(data.data.page);
+      });
+
+    axios
+      .get(`${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage}`, {
         headers: {
           Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
         },
       })
       .then((data) => {
         console.log(data.data);
-        setRightTexts(data.data.page);
-        setLoading(false);
+        setHighlightLeft(data.data.index);
       });
 
-
+    axios
+      .get(
+        `${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage + 1}`,
+        {
+          headers: {
+            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          },
+        }
+      )
+      .then((data) => {
+        console.log(data.data);
+        setHighlightRight(data.data.index);
+        setLoading(false);
+      });
     return;
   }, [param]);
 
-  const font_size = (screen.width / 100 * (20/15 ));
-  
-  if(isLoading){
-    return(<div>Loading...</div>)
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
+
+  const bookcontents = (LeftTexts + RightTexts).split(".");
+  const lefttotalline = LeftTexts.split(".").length;
+
+  let temp = [];
+  for (let i = 0; i < highlightIndexRight.length; i++) {
+    if (i == 0) {
+      temp = [];
+    }
+    temp.push(highlightIndexRight[i] + lefttotalline);
+  }
+
+  const highlightIndex = [...highlightIndexLeft, ...temp];
 
   return (
     <div>
-      <div id={styles.container}>
-        <div id={styles.pageLayout}>
-          <div className={styles.shadowLeft}>
-            {<p align="left">{LeftTexts}</p>}
-          </div>
+      <div id="readingwrapper">
+        <div id="readingcontainer">
+          <section className="open-book">
+            <header>
+              <h6>&nbsp;</h6>
+              <h6>{title}</h6>
+            </header>
 
-          <div className={styles.shadowRight}>
-          {<p align="left">{RightTexts}</p>}
-          </div>
+            <article>
+              {bookcontents}
+
+            </article>
+
+            <footer>
+              <ol id="page-numbers">
+                <li>{`${curchapter}-${curpage}`}</li>
+                <li>{`${curchapter}-${curpage + 1}`}</li>
+              </ol>
+            </footer>
+          </section>
         </div>
       </div>
       <DropdownButton id={styles.dropdownItemButton} title="엉박사 찬스">
-        <Dropdown.Item
-          as="button"
-          onClick={() => {
-     
-          }}
-        >
+        <Dropdown.Item as="button" onClick={() => {}}>
           사전 찾기
         </Dropdown.Item>
 
         <Dropdown.Item
           as="button"
           onClick={() => {
-            
+            if (isHighlight) {
+              setIsHighlight(false);
+            } else {
+              setIsHighlight(true);
+            }
           }}
         >
           하이라이트
@@ -117,9 +158,11 @@ function Read() {
           size="6x"
           onClick={() => {
             if (curpage != 1) {
+              setLoading(true)
               navigate(`/reading/${title}/${curchapter}/${curpage - 2}`);
             } else {
               if (curchapter != 1) {
+                setLoading(true)
                 navigate(`/reading/${title}/${curchapter - 1}/1`);
               } else {
                 console.log("처음!");
@@ -133,10 +176,12 @@ function Read() {
           icon={faChevronRight}
           size="6x"
           onClick={() => {
-            if (curpage+2 <= totalpages) {
+            if (curpage + 2 <= totalpages) {
+              setLoading(true)
               navigate(`/reading/${title}/${curchapter}/${curpage + 2}`);
             } else {
               if (curchapter != totalchapters) {
+                setLoading(true)
                 // navigate(`/reading/${title}/${curchapter + 1}/${1}`);
                 navigate(`/quiz/${title}/${curchapter}`);
               } else {
@@ -147,7 +192,6 @@ function Read() {
           }}
         />
       </Button>
-      
     </div>
   );
 }

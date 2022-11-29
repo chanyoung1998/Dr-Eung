@@ -45,27 +45,6 @@
   );
 }
 
-/*** OPEN.Book ***/
-.openBook {
-  background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.5) 0 1em 3em;
-  color: #000;
-  padding: 2em;
-}
-
-.openBook * {
-  position: relative;
-}
-
-/* Highlight */
-.openBook *::-moz-selection {
-  background: rgba(222, 255, 0, 0.75);
-}
-
-.openBook *::selection {
-  background: rgba(222, 255, 0, 0.75);
-}
-
 #leftButton,
 #rightButton {
   position: fixed;
@@ -103,13 +82,4 @@
   height: 50px;
 }
 
-@media (max-device-width: 1300px) {
-  #container {
-    font-size: 17px;
-    line-height: 2em;
-  }
 
-  /* .shadowLeft{
-    display:none;
-  } */
-}

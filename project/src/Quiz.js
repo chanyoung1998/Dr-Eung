@@ -18,7 +18,7 @@ import leaf from "./img/leaf.png";
 import branch from "./img/branch.png";
 import bulb from "./img/bulb.png";
 import submiticon from "./img/submit3.png";
-import submiticon2 from "./img/submit2.png";
+import owl from "./img/owl.png";
 
 function Quiz() {
   let param = useParams();
@@ -45,6 +45,10 @@ function Quiz() {
   if (questionCount == 5) {
     navigate(`/activity/${title}/${currentChapter}/`);
   }
+  const totalchapter = 3;
+  const [progress, setProgress] = useState(
+    ((currentChapter - 1) / totalchapter) * 60
+  );
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
@@ -107,168 +111,198 @@ function Quiz() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(questionCount)
+
   return (
-    <div className={styles.container}>
-      <HintModal show={show} setShow={setShow} hint={hint} />
-      <Nav
-        id="bootstrap-overrides"
-        justify
-        variant="tabs"
-        defaultActiveKey="0"
-        style={{ border: "none", zIndex: "0" }}
-      >
-        {numbers.map(function (e, i) {
-          let leftmove = [
-            styles.leftmove0,
-            styles.leftmove1,
-            styles.leftmove2,
-            styles.leftmove3,
-            styles.leftmove4,
-          ][i];
-          let leftmoveZindex = [
-            styles.leftmove0_2,
-            styles.leftmove1_2,
-            styles.leftmove2_2,
-            styles.leftmove3_2,
-            styles.leftmove4_2,
-          ][i];
+    <>
+      <div className={styles.container}>
+        <HintModal show={show} setShow={setShow} hint={hint} />
+        <Nav
+          id="bootstrap-overrides"
+          justify
+          variant="tabs"
+          defaultActiveKey="0"
+          style={{ border: "none", zIndex: "0" }}
+        >
+          {numbers.map(function (e, i) {
+            let leftmove = [
+              styles.leftmove0,
+              styles.leftmove1,
+              styles.leftmove2,
+              styles.leftmove3,
+              styles.leftmove4,
+            ][i];
+            let leftmoveZindex = [
+              styles.leftmove0_2,
+              styles.leftmove1_2,
+              styles.leftmove2_2,
+              styles.leftmove3_2,
+              styles.leftmove4_2,
+            ][i];
 
-          let leftclass = clicked == i ? leftmoveZindex : leftmove;
-
-          return (
-            <div>
-              <Nav.Item id={styles.wrap} className={leftclass}>
-                <Nav.Link
-                  id={styles.navlink}
-                  eventKey={i}
-                  onClick={() => {
-                    setClicked(i);
-                    setAnswerClicked(0);
-                    setImgShow([false, false, false, false, false]);
-                    setShow(false);
-                    setHint("");
-                    setAnswer(null);
-                    setWrongcount(0);
-                  }}
-                >
-                  <h1>{e}</h1>
-                </Nav.Link>
-              </Nav.Item>
-            </div>
-          );
-        })}
-      </Nav>
-
-      <div className={styles.content}>
-        <div>
-          <p align="left">{quizs[clicked].question}</p>
-        </div>
-        <Row>
-          <Col md={4} className={styles.bulblayout}>
-            <img
-              src={bulb}
-              className={styles.bulb}
-              onClick={() => {
-                if (wrongcount >= 2) {
-                  setShow(true);
-                }
-              }}
-              style={{ display: wrongcount >= 2 ? "" : "none" }}
-            />
-          </Col>
-          <Col md={{ span: 4, offset: 4 }} className={styles.submitlayout}>
-            <img
-              src={submiticon}
-              className={styles.submiticon}
-              onClick={() => {
-                if (answer == null) {
-                  axios
-                    .put(
-                      `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${
-                        clicked + 1
-                      }`,
-                      { answer: answerClicked + 1 },
-                      {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                          Authorization:
-                            "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-                        },
-                      }
-                    )
-                    .then((res) => {
-                      if (res.data == "정답입니다!") {
-                        let temp = [...imgShow];
-                        temp[answerClicked] = true;
-                        setAnswer(answerClicked);
-                        setImgShow(temp);
-                        setQuestioncount(questionCount + 1);
-                        console.log(questionCount);
-                      } else {
-                        let temp = [...imgShow];
-                        temp[answerClicked] = true;
-                        setImgShow(temp);
-                        setWrongcount(wrongcount + 1);
-                        setHint(res.data.hint.join(" "));
-                      }
-                    });
-                } else {
-                  // 초기화
-                  // setClicked(clicked+1);
-                  // console.log(document.getElementsByTagName('a'))
-                  // document.getElementsByTagName('a')[clicked-1].getElementsByTagName
-                }
-              }}
-            />
-          </Col>
-        </Row>
-
-        <div className={styles.choicelayer}>
-          {[0, 1, 2, 3, 4].map(function (e, i) {
-            const options = quizs[clicked].choice;
+            let leftclass = clicked == i ? leftmoveZindex : leftmove;
 
             return (
-              <p
-                align="left"
-                onClick={() => {
-                  setAnswerClicked(e);
-                }}
-              >
-                <img
-                  src={answer == e ? leaf : branch}
-                  className={answer == e ? styles.leaf : styles.branch}
-                  style={{ display: imgShow[e] == true ? "" : "none" }}
-                />
-                <FontAwesomeIcon
-                  icon={answerClicked == e ? faCircleSolid : faCircle}
-                  size="1x"
-                />
-                &nbsp;&nbsp;{options[e]}
-              </p>
+              <div>
+                <Nav.Item id={styles.wrap} className={leftclass}>
+                  <Nav.Link
+                    id={styles.navlink}
+                    eventKey={i}
+                    onClick={() => {
+                      setClicked(i);
+                      setAnswerClicked(0);
+                      setImgShow([false, false, false, false, false]);
+                      setShow(false);
+                      setHint("");
+                      setAnswer(null);
+                      setWrongcount(0);
+                    }}
+                  >
+                    <h1>{e}</h1>
+                  </Nav.Link>
+                </Nav.Item>
+              </div>
             );
           })}
+        </Nav>
+
+        <div className={styles.content}>
+          <div>
+            <p align="left">{quizs[clicked].question}</p>
+          </div>
+          <Row>
+            <Col md={4} className={styles.bulblayout}>
+              <img
+                src={bulb}
+                className={styles.bulb}
+                onClick={() => {
+                  if (wrongcount >= 2) {
+                    setShow(true);
+                  }
+                }}
+                style={{ display: wrongcount >= 2 ? "" : "none" }}
+              />
+            </Col>
+            <Col md={{ span: 4, offset: 4 }} className={styles.submitlayout}>
+              <img
+                src={submiticon}
+                className={styles.submiticon}
+                onClick={() => {
+                  if (answer == null) {
+                    axios
+                      .put(
+                        `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${
+                          clicked + 1
+                        }`,
+                        { answer: answerClicked + 1 },
+                        {
+                          headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization:
+                              "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                          },
+                        }
+                      )
+                      .then((res) => {
+                        if (res.data == "정답입니다!") {
+                          let temp = [...imgShow];
+                          temp[answerClicked] = true;
+                          setAnswer(answerClicked);
+                          setImgShow(temp);
+                          setQuestioncount(questionCount + 1);
+                          setProgress(
+                            progress + (1 / 9) * (1 / totalchapter) * 60
+                          );
+                        } else {
+                          let temp = [...imgShow];
+                          temp[answerClicked] = true;
+                          setImgShow(temp);
+                          setWrongcount(wrongcount + 1);
+                          setHint(res.data.hint.join(" "));
+                        }
+                      });
+                  } else {
+                    // 초기화
+                    // setClicked(clicked+1);
+                    // console.log(document.getElementsByTagName('a'))
+                    // document.getElementsByTagName('a')[clicked-1].getElementsByTagName
+                  }
+                }}
+              />
+            </Col>
+          </Row>
+
+          <div className={styles.choicelayer}>
+            {[0, 1, 2, 3, 4].map(function (e, i) {
+              const options = quizs[clicked].choice;
+
+              return (
+                <p
+                  align="left"
+                  onClick={() => {
+                    setAnswerClicked(e);
+                  }}
+                >
+                  <img
+                    src={answer == e ? leaf : branch}
+                    className={answer == e ? styles.leaf : styles.branch}
+                    style={{ display: imgShow[e] == true ? "" : "none" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={answerClicked == e ? faCircleSolid : faCircle}
+                    size="1x"
+                  />
+                  &nbsp;&nbsp;{options[e]}
+                </p>
+              );
+            })}
+          </div>
         </div>
+        <Button id={styles.leftButton}>
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            size="6x"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        </Button>
+        <Button id={styles.rightButton}>
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            size="6x"
+            onClick={() => {
+              navigate(1);
+            }}
+          />
+        </Button>
       </div>
-      <Button id={styles.leftButton}>
-        <FontAwesomeIcon
-          icon={faChevronLeft}
-          size="6x"
+      <div className={styles.backbutton}>
+        <button
           onClick={() => {
-            // navigate(-1);
+            navigate("/home");
+            // 마이페이지로 연결
           }}
-        />
-      </Button>
-      <Button id={styles.rightButton}>
-        <FontAwesomeIcon
-          icon={faChevronRight}
-          size="6x"
-          onClick={() => {
-            // navigate(1);
-          }}
-        />
-      </Button>
-    </div>
+        >
+          돌아가기
+        </button>
+      </div>
+      <div className={styles.ProgressContainer}>
+        <ul>
+          <div>단원별 활동</div>
+          <li>
+            <span
+              className={`${styles.bar}`}
+              style={{ width: `${progress}%` }}
+            />
+            <img
+              className={styles.bar_img}
+              src={owl}
+              style={{ left: `${progress + 20}%` }}
+            />
+          </li>
+        </ul>
+      </div>
+    </>
   );
 }
 

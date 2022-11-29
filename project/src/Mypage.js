@@ -21,6 +21,7 @@ import owl3 from "./img/owl3.png";
 import owl4 from "./img/owl4.png";
 import owl5 from "./img/owl5.png";
 import owl6 from "./img/owl6.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 
@@ -142,7 +143,7 @@ function Profile({ profile }) {
 
 function RecentActivity({activities}) {
  
-
+  let navigate = useNavigate();
   return (
     <div className={styles.recentactivity}>
       <Col md={{ span: 12 }}>
@@ -185,7 +186,7 @@ function RecentActivity({activities}) {
                   let curStatus = activity.state ? activity.state : '';
                   let curStatusBg = "";
                   let curStatusfc = "";
-                  if (curStatus.includes("읽는중")) {
+                  if (curStatus.includes("읽는")) {
                     curStatusBg = "#E3C770";
                     curStatusfc = "#285430";
                   } else if (curStatus.includes("퀴즈")) {
@@ -194,7 +195,12 @@ function RecentActivity({activities}) {
                   } else if (curStatus.includes("완료")) {
                     curStatusBg = "#FFAE6D";
                     curStatusfc = "#00D7FF";
-                  } else {
+                  }else if(curStatus.includes("활동")){
+                    curStatusBg = "#F6AE99";
+                    curStatusfc = "#00D7FF";
+                  }
+                  // 독후감 작성
+                  else { 
                     curStatusBg = "#F3E0B5";
                     curStatusfc = "#C70A80";
                   }
@@ -217,7 +223,27 @@ function RecentActivity({activities}) {
                         <Col md={{ span: 3 }} style={{ margin: "auto" }}>
                           {activity.time}
                         </Col>
-                        <Col md={{ span: 3 }} style={{ margin: "auto" }}>
+                        <Col md={{ span: 3 }} style={{ margin: "auto" }} onClick={()=>{
+                          if(curStatus.includes("완료")){
+                            navigate(`/feedback/${activity.id}`)
+                          }
+                          //읽는 중
+                          else if(activity.info.state == 1){
+                            navigate(`/reading/${activity.id}/${activity.info.current_chapter}/${activity.info.current_page}`)
+                          }
+                          //퀴즈
+                          else if(activity.info.state == 2){
+                            navigate(`/quiz/${activity.id}/${activity.info.current_chapter}`)
+                          }
+                          //활동(단원별 내용 작성)
+                          else if(activity.info.state == 3){
+                            navigate(`/activity/${activity.id}/${activity.info.current_chapter}`)
+                          }
+                          //독후감 작성(단원별 내용 작성)
+                          else if(activity.info.state == 4){
+                            navigate(`/writing/${activity.id}/form/${activity.info.format}`)
+                          }
+                        }}>
                           <div
                             style={{
                               // color: `${curStatusfc}`,
@@ -327,14 +353,4 @@ function CustomRadar(props) {
   );
 }
 
-// <div
-// className={styles.tabArea}
-// onClick={() => {
-//   setAbility(0);
-// }}
-// ></div>
-// <div
-// className={styles.tabArea2}
-// style={{ background: "#E4E0CE" }}
-// ></div>
 export default Mypage;

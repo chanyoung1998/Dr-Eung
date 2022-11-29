@@ -1,7 +1,7 @@
 /*eslint-disable */
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { Nav, Modal, Row, Col ,Button} from "react-bootstrap";
+import { Nav, Modal, Row, Col, Button } from "react-bootstrap";
 import styles from "./Activity.module.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,12 +9,14 @@ import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   faCircle as faCircleSolid,
   faSlash,
+  faChevronRight,
+  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import leaf from "./img/leaf.png";
 import branch from "./img/branch.png";
 import bulb from "./img/bulb.png";
-import submiticon from "./img/submit3.png";
-import submiticon2 from "./img/submit2.png";
+import submiticon from "./img/savesubmit.png";
+
 import owl from "./img/owl.png";
 import { useSelector } from "react-redux";
 
@@ -23,27 +25,41 @@ function Activity() {
   let navigate = useNavigate();
   const title = param.title;
   const curchapter = Number(param.chapter);
+  const totalchapter = 3;
 
-  let [clicked2, setClicked2] = useState(0);
+  // let [clicked, setClicked] = useState(0);
   let clicked = 0;
 
-  // const [keywordinput, setKeyword] = useState("");
-  // const [reasoninput, setReason] = useState("");
-  // const [summaryinput, setSummary] = useState("");
-  // const [feelinginput, setFeeling] = useState("");
+  const [keywordinput, setKeyword] = useState("");
+  const [reasoninput, setReason] = useState("");
+  const [summaryinput, setSummary] = useState("");
+  const [feelinginput, setFeeling] = useState("");
 
-  let keywordinput = "";
-  let reasoninput = "";
-  let summaryinput = "";
-  let feelinginput = "";
+  // let keywordinput = "";
+  // let reasoninput = "";
+  // let summaryinput = "";
+  // let feelinginput = "";
 
-  const numbers = ["Keyword", "Reason", "Summary", "Feeling"];
+  const numbers = ["핵심 단어", "이유", "요약", "느낌"];
   const [questions, setQuestions] = useState({});
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [isLoading, setLoading] = useState(true);
 
-  const ref = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+
+  const ref1_1 = useRef(null);
+  const ref2_1 = useRef(null);
+  const ref3_1 = useRef(null);
+  const ref4_1 = useRef(null);
+
+  const [progress, setProgress] = useState(
+    ((curchapter - 1) / totalchapter) * 60 +
+      (1 / 9) * (1 / totalchapter) * 60 * 5
+  );
 
   useEffect(() => {
     axios
@@ -53,124 +69,155 @@ function Activity() {
         },
       })
       .then((res) => {
-      
+        console.log(res.data)
         setQuestions(res.data);
-        setLoading(false);
-      })
-
+        setKeyword(res.data.keyword_answer);
+        setReason(res.data.reason_answer);
+        setSummary(res.data.summary_answer);
+        setFeeling(res.data.feeling_answer);
+        
+        setTimeout(()=>{setLoading(false);  }, 2000)
+      });
   }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  
   return (
-    <div className={styles.container}>
-      <Nav
-        id="bootstrap-overrides"
-        justify
-        variant="tabs"
-        defaultActiveKey="0"
-        style={{ border: "none", zIndex: "0" }}
-      >
-        {numbers.map(function (e, i) {
-          let leftmove = [
-            styles.leftmove0,
-            styles.leftmove1,
-            styles.leftmove2,
-            styles.leftmove3,
-          ][i];
-          let leftmoveZindex = [
-            styles.leftmove0_2,
-            styles.leftmove1_2,
-            styles.leftmove2_2,
-            styles.leftmove3_2,
-          ][i];
+    <>
+      <div className={styles.container}>
+        <Nav
+          id="bootstrap-overrides"
+          justify
+          variant="tabs"
+          defaultActiveKey="0"
+          style={{ border: "none", zIndex: "0" }}
+        >
+          {numbers.map(function (e, i) {
+            return (
+              <div>
+                <Nav.Item id={styles.wrap}>
+                  <Nav.Link
+                    id={styles.navlink}
+                    eventKey={i}
+                    onClick={() => {
+                      
+                      clicked = i;
 
-          let leftclass = clicked == 3 ? leftmoveZindex : leftmove;
+                      ref1.current.classList.remove(`${styles.zindex}`);
+                      ref2.current.classList.remove(`${styles.zindex}`);
+                      ref3.current.classList.remove(`${styles.zindex}`);
+                      ref4.current.classList.remove(`${styles.zindex}`);
 
-          return (
-            <div>
-              <Nav.Item id={styles.wrap} className={leftclass}>
-                <Nav.Link
-                  id={styles.navlink}
-                  eventKey={i}
-                  onClick={() => {
-                    // setClicked2(i);
-                    let temp = questions;
-                    setQuestions({});
-                    setQuestions(temp);
-                    
+                      ref1_1.current.classList.remove(`${styles.ondisplay}`);
+                      ref2_1.current.classList.remove(`${styles.ondisplay}`);
+                      ref3_1.current.classList.remove(`${styles.ondisplay}`);
+                      ref4_1.current.classList.remove(`${styles.ondisplay}`);
 
-                    clicked = i;
-                    if (clicked == 0) {
-                      ref.current.value = keywordinput;
-                    } else if (clicked == 1) {
-                      ref.current.value = reasoninput;
-                    } else if (clicked == 2) {
-                      ref.current.value = summaryinput;
-                    } else if (clicked == 3) {
-                      ref.current.value = feelinginput;
-                    }
-                    console.log(keywordinput);
-                    console.log(reasoninput);
-                    console.log(summaryinput);
-                    console.log(feelinginput);
-                  }}
-                >
-                  <h1>{e}</h1>
-                </Nav.Link>
-              </Nav.Item>
-            </div>
-          );
-        })}
-      </Nav>
+                      if (clicked == 0) {
+                        ref1.current.classList.add(`${styles.zindex}`);
+                        ref1_1.current.classList.add(`${styles.ondisplay}`);
+                        ref1.current.value = keywordinput;
+                      } else if (clicked == 1) {
+                        ref2.current.classList.add(`${styles.zindex}`);
+                        ref2_1.current.classList.add(`${styles.ondisplay}`);
+                        ref2.current.value = reasoninput;
+                      } else if (clicked == 2) {
+                        ref3.current.classList.add(`${styles.zindex}`);
+                        ref3_1.current.classList.add(`${styles.ondisplay}`);
+                        ref3.current.value = summaryinput;
+                      } else if (clicked == 3) {
+                        ref4.current.classList.add(`${styles.zindex}`);
+                        ref4_1.current.classList.add(`${styles.ondisplay}`);
+                        ref4.current.value = feelinginput;
+                      }
+                    }}
+                  >
+                    <h1>{e}</h1>
+                  </Nav.Link>
+                </Nav.Item>
+              </div>
+            );
+          })}
+        </Nav>
 
-      <div className={styles.content}>
-        <div>
-          {/* <p align="left">
-            {clicked == 0
-              ? questions.keyword
-              : clicked == 1
-              ? questions.reason
-              : clicked == 2
-              ? questions.summary
-              : questions.feeling}
-          </p> */}
-          <Question questions={questions} index={clicked}/>
+        <div className={styles.content}>
+          <div style={{ position: "relative" }}>
+            <p
+              align="left"
+              ref={ref1_1}
+              className={`${styles.q1} ${styles.ondisplay}`}
+            >
+              {questions.keyword}
+            </p>
+            <p align="left" ref={ref2_1} className={styles.q2}>
+              {questions.reason}
+            </p>
+            <p align="left" ref={ref3_1} className={styles.q3}>
+              {questions.summary}
+            </p>
+            <p align="left" ref={ref4_1} className={styles.q4}>
+              {questions.feeling}
+            </p>
+          </div>
+          <Row>
+            <Col md={4} className={styles.owllayout}>
+              <img src={owl} className={styles.owl} />
+            </Col>
+            <Col md={{ span: 4, offset: 4 }} className={styles.submitlayout}>
+              <img
+                src={submiticon}
+                className={styles.submiticon}
+                onClick={() => {
+                  setProgress(progress + (1 / 9) * (1 / totalchapter) * 60);
+                  if (clicked == 0) {
+                    setKeyword(ref1.current.value);
+                    // keywordinput = ref.current.value;
+                  } else if (clicked == 1) {
+                    setReason(ref2.current.value);
+                    // reasoninput = ref.current.value;
+                  } else if (clicked == 2) {
+                    setSummary(ref3.current.value);
+                    // summaryinput = ref.current.value;
+                  } else if (clicked == 3) {
+                    setFeeling(ref4.current.value);
+                    // feelinginput = ref.current.value;
+                  }
+                }}
+              />
+  
+            </Col>
+          </Row>
+          <div style={{ position: "relative" }}>
+            <textarea
+              id="textarea"
+              ref={ref2}
+              className={`${styles.writelayer} ${styles.note} ${styles.ta2}`}
+              placeholder="왜 그렇게 생각했나요?"
+            ></textarea>
+            <textarea
+              id="textarea"
+              ref={ref3}
+              className={`${styles.writelayer} ${styles.note} ${styles.ta3}`}
+              placeholder="이번 단원을 4~5문장으로 요약해보세요!"
+            ></textarea>
+            <textarea
+              id="textarea"
+              ref={ref4}
+              className={`${styles.writelayer} ${styles.note} ${styles.ta4}`}
+              placeholder="이번 단원에서 느낀점을 적어보세요!"
+            ></textarea>
+            <textarea
+              id="textarea"
+              ref={ref1}
+              className={`${styles.writelayer} ${styles.note} ${styles.ta1}`}
+              placeholder="이번 단원에서 가장 기억에 남는 단어는 무엇인지 적어보세요!"
+
+            >{keywordinput}</textarea>
+          </div>
         </div>
-        <Row>
-          <Col md={4} className={styles.owllayout}>
-            <img src={owl} className={styles.owl} />
-          </Col>
-          <Col md={{ span: 4, offset: 4 }} className={styles.submitlayout}>
-            <img
-              src={submiticon}
-              className={styles.submiticon}
-              onClick={() => {
-                if (clicked == 0) {
-                  // setKeyword(ref.current.value);
-                  keywordinput = ref.current.value;
-                } else if (clicked == 1) {
-                  // setReason(ref.current.value);
-                  reasoninput = ref.current.value;
-                } else if (clicked == 2) {
-                  // setSummary(ref.current.value);
-                  summaryinput = ref.current.value;
-                } else if (clicked == 3) {
-                  // setFeeling(ref.current.value);
-                  feelinginput = ref.current.value;
-                }
-              }}
-            />
-          </Col>
-        </Row>
-
-        <textarea
-          id="textarea"
-          ref={ref}
-          className={`${styles.writelayer} ${styles.note}`}
-        ></textarea>
       </div>
 
       <Button
@@ -179,10 +226,12 @@ function Activity() {
         onClick={() => {
           axios.post(
             `${BASE_URL}report/${title}/${curchapter}/activity/`,
-            { keyword: keywordinput,
-              reason :reasoninput,
-              summary : summaryinput,
-              feeling : feelinginput },
+            {
+              keyword: keywordinput,
+              reason: reasoninput,
+              summary: summaryinput,
+              feeling: feelinginput,
+            },
             {
               headers: {
                 "Content-Type": "multipart/form-data",
@@ -195,19 +244,68 @@ function Activity() {
       >
         제출하기
       </Button>
-    </div>
-  );
-}
 
-function Question({questions,index}){
-  
-  const q = ['keyword','reason','summary','feeling'];
-  console.log(questions[q[index]])
-  return(<>
-  
-  <p>{questions[q[index]]}</p>
-  
-  </>)
+      <div className={styles.backbutton}>
+        <button
+          onClick={() => {
+            axios.post(
+              `${BASE_URL}report/${title}/${curchapter}/activity/`,
+              {
+                keyword: keywordinput,
+                reason: reasoninput,
+                summary: summaryinput,
+                feeling: feelinginput,
+              },
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                },
+              }
+            );
+            navigate("/home");
+            // 마이페이지로 연결
+          }}
+        >
+          돌아가기
+        </button>
+      </div>
+      <Button id={styles.leftButton}>
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            size="6x"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        </Button>
+        <Button id={styles.rightButton}>
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            size="6x"
+            onClick={() => {
+              navigate(1);
+            }}
+          />
+        </Button>
+      <div className={styles.ProgressContainer}>
+        <ul>
+          <div>단원별 활동</div>
+          <li>
+            <span
+              className={`${styles.bar}`}
+              style={{ width: `${progress}%` }}
+            />
+            <img
+              className={styles.bar_img}
+              src={owl}
+              style={{ left: `${progress + 20}%` }}
+            />
+          </li>
+        </ul>
+      </div>
+    </>
+  );
 }
 
 export default Activity;
