@@ -114,9 +114,9 @@ function Login() {
                 <a href={REGISTER_URL} className={styles.register} onClick={()=>{navigate("/register")}}>
                   회원가입
                 </a>
-                <btn className={styles.btn} onClick={() => handleLogin()}>
+                <button className={styles.btn} onClick={() => handleLogin()}>
                   시작하기
-                </btn>
+                </button>
               </div>
             </div>
           </div>

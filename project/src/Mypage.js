@@ -21,6 +21,7 @@ import owl3 from "./img/owl3.png";
 import owl4 from "./img/owl4.png";
 import owl5 from "./img/owl5.png";
 import owl6 from "./img/owl6.png";
+import default_profile from "./img/profile.png"
 import { Navigate, useNavigate } from "react-router-dom";
 
 
@@ -125,10 +126,13 @@ function Profile({ profile }) {
 
         <div className={styles.title}>{profile.nickname}</div>
         <div className={styles.title}>{profile.school}</div>
-
-        <h2>{profile.name}</h2>
-
-        <div className={styles.desc}>{profile.introduction}</div>
+        <div className={styles.profilebox}>
+          <div className={styles.namebox}>
+            <h2>{profile.name}</h2>
+            <div className={styles.desc}>{profile.introduction}</div>
+          </div>
+          <div className={styles.imgbox}></div>
+        </div>
         <div className={styles.actions}>
           <button className={styles.button}>
             <FontAwesomeIcon icon={faHeart} />
