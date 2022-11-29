@@ -10,11 +10,28 @@
   padding: 1em 1.5em 1em 1.5em;
 
   display: grid;
-  grid-template-rows: 1fr 1fr 2fr 4fr 1fr;
+  grid-template-rows: 1fr 1fr 6fr 1fr;
+}
+.card .profilebox{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.card .namebox{
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+}
+
+.card .imgbox{
+  margin: 10px 10px;
+  background-image: url("./img/profile1.png");
+  background-size:contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
 }
 
 .card h2 {
-  margin: 0;
+  margin: 10px 0px;
   padding: 0 1rem;
 }
 .card .title {
@@ -158,24 +175,34 @@
   grid-template-rows: 1fr 1fr;
   height: 97%;
   /* transform: translate(0, 15%); */
-  background-image: url("./img/bg1.png");
+  background-image: url("./img/bg5.png");
   background-size: cover;
   border: 20px solid white; 
   border-radius: 50px;
   overflow: hidden;
   margin:30px 30px 0 ;
   box-shadow: 5px 5px 0px rgba(183, 130, 90, 0.3);
+  
 }
 
 .owlcustomimg {
-  width: 25vw;
+  width: 20vw;
   height: 40vh;
-  transform: translate(0, 10%);
+  transform: translate(0, 20%);
+}
+
+.btndiv{
+  position: relative;
 }
 
 #ReadButton {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translateX(-50%);
   color: black;
   background-color: rgb(146, 66, 66);
+  border: none;
   border-color: rgb(218, 221, 224);
 }
 
@@ -183,11 +210,13 @@
   background-color: rgb(117, 53, 53);
 }
 
-.activitystatus:hover {
-  color: #515151;
-
+#ReadButton:active {
+  background-color: rgb(95, 45, 45);
 }
 
+.activitystatus:hover {
+  color: #515151;
+}
 
 @media (max-width: 1550px) {
   .recentactivity {
