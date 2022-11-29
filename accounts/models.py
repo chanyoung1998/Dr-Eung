@@ -5,9 +5,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from math import exp, log
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=45, null=False, default="")
     name = models.CharField(max_length=45, null=False, default="")
-    school = models.CharField(max_length=45, null=False, default="")
+    nickname = models.CharField(max_length=45, blank=True, default="")
+    school = models.CharField(max_length=45, blank=True, default="")
     introduction = models.TextField(max_length=255, blank=True, default="")
     ability = ArrayField(
         models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)]),
@@ -26,6 +26,8 @@ class User(AbstractUser):
         for i in range(5):
             self.ability[i] = (self.ability[i] / scale(n-1) + score[i]) // (n+1)
             self.ability[i] *= scale(n)
+            if self.ability[i] > 100:
+                self.ability[i] = 100
 
         if sum(self.genres) >= 100 and sum(self.score) / 5 >= 80:
             self.tier = 5
