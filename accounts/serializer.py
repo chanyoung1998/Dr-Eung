@@ -83,39 +83,30 @@ class ProfileSerializer(serializers.BaseSerializer):
         reports = user.report.all().values().order_by('-time')[:5]
         recent = []
         for report in reports:
+            recent.append(
+                {
+                    "id": report['book_id'],
+                    "date": report['time'].strftime('%Y-%m-%d'),
+                    "time": report['time'].strftime('%H:%M'),
+                    "info": {
+                        "state": report.step,
+                        "current_page": report.page,
+                        "current_chapter": report.curr_capter,
+                        "format": reports.format
+                    }
+                }
+            )
             if report['complete']:
-                recent.append(
-                    {
-                        "id": report['book_id'],
-                        "date": report['time'].strftime('%Y-%m-%d'),
-                        "time": report['time'].strftime('%H:%M'),
-                        "state": "감상문 작성 완료"}
-                )
+                recent[-1].update({"state": "감상문 작성 완료"})
             else:
                 if report['step'] == 1:
-                    recent.append(
-                        {
-                            "id": report['book_id'],
-                            "date": report['time'].strftime('%Y-%m-%d'),
-                            "time": report['time'].strftime('%H:%M'),
-                            "state": f"{report['curr_chapter']}단원 {report['page']}p 읽는중"}
-                    )
+                    recent[-1].update({"state": f"{report['curr_chapter']}단원 {report['page']}p 읽는중"})
                 elif report['step'] == 2:
-                    recent.append(
-                        {
-                            "id": report['book_id'],
-                            "date": report['time'].strftime('%Y-%m-%d'),
-                            "time": report['time'].strftime('%H:%M'),
-                            "state": f"{report['curr_chapter']}단원 퀴즈 푸는중"}
-                    )
+                    recent[-1].update({"state": f"{report['curr_chapter']}단원 퀴즈 푸는중"})
                 elif report['step'] == 3:
-                    recent.append(
-                        {
-                            "id": report['book_id'],
-                            "date": report['time'].strftime('%Y-%m-%d'),
-                            "time": report['time'].strftime('%H:%M'),
-                            "state": "감상문 작성 중"}
-                    )
+                    recent[-1].update({"state": f"{report['curr_chapter']}단원 활동 중"})
+                elif report['step'] == 4:
+                    recent[-1].update({"state": "감상문 작성 중"})
 
         return {
             "profile": {

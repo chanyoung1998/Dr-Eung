@@ -18,6 +18,10 @@ class ActivityView(generics.GenericAPIView):
     def get(self, request, title, chapter):
         text = get_object_or_404(BookReport, author=request.user, book__title=title).contents
 
+        if text.report.step < 3:
+            text.report.step = 3
+            text.report.save()
+
         if not text.activity.filter(chapter=chapter):
             Activity.objects.create(text=text, chapter=chapter)
         activity = text.activity.get(chapter=chapter)

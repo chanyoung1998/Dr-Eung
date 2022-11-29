@@ -34,6 +34,12 @@ class ReportListSerializer(serializers.BaseSerializer):
                 "감상문 제목": report['title'],
                 "bookmark": report['bookmark'],
                 "complete": report['complete'],
+                "info": {
+                    "state": report.step,
+                    "current_page": report.page,
+                    "current_chapter": report.curr_capter,
+                    "format": reports.format
+                }
                 # 이미지 주소: report.book.img
             }
 
@@ -55,7 +61,11 @@ class ActivitySerializer(serializers.Serializer):
             "keyword": QUESTION_SET["keyword"][keyword_question],
             "reason": QUESTION_SET["reason"],
             "summary": QUESTION_SET["summary"][summary_question],
-            "feeling": QUESTION_SET["feeling"][feeling_question]
+            "feeling": QUESTION_SET["feeling"][feeling_question],
+            "keyword_answer": activity.keyword,
+            "reason_answer": activity.reason,
+            "summary_answer": activity.summary,
+            "feeling_answer": activity.feeling
         }
 
     def to_internal_value(self, data):
@@ -86,7 +96,7 @@ class WritingTextSerializer(serializers.Serializer):
                 "feeling": [QUESTION_SET["feeling"][activity.question_set[2]], activity.feeling]
             }
 
-        text.report.step = 3
+        text.report.step = 4
         text.report.save()
 
         return {

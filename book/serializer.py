@@ -23,6 +23,7 @@ class BookSearchSerializer(serializers.Serializer):
             "title": book.title,
             "author": book.author,
             "genre": book.genre,
+            "total_chapters": book.chapters,
             "description": book.description,
         }
 
@@ -51,7 +52,7 @@ class BookSerializer(serializers.BaseSerializer):
         report = book.report.get(author=user.pk)
         report.bookmark = True
 
-        if report.step == 2:
+        if report.step == 3:
             report.step = 1
             report.page = 1
             if report.curr_chapter < chapter:
@@ -74,7 +75,6 @@ class BookSerializer(serializers.BaseSerializer):
                 "pages": content_chapter.pages,
                 "chapters": book.chapters,
                 "status": 200}
-
 
 class HighlightIndexSerializer(serializers.Serializer):
 

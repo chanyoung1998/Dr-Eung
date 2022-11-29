@@ -18,7 +18,7 @@ class QuizView(generics.GenericAPIView):
         serializer = QuizSerializer(quiz)
 
         report = request.user.report.get(book__title=title)
-        if report.step == 1:
+        if report.step < 2:
             report.step = 2
             report.save()
 
