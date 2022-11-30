@@ -220,11 +220,6 @@ function Quiz() {
                           setHint(res.data.hint.join(" "));
                         }
                       });
-                  } else {
-                    // 초기화
-                    // setClicked(clicked+1);
-                    // console.log(document.getElementsByTagName('a'))
-                    // document.getElementsByTagName('a')[clicked-1].getElementsByTagName
                   }
                 }}
               />
@@ -262,7 +257,19 @@ function Quiz() {
             icon={faChevronLeft}
             size="6x"
             onClick={() => {
-              navigate(-1);
+              setLoading(true);
+              axios
+                .get(`${BASE_URL}book/${title}/${currentChapter}/?page=1`, {
+                  headers: {
+                    Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  },
+                })
+                .then((data) => {
+                  
+                  navigate(`/reading/${title}/${currentChapter}/${data.data.pages}`);
+                  
+                  
+                })
             }}
           />
         </Button>

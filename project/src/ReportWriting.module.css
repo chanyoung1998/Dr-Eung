@@ -14,8 +14,8 @@
 
 .chapters {
   overflow-y: auto;
-  overflow-x: hidden;
-  white-space: nowrap;
+  /* overflow-x: hidden; */
+  white-space: pre-line;
   box-sizing: border-box;
   background-image: linear-gradient(
     to left,
@@ -157,6 +157,8 @@
   width: 120px;
   height: 50px;
 }
+
+
 
 /* .from1  */
 

@@ -1,15 +1,8 @@
 /*eslint-disable */
 
-import {
-  useNavigate,
-  Outlet,
-  useParams,
-  Routes,
-  Route,
-  Link,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -17,8 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Read.module.css";
 import axios from "axios";
-import { useSelector} from "react-redux";
-
+import { useSelector } from "react-redux";
+import bookloading from "./img/bookloading2.gif";
 
 function Read() {
   let param = useParams();
@@ -37,6 +30,7 @@ function Read() {
   let [highlightIndexLeft, setHighlightLeft] = useState([]);
   let [highlightIndexRight, setHighlightRight] = useState([]);
   let [isHighlight, setIsHighlight] = useState(false);
+  let [show, setShow] = useState(false);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
@@ -46,6 +40,7 @@ function Read() {
         },
       })
       .then((data) => {
+        console.log(data.data);
         setLeftTexts(data.data.page);
         setTotalpages(data.data.pages);
         setTotalchapters(data.data.chapters);
@@ -85,29 +80,31 @@ function Read() {
         }
       )
       .then((data) => {
-        console.log(data.data);
+        // console.log(data.data);
         setHighlightRight(data.data.index);
         setLoading(false);
       });
     return;
   }, [param]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading) 
+  {
+    setTimeout(2000,[]);
+    return <div><img src={bookloading}/> </div>;
   }
 
-  const bookcontents = (LeftTexts + RightTexts).split(".");
-  const lefttotalline = LeftTexts.split(".").length;
+  const bookcontents = LeftTexts + RightTexts;
+  // const lefttotalline = LeftTexts.split(".").length;
 
-  let temp = [];
-  for (let i = 0; i < highlightIndexRight.length; i++) {
-    if (i == 0) {
-      temp = [];
-    }
-    temp.push(highlightIndexRight[i] + lefttotalline);
-  }
+  // let temp = [];
+  // for (let i = 0; i < highlightIndexRight.length; i++) {
+  //   if (i == 0) {
+  //     temp = [];
+  //   }
+  //   temp.push(highlightIndexRight[i] + lefttotalline);
+  // }
 
-  const highlightIndex = [...highlightIndexLeft, ...temp];
+  // const highlightIndex = [...highlightIndexLeft, ...temp];
 
   return (
     <div>
@@ -119,10 +116,7 @@ function Read() {
               <h6>{title}</h6>
             </header>
 
-            <article>
-              {bookcontents}
-
-            </article>
+            <article>{bookcontents}</article>
 
             <footer>
               <ol id="page-numbers">
@@ -133,8 +127,17 @@ function Read() {
           </section>
         </div>
       </div>
+      <DictionaryModal show={show} setShow={setShow} data={"사전"} />
       <DropdownButton id={styles.dropdownItemButton} title="엉박사 찬스">
-        <Dropdown.Item as="button" onClick={() => {}}>
+        <Dropdown.Item
+          as="button"
+          onClick={() => {
+            let selectedObj = window.getSelection();
+            let selected = selectedObj.getRangeAt(0).toString();
+            setShow(true);
+            console.log(selected);
+          }}
+        >
           사전 찾기
         </Dropdown.Item>
 
@@ -158,12 +161,32 @@ function Read() {
           size="6x"
           onClick={() => {
             if (curpage != 1) {
-              setLoading(true)
+              setLoading(true);
               navigate(`/reading/${title}/${curchapter}/${curpage - 2}`);
             } else {
               if (curchapter != 1) {
-                setLoading(true)
-                navigate(`/reading/${title}/${curchapter - 1}/1`);
+                setLoading(true);
+                if (curpage == 1) {
+                  axios
+                    .get(
+                      `${BASE_URL}book/${title}/${curchapter}/?page=${
+                        curpage - 1
+                      }`,
+                      {
+                        headers: {
+                          Authorization:
+                            "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                        },
+                      }
+                    )
+                    .then((data) => {
+                      navigate(
+                        `/reading/${title}/${curchapter - 1}/${data.data.pages}`
+                      );
+                    });
+                } else {
+                  navigate(`/reading/${title}/${curchapter - 1}/1`);
+                }
               } else {
                 console.log("처음!");
               }
@@ -177,11 +200,11 @@ function Read() {
           size="6x"
           onClick={() => {
             if (curpage + 2 <= totalpages) {
-              setLoading(true)
+              setLoading(true);
               navigate(`/reading/${title}/${curchapter}/${curpage + 2}`);
             } else {
               if (curchapter != totalchapters) {
-                setLoading(true)
+                setLoading(true);
                 // navigate(`/reading/${title}/${curchapter + 1}/${1}`);
                 navigate(`/quiz/${title}/${curchapter}`);
               } else {
@@ -193,6 +216,31 @@ function Read() {
         />
       </Button>
     </div>
+  );
+}
+
+function DictionaryModal({ show, setShow, data }) {
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        dialogClassName={styles.mymodal}
+      >
+        <Modal.Body style={{ background: "#FFF7E9" }}>
+          <div className={styles.dictdiv}>
+            <li className={styles.dictli}>
+              노트<ul className={styles.dictul}>이 노트는</ul>
+            </li>
+
+            <hr />
+            <li className={styles.dictli}>노트</li>
+            <hr />
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 

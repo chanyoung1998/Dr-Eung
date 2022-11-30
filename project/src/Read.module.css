@@ -80,6 +80,38 @@
   border-color: rgb(218, 221, 224);
   /* width:100px; */
   height: 50px;
+  z-index: 32;;
 }
 
+
+.mymodal {
+  width: 30vw; /* Occupy the 90% of the screen width */
+  max-width: 50vw;
+  height: 40vh;
+  
+}
+
+
+.mymodal div {
+  border-radius: 30px;
+  margin: 3px;
+  border:0;
+  
+}
+.dictdiv{
+  overflow-y: scroll;
+}
+.dictdiv::-webkit-scrollbar{
+  display: none;
+}
+.dictli{
+  color:#1a1a1a;
+  font-size: 20px;
+  margin: 10px;
+  width:80%;
+}
+.dictul{
+  color:#606060;
+  font-size:15px
+}
 

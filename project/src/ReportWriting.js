@@ -4,7 +4,7 @@ import { useParams, Outlet, useNavigate } from "react-router-dom";
 import { Nav, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import styles from "./ReportWriting.module.css";
-import { susa } from "susa-js";
+
 import axios from "axios";
 import { useSelector } from "react-redux";
 function ReportWriting() {
@@ -33,7 +33,8 @@ function ReportWriting() {
 
   let [tab, setTab] = useState(1);
   let [show, setShow] = useState(false);
-  let [chapters, setChapters] = useState([1, 2, 3, 4, 5]);
+  let [chapters, setChapters] = useState([])
+  
   let [data, setData] = useState([
     {
       original: "original",
@@ -59,6 +60,7 @@ function ReportWriting() {
       .then((d) => {
         const totalchapters = Object.keys(d.data["activities"]).length;
         const newarray = Array.from({ length: totalchapters }, (v, i) => i + 1);
+        // const newarray = chapters.slice(0,totalchapters);
         setChapters(newarray);
         setData([d.data]);
         setLoading(false);
@@ -78,6 +80,7 @@ function ReportWriting() {
         setTab={setTab}
         setShow={setShow}
         curChapter={tab}
+        tabname = {["첫 번째 단원","두 번째 단원", "세 번째 단원", "네 번째 단원", "다섯 번째 단원","열 번째 단원","열한 번째 단원","열두 번째 단원","열세 번째 단원","열네 번째 단원","열다섯 번째 단원","열여섯 번째 단원","열일곱 번째 단원","열여덟 번째 단원","열아홉 번째 단원"][tab-1]}
       />
       <FormExampleModal
         show={formshow}
@@ -89,6 +92,7 @@ function ReportWriting() {
       <div className={styles.chapters}>
         <Nav className="flex-column" variant="tabs" defaultActiveKey="0">
           {chapters.map(function (element, index) {
+            const tabname = ["첫 번째 단원","두 번째 단원", "세 번째 단원", "네 번째 단원", "다섯 번째 단원","열 번째 단원","열한 번째 단원","열두 번째 단원","열세 번째 단원","열네 번째 단원","열다섯 번째 단원","열여섯 번째 단원","열일곱 번째 단원","열여덟 번째 단원","열아홉 번째 단원"];
             return (
               <Nav.Item>
                 <Nav.Link
@@ -103,7 +107,7 @@ function ReportWriting() {
                     margin: "2px",
                   }}
                 >
-                  <h1>{susa(element)}</h1>
+                  <h5>{(tabname[index])}</h5>
                 </Nav.Link>
               </Nav.Item>
             );
@@ -148,7 +152,7 @@ function ReportWriting() {
   );
 }
 
-function ReportModal({ data, show, setShow, curChapter }) {
+function ReportModal({ data, show, setShow, curChapter,tabname }) {
   return (
     <>
       <Modal
@@ -159,7 +163,7 @@ function ReportModal({ data, show, setShow, curChapter }) {
       >
         <Modal.Header closeButton style={{ background: "#FFF7E9" }}>
           <Modal.Title>
-            <h2>{susa(curChapter)} 번째</h2>
+            <h2>{tabname}</h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ background: "#FFF7E9" }}>
