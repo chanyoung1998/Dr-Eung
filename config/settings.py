@@ -28,8 +28,8 @@ def get_env_variable(var_name):
         error_msg = "Set the {} environment variable".format(var_name)
         raise ImproperlyConfigured(error_msg)
 
-SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
-
+# SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
+SECRET_KEY = 'django-insecure-#49#nou%klq(wf2cbr%w1@izbi-+-9wm41utvmipk*j(!5e_5('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
