@@ -35,10 +35,10 @@ class ReportListSerializer(serializers.BaseSerializer):
                 "bookmark": report['bookmark'],
                 "complete": report['complete'],
                 "info": {
-                    "state": report.step,
-                    "current_page": report.page,
-                    "current_chapter": report.curr_capter,
-                    "format": reports.format
+                    "state": report['step'],
+                    "current_page": report['page'],
+                    "current_chapter": report['curr_chapter'],
+                    "format": report['format']
                 }
                 # 이미지 주소: report.book.img
             }

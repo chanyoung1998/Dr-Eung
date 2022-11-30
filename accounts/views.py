@@ -28,6 +28,6 @@ def profile_view(request):
 @api_view(['GET'])
 def id_view(request):
     username = request.GET["id"]
-    if User.filter(username=username).exists():
-        return Response(status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_404_NOT_FOUND)
+    if User.objects.filter(username=username).exists():
+        return Response(True, status=status.HTTP_200_OK)
+    return Response(False, status=status.HTTP_200_OK)

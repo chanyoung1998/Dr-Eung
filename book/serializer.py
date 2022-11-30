@@ -11,7 +11,7 @@ class BookListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ('title', 'author', 'genre', 'description')
+        fields = ('title', 'author', 'genre', 'description', 'chapters')
 
 
 class BookSearchSerializer(serializers.Serializer):
@@ -23,7 +23,7 @@ class BookSearchSerializer(serializers.Serializer):
             "title": book.title,
             "author": book.author,
             "genre": book.genre,
-            "total_chapters": book.chapters,
+            "chapters": book.chapters,
             "description": book.description,
         }
 

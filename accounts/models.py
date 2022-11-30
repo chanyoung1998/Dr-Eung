@@ -42,7 +42,7 @@ class User(AbstractUser):
 
 
     def __str__(self):
-        return self.nickname
+        return self.name
 
 def scale(x):
     return (-exp(-(x+1)/10 + log(100)) + 100) / 100

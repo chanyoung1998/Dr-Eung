@@ -8,14 +8,14 @@ from rest_framework.validators import UniqueValidator
 from .models import User
 
 class RegisterSerializer(serializers.ModelSerializer):
-    nickname = serializers.CharField(
+    username = serializers.CharField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())],
     )
     password = serializers.CharField(
         write_only=True,
         required=True,
-        validators=[validate_password],
+        #validators=[validate_password],
         style={'input_type': 'password'},
     )
     password2 = serializers.CharField(
@@ -37,12 +37,16 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             username=validated_data['username'],
-            nickname=validated_data['nickname'],
             name=validated_data['name'],
-            school=validated_data['school'],
-            introduction=validated_data['introduction']
-        )
+            )
         user.set_password(validated_data['password'])
+        if 'nickname' in validated_data.keys():
+            user.nickname = validated_data['nickname']
+        if 'school' in validated_data.keys():
+            user.school = validated_data['school']
+        if ' introduction' in validated_data.keys():
+            user.introduction = validated_data['introduction']
+
         user.save()
         token = Token.objects.create(user=user)
         return user
@@ -89,10 +93,10 @@ class ProfileSerializer(serializers.BaseSerializer):
                     "date": report['time'].strftime('%Y-%m-%d'),
                     "time": report['time'].strftime('%H:%M'),
                     "info": {
-                        "state": report.step,
-                        "current_page": report.page,
-                        "current_chapter": report.curr_capter,
-                        "format": reports.format
+                        "state": report['step'],
+                        "current_page": report['page'],
+                        "current_chapter": report['curr_chapter'],
+                        "format": report['format']
                     }
                 }
             )
