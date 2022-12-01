@@ -75,3 +75,15 @@ def dictionary_view(request):
     agent = requests.Session()
     res = agent.get(f"{base_url}?key={key}&q={word}&req_type=json&num=10")
     return Response(res.json()["channel"], status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def keyword_view(request, title):
+    if 'num' in request.GET:
+        num = int(request.GET['num'])
+    else:
+        num = 9
+
+    serializer = KeywordSerializer(data={'title': title, 'num': num})
+    serializer.is_valid(raise_exception=True)
+    return Response(serializer.validated_data, status=status.HTTP_200_OK)

@@ -89,3 +89,16 @@ class HighlightIndexSerializer(serializers.Serializer):
         summary_index = BookConfig.models["summerizer"].extractive_summarization(contents, 3)
 
         return {"index": summary_index}
+
+class KeywordSerializer(serializers.Serializer):
+
+    def to_internal_value(self, data):
+        title = data['title']
+        num = data['num']
+
+        book = get_object_or_404(Book, title=title)
+        keywords = book.keywords
+        if len(keywords) > num:
+            keywords = random.sample(keywords, num)
+
+        return {"keywords": keywords}
