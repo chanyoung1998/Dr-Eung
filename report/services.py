@@ -137,19 +137,26 @@ class Feedback():
                     "errors": 0,
                     "words": OrderedDict()
                 }
-        n = math.ceil(len(txt)/1000)
-        for i in range(n):
-            if i == n - 1:
-                tmp = spell_checker.check(txt[i * 1000: -1]).as_dict()
-            else:
-                tmp = spell_checker.check(txt[i * 1000: (i+1) * 1000]).as_dict()
+        #n = math.ceil(len(txt)/1000)
+        #for i in range(n):
+        #    if i == n - 1:
+        #        tmp = spell_checker.check(txt[i * 1000: -1]).as_dict()
+        #    else:
+        #        tmp = spell_checker.check(txt[i * 1000: (i+1) * 1000]).as_dict()
 
-            checked["checked"] += tmp["checked"]
+        #    checked["checked"] += tmp["checked"]
+        #    checked["errors"] += tmp["errors"]
+        #    checked["words"].update(tmp["words"])
+        #    print(checked)
+        txtcontextlist = txt.split('\n')
+        for txtcontext in txtcontextlist:
+            tmp = spell_checker.check(txtcontext).as_dict()
+            checked["checked"] += tmp["checked"] + '\n'
             checked["errors"] += tmp["errors"]
             checked["words"].update(tmp["words"])
-            print(checked)
+
         return {
-            "correct": ''.join(checked["checked"]),
+            "correct": checked["checked"],
             "score": int((1 - checked["errors"] / len(checked["words"])) * 100)
         }
 
