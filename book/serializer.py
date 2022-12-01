@@ -6,6 +6,7 @@ from report.models import BookReport
 from .apps import BookConfig
 from .signals import LINES, LETTERS
 from .models import *
+import random
 
 class BookListSerializer(serializers.ModelSerializer):
 
