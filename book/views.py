@@ -67,14 +67,11 @@ def highlight_view(request, title, chapter):
 def dictionary_view(request):
     if not 'word' in request.GET:
         raise ParseError("query is not correct - \"/?word=<str>\"")
+
     word = request.GET['word']
-    u_word = word.encode('utf-8')
-    payload = {"query": u_word, "display": 4}
-    headers = {
-        "X-Naver-Client-Id": "JLM4mSSTkSPfbPobinaO",
-        "X-Naver-Client-Secret": "3Is_ni_K2W"
-    }
-    base_url = "https://openapi.naver.com/v1/search/encyc.json"
+    key = "89A09DC2FAD95241E4C880615F939362"
+    base_url = "https://stdict.korean.go.kr/api/search.do"
+
     agent = requests.Session()
-    res = agent.get(base_url, params=payload, headers=headers)
-    return Response(res.json(), status=status.HTTP_200_OK)
+    res = agent.get(f"{base_url}?key={key}&q={word}&req_type=json&num=10")
+    return Response(res.json()["channel"], status=status.HTTP_200_OK)
