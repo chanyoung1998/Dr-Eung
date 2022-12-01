@@ -11,7 +11,9 @@ import {
 import styles from "./Read.module.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import bookloading from "./img/bookloading2.gif";
+import bookloading from "./img/loading_book.gif";
+import loading from "./img/loading.gif";
+import Loading from "./Loading";
 
 function Read() {
   let param = useParams();
@@ -90,7 +92,7 @@ function Read() {
   if (isLoading) 
   {
     setTimeout(2000,[]);
-    return <div><img src={bookloading}/> </div>;
+    return <Loading />;
   }
 
   const bookcontents = LeftTexts + RightTexts;
