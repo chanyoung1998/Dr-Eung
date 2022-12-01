@@ -60,6 +60,7 @@ function Writefrom() {
 }
 
 function Form0({ title, BASE_URL,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "주인공 또는 작가의 마음을 유추할 수 있는 질문을 적어보고 이에 대한 자신의 생각을 적어보세요!",
@@ -187,6 +188,7 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
             if (질문번호 < 5 && 질문번호 >= 1) {
@@ -206,6 +208,7 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
 }
 
 function Form1({ title, BASE_URL,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "누구에게 편지를 쓸지 생각해보세요! 책속에 등장하는 인물뿐만 아니라 무생물이나 동물에게도 적용할 수 있어요!",
     "편지의 제목을 작성해 볼까요?",
@@ -267,6 +270,7 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
           setProgress(progress + 20/Object.keys(작성내용).length)
           if (finish == 질문번호 + 1) {
             console.log("제출");
+            
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
@@ -285,8 +289,11 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
                   Authorization:
                     "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
                 },
-              }
-            );
+              })
+              setTimeout(2000,navigate(`/feedback/${title}`));
+            
+            
+            ;
           } else {
             let textareas = document.getElementsByTagName("textarea");
             textareas[0].value = "";
@@ -300,6 +307,7 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
   );
 }
 function Form2({ title, BASE_URL ,progress,setProgress}) {
+  let navigate = useNavigate();
   const 질문 = [
     ["감상문의 제목을 적어보세요!", "비교할 책 제목이 뭔가요?"],
     "먼저 간단하게 읽은 책에 대해 설명해 주세요!",
@@ -388,6 +396,7 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -403,6 +412,7 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
 }
 
 function Form3({ title, BASE_URL,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "책에서 인상 깊었던 구절이 있나요? 시의 제목을 생각해보세요!",
     "작품의 정경을 그려보며 나 스스로가 그 속에 동화된 기분을 느껴보세요!",
@@ -466,6 +476,7 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -481,6 +492,7 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
 }
 
 function Form4({ title, BASE_URL,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "비평문의 제목을 적어보세요!",
     "책을 읽고 새롭게 알게된 사실이나 생각의 변화가 있었나요?",
@@ -551,6 +563,7 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -566,6 +579,7 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
 }
 
 function Form5({ title, BASE_URL ,progress,setProgress}) {
+  let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "자유롭게 독후감상문을 적어보세요!",
@@ -632,6 +646,7 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -647,6 +662,7 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
 }
 
 function Form6({ title, BASE_URL ,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "책을 선택하게 된 이유나 계기가 있나요? 그리고 책이 다루고 있는 내용에 대해 평소에 관심이 얼마나 있었나요?",
@@ -735,6 +751,7 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -749,6 +766,7 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
   );
 }
 function Form7({ title, BASE_URL,progress,setProgress }) {
+  let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "책의 줄거리를 적어볼까요? 중요한 내용이나 전체 줄거리를 요약해도 좋아요!",
@@ -824,6 +842,7 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -839,6 +858,7 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
 }
 
 function Form8({ title, BASE_URL ,progress,setProgress}) {
+  let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
     "무엇을 바꿔 쓸지 적어보고 이유도 적어보세요!",
@@ -916,6 +936,7 @@ function Form8({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
+            setTimeout(2000,navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 

@@ -275,7 +275,23 @@ function Activity() {
             icon={faChevronLeft}
             size="6x"
             onClick={() => {
-              navigate(-1);
+              setLoading(true);
+              axios.post(
+                `${BASE_URL}report/${title}/${curchapter}/activity/`,
+                {
+                  keyword: keywordinput,
+                  reason: reasoninput,
+                  summary: summaryinput,
+                  feeling: feelinginput,
+                },
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  },
+                }
+              );
+              navigate(`/quiz/${title}/${curchapter}`);
             }}
           />
         </Button>
