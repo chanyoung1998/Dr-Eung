@@ -97,7 +97,7 @@ function BookMenu() {
                           if (e.key === "Enter") {
                             axios
                               .get(
-                                `${BASE_URL}book/search/?title=${e.target.value}`,
+                                `${BASE_URL}book/${e.target.value}`,
                                 {
                                   headers: {
                                     Authorization:

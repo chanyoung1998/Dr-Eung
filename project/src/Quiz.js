@@ -45,7 +45,8 @@ function Quiz() {
   if (questionCount == 5) {
     navigate(`/activity/${title}/${currentChapter}/`);
   }
-  const totalchapter = 3;
+  // const [totalchapter,setTotalChapter] = useState(3);
+  let totalchapter = 1
   const [progress, setProgress] = useState(
     ((currentChapter - 1) / totalchapter) * 60
   );
@@ -105,14 +106,25 @@ function Quiz() {
 
           setLoading(false);
         }) 
-      );
+        
+      )
+      axios.get(`${BASE_URL}book/${title}`, {
+        headers: {
+          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+        },
+      })
+      .then((res)=>{
+        
+        // setTotalChapter(res.data.chapters)
+        totalchapter = res.data.chapters
+        setProgress(
+          ((currentChapter - 1) / totalchapter) * 60
+        );
+        setLoading(false);
+      });
 
-      if(localStorage.getItem(title)){
-        console.log("존재")
-      }
-      else{
-        // totalchapter 불러오기
-      }
+        
+      
   }, []);
 
   if (isLoading) {

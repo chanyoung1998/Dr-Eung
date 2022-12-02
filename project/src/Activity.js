@@ -25,7 +25,7 @@ function Activity() {
   let navigate = useNavigate();
   const title = param.title;
   const curchapter = Number(param.chapter);
-  const totalchapter = 3;
+  
 
   // let [clicked, setClicked] = useState(0);
   let clicked = 0;
@@ -56,9 +56,11 @@ function Activity() {
   const ref3_1 = useRef(null);
   const ref4_1 = useRef(null);
 
+  // const [totalchapter,setTotalChapter] = useState(1);
+  let totalchapter = 1
   const [progress, setProgress] = useState(
     ((curchapter - 1) / totalchapter) * 60 +
-      (1 / 9) * (1 / totalchapter) * 60 * 5
+      (5 / 9) * (1 / totalchapter) * 60
   );
 
   useEffect(() => {
@@ -76,6 +78,22 @@ function Activity() {
         setSummary(res.data.summary_answer);
         setFeeling(res.data.feeling_answer);
         
+
+      });
+
+      axios.get(`${BASE_URL}book/${title}`, {
+        headers: {
+          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+        },
+      })
+      .then((res)=>{
+        
+        // setTotalChapter(res.data.chapters)
+        totalchapter = res.data.chapters
+        setProgress(
+          ((curchapter - 1) / totalchapter) * 60 +
+            (1 / 9) * (1 / totalchapter) * 60 * 5
+        )
         setTimeout(()=>{setLoading(false);  }, 2000)
       });
   }, []);
@@ -214,7 +232,7 @@ function Activity() {
               ref={ref1}
               className={`${styles.writelayer} ${styles.note} ${styles.ta1}`}
               placeholder="이번 단원에서 가장 기억에 남는 단어는 무엇인지 적어보세요!"
-
+              
             >{keywordinput}</textarea>
           </div>
         </div>

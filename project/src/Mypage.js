@@ -1,10 +1,9 @@
 /*eslint-disable */
-import { useState, Component, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
   faUserFriends,
-  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Container, Row, Col, Button } from "react-bootstrap";
@@ -22,7 +21,7 @@ import owl4 from "./img/owl4.png";
 import owl5 from "./img/owl5.png";
 import owl6 from "./img/owl6.png";
 import default_profile from "./img/profile.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
@@ -77,7 +76,7 @@ function Mypage() {
             <div className={styles.statuslayout} style={{ background: "none" }}>
               <div
                 className={styles.graphArea}
-                // style={{ background: "#FFE9A0" }}
+ 
               >
                 <div className={styles.status}>
                   <CustomRadar data={score1} categories={ability} />
@@ -85,7 +84,7 @@ function Mypage() {
               </div>
               <div
                 className={styles.graphArea2}
-                // style={{ background: "#E4E0CE" }}
+
               >
                 <div className={styles.status}>
                   <div className={styles.status}>
@@ -119,7 +118,7 @@ function Profile({ profile }) {
     <div style={{ margin: "30px auto 0" }}>
       {/* <h2>자기소개</h2> */}
       <div className={styles.card}>
-        {/* <div className={styles.imgAvatar}></div> */}
+
 
         <div className={styles.title}>{profile.nickname}</div>
         <div className={styles.title}>{profile.school}</div>
