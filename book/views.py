@@ -14,20 +14,13 @@ class BookListPagination(PageNumberPagination):
 class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Book.objects.all()
-    serializer_class = BookListSerializer
+    serializer_class = BookSerializer
     pagination_class = BookListPagination
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def book_search_view(request):
-    if not 'title' in request.GET:
-        raise ParseError("query is not correct - \"/?title=<str>\"")
-    title = request.GET['title']
-    serializer = BookSearchSerializer(data=title)
-    serializer.is_valid(raise_exception=True)
-    if serializer.validated_data:
-        return Response(serializer.validated_data)
-    return Response(status=status.HTTP_404_NOT_FOUND)
+class BookView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -37,7 +30,7 @@ def reading_view(request, title, chapter):
 
     page = request.GET['page']
 
-    serializer = BookSerializer(
+    serializer = ContentSerializer(
         data={'user': request.user,
               'title': title,
               'chapter': chapter,
@@ -74,6 +67,11 @@ def dictionary_view(request):
 
     agent = requests.Session()
     res = agent.get(f"{base_url}?key={key}&q={word}&req_type=json&num=10")
+    if res.text == "":
+        res = agent.get(f"{base_url}?key={key}&q={word}&req_type=json&num=10&advanced=y&method=include&type1=word,phrase,idiom")
+
+    if res.text == "{}":
+        return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(res.json()["channel"], status=status.HTTP_200_OK)
 
 @api_view(['GET'])

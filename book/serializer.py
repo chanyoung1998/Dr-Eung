@@ -8,27 +8,13 @@ from .signals import LINES, LETTERS
 from .models import *
 import random
 
-class BookListSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
         fields = ('title', 'author', 'genre', 'description', 'chapters')
 
-
-class BookSearchSerializer(serializers.Serializer):
-    def to_internal_value(self, data):
-        title = data
-        book = get_object_or_404(Book, title=title)
-
-        return {
-            "title": book.title,
-            "author": book.author,
-            "genre": book.genre,
-            "chapters": book.chapters,
-            "description": book.description,
-        }
-
-class BookSerializer(serializers.BaseSerializer):
+class ContentSerializer(serializers.BaseSerializer):
     def to_internal_value(self, data):
         user = data['user']
         title = data['title']
