@@ -82,6 +82,9 @@
   height: 50px;
   z-index: 32;;
 }
+#itembutton:active{
+  background-color: rgb(167, 167, 167);
+}
 
 
 .mymodal {
@@ -99,6 +102,7 @@
   
 }
 .dictdiv{
+  height: 30vh;
   overflow-y: scroll;
 }
 .dictdiv::-webkit-scrollbar{

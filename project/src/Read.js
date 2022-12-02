@@ -30,6 +30,7 @@ function Read() {
   let [highlightIndexLeft, setHighlightLeft] = useState([]);
   let [highlightIndexRight, setHighlightRight] = useState([]);
   let [isHighlight, setIsHighlight] = useState(false);
+  let [dictdata, setDictdata] = useState([]);
   let [show, setShow] = useState(false);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
@@ -84,13 +85,15 @@ function Read() {
         setHighlightRight(data.data.index);
         setLoading(false);
       });
-    return;
   }, [param]);
 
-  if (isLoading) 
-  {
-    setTimeout(2000,[]);
-    return <div><img src={bookloading}/> </div>;
+  if (isLoading) {
+    setTimeout(2000, []);
+    return (
+      <div>
+        <img src={bookloading} />{" "}
+      </div>
+    );
   }
 
   const bookcontents = LeftTexts + RightTexts;
@@ -127,33 +130,45 @@ function Read() {
           </section>
         </div>
       </div>
-      <DictionaryModal show={show} setShow={setShow} data={"사전"} />
+      <DictionaryModal show={show} setShow={setShow} dictdata={dictdata} />
       <DropdownButton id={styles.dropdownItemButton} title="엉박사 찬스">
         <Dropdown.Item
+          id={styles.itembutton}
           as="button"
           onClick={() => {
             let selectedObj = window.getSelection();
-            let selected = selectedObj.getRangeAt(0).toString();
-            setShow(true);
-            console.log(selected);
+            let selected = "";
+            selected = selectedObj.getRangeAt(0).toString();
+
+            axios
+              .get(`${BASE_URL}book/dictionary?word=${selected}`, {
+                headers: {
+                  Authorization:
+                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                },
+              })
+              .then((res) => {
+                console.log(res.data.item)
+                setDictdata(res.data.item);
+                setShow(true);
+              });
           }}
         >
           사전 찾기
         </Dropdown.Item>
 
+        <Dropdown.Item id={styles.itembutton} as="button">
+          요약 보기
+        </Dropdown.Item>
         <Dropdown.Item
+          id={styles.itembutton}
           as="button"
           onClick={() => {
-            if (isHighlight) {
-              setIsHighlight(false);
-            } else {
-              setIsHighlight(true);
-            }
+            navigate("/home");
           }}
         >
-          하이라이트
+          돌아가기
         </Dropdown.Item>
-        <Dropdown.Item as="button">요약 보기</Dropdown.Item>
       </DropdownButton>
       <Button id={styles.leftButton}>
         <FontAwesomeIcon
@@ -219,7 +234,8 @@ function Read() {
   );
 }
 
-function DictionaryModal({ show, setShow, data }) {
+function DictionaryModal({ show, setShow, dictdata }) {
+  
   return (
     <>
       <Modal
@@ -230,13 +246,24 @@ function DictionaryModal({ show, setShow, data }) {
       >
         <Modal.Body style={{ background: "#FFF7E9" }}>
           <div className={styles.dictdiv}>
-            <li className={styles.dictli}>
-              노트<ul className={styles.dictul}>이 노트는</ul>
-            </li>
-
-            <hr />
-            <li className={styles.dictli}>노트</li>
-            <hr />
+            {dictdata.map(function (data, index) {
+              let datatitle = data.word;
+              let datacontent = data.sense.definition;
+              let link = data.sense.link;
+              let type = data.sense.type;
+              let pos = data.pos
+              console.log(datatitle)
+              console.log(datacontent)
+              return (
+                <>
+                  <li className={styles.dictli}>
+                    {datatitle}
+                    <ul className={styles.dictul}>{datacontent}</ul>
+                  </li>
+                  <hr />
+                </>
+              );
+            })}
           </div>
         </Modal.Body>
       </Modal>

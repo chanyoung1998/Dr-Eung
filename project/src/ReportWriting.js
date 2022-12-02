@@ -33,8 +33,8 @@ function ReportWriting() {
 
   let [tab, setTab] = useState(1);
   let [show, setShow] = useState(false);
-  let [chapters, setChapters] = useState([])
-  
+  let [chapters, setChapters] = useState([]);
+
   let [data, setData] = useState([
     {
       original: "original",
@@ -48,8 +48,9 @@ function ReportWriting() {
       },
     },
   ]);
-  const [isLoading,setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/${title}/`, {
@@ -64,95 +65,141 @@ function ReportWriting() {
         setChapters(newarray);
         setData([d.data]);
         setLoading(false);
-        
       });
   }, []);
 
-  if(isLoading){
-    return (<div>Loading...</div>)
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-  
+
   return (
-    <div className={styles.reportWritingLayout}>
-      <ReportModal
-        data={data}
-        show={show}
-        setTab={setTab}
-        setShow={setShow}
-        curChapter={tab}
-        tabname = {["첫 번째 단원","두 번째 단원", "세 번째 단원", "네 번째 단원", "다섯 번째 단원","열 번째 단원","열한 번째 단원","열두 번째 단원","열세 번째 단원","열네 번째 단원","열다섯 번째 단원","열여섯 번째 단원","열일곱 번째 단원","열여덟 번째 단원","열아홉 번째 단원"][tab-1]}
-      />
-      <FormExampleModal
-        show={formshow}
-        setFormShow={setFormShow}
-        formnum={형식번호}
-        형식={형식}
-        title={title}
-      />
-      <div className={styles.chapters}>
-        <Nav className="flex-column" variant="tabs" defaultActiveKey="0">
-          {chapters.map(function (element, index) {
-            const tabname = ["첫 번째 단원","두 번째 단원", "세 번째 단원", "네 번째 단원", "다섯 번째 단원","열 번째 단원","열한 번째 단원","열두 번째 단원","열세 번째 단원","열네 번째 단원","열다섯 번째 단원","열여섯 번째 단원","열일곱 번째 단원","열여덟 번째 단원","열아홉 번째 단원"];
-            return (
-              <Nav.Item>
-                <Nav.Link
-                  eventKey={index}
-                  onClick={() => {
-                    setTab(element);
-                    setShow(true);
-                  }}
-                  style={{
-                    color: "#B2B2B2",
-                    borderRadius: "10px",
-                    margin: "2px",
-                  }}
-                >
-                  <h5>{(tabname[index])}</h5>
-                </Nav.Link>
-              </Nav.Item>
-            );
-          })}
-        </Nav>
+    <>
+      <div className={styles.backbutton}>
+        <button className={styles.backbuttonbtn}
+          onClick={() => {
+            navigate("/home");
+            // 마이페이지로 연결
+          }}
+        >
+          돌아가기
+        </button>
       </div>
-      {Object.keys(param).includes("formnum") ? (
-        <Outlet></Outlet>
-      ) : (
-        <div className={styles.innerLayout}>
-          <h1 style={{ paddingTop: "50px" }}>독후감 형식을 한번 골라봐!</h1>
-          <div className={styles.formsLayout}>
-            {형식.map(function (e, i) {
-              return i == 형식번호 ? (
-                <button
-                  className={`${styles.button} ${styles.clicked} ${styles.btn}${
-                    i + 1
-                  }`}
-                  onClick={() => {
-                    set형식번호(i);
-                    setFormShow(true);
-                  }}
-                >
-                  {e}
-                </button>
-              ) : (
-                <button
-                  className={`${styles.button} ${styles.btn}${i + 1}`}
-                  onClick={() => {
-                    set형식번호(i);
-                    setFormShow(true);
-                  }}
-                >
-                  {e}
-                </button>
+      <div className={styles.reportWritingLayout}>
+        <ReportModal
+          data={data}
+          show={show}
+          setTab={setTab}
+          setShow={setShow}
+          curChapter={tab}
+          tabname={
+            [
+              "첫 번째 단원",
+              "두 번째 단원",
+              "세 번째 단원",
+              "네 번째 단원",
+              "다섯 번째 단원",
+              "열 번째 단원",
+              "열한 번째 단원",
+              "열두 번째 단원",
+              "열세 번째 단원",
+              "열네 번째 단원",
+              "열다섯 번째 단원",
+              "열여섯 번째 단원",
+              "열일곱 번째 단원",
+              "열여덟 번째 단원",
+              "열아홉 번째 단원",
+            ][tab - 1]
+          }
+        />
+        <FormExampleModal
+          show={formshow}
+          setFormShow={setFormShow}
+          formnum={형식번호}
+          형식={형식}
+          title={title}
+        />
+
+        <div className={styles.chapters}>
+          <Nav className="flex-column" variant="tabs" defaultActiveKey="0">
+            {chapters.map(function (element, index) {
+              const tabname = [
+                "첫 번째 단원",
+                "두 번째 단원",
+                "세 번째 단원",
+                "네 번째 단원",
+                "다섯 번째 단원",
+                "열 번째 단원",
+                "열한 번째 단원",
+                "열두 번째 단원",
+                "열세 번째 단원",
+                "열네 번째 단원",
+                "열다섯 번째 단원",
+                "열여섯 번째 단원",
+                "열일곱 번째 단원",
+                "열여덟 번째 단원",
+                "열아홉 번째 단원",
+              ];
+              return (
+                <Nav.Item>
+                  <Nav.Link
+                    eventKey={index}
+                    onClick={() => {
+                      setTab(element);
+                      setShow(true);
+                    }}
+                    style={{
+                      color: "#B2B2B2",
+                      borderRadius: "10px",
+                      margin: "2px",
+                    }}
+                  >
+                    <h5>{tabname[index]}</h5>
+                  </Nav.Link>
+                </Nav.Item>
               );
             })}
-          </div>
+          </Nav>
         </div>
-      )}
-    </div>
+        {Object.keys(param).includes("formnum") ? (
+          <Outlet></Outlet>
+        ) : (
+          <div className={styles.innerLayout}>
+            <h1 style={{ paddingTop: "50px" }}>독후감 형식을 한번 골라봐!</h1>
+            <div className={styles.formsLayout}>
+              {형식.map(function (e, i) {
+                return i == 형식번호 ? (
+                  <button
+                    className={`${styles.buttonform} ${styles.clicked} ${
+                      styles.btn
+                    }${i + 1}`}
+                    onClick={() => {
+                      set형식번호(i);
+                      setFormShow(true);
+                    }}
+                  >
+                    {e}
+                  </button>
+                ) : (
+                  <button
+                    className={`${styles.buttonform} ${styles.btn}${i + 1}`}
+                    onClick={() => {
+                      set형식번호(i);
+                      setFormShow(true);
+                    }}
+                  >
+                    {e}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
-function ReportModal({ data, show, setShow, curChapter,tabname }) {
+function ReportModal({ data, show, setShow, curChapter, tabname }) {
   return (
     <>
       <Modal
@@ -312,19 +359,36 @@ const 예시 = [
     <h3>예시)나의 라임오렌지 나무</h3>
     <h3 style={{ color: "#009EFF" }}>장난꾸러기 제제</h3>
     <p>
-    이 이야기는 순수한 마음을 자진 어린이 제제와 뽀르뚜까 아저씨와의 우정에 대한 이야기다. 브라질에 사는 제제라는 아이는 집안이 너무 가난하다. 장난꾸러기지만 깊은 생각을 하는 제제를 이해해 주는 친구가 없자 제제는 오렌지 나무와 상상으로 이야기한다. 그 뒤 제제를 이해해 주는 뽀르뚜까 아저씨를 만나지만 아저씨는 교통 사고로 죽고 만다. 그 후 제제는 다시 슬픔에 잠긴다는 이야기다. <strong style={{ color: "#009EFF" }}>나는 이 책을 통해서 「빨강 머리 앤」이 생각났다.</strong> 왜냐하면 「빨강 머리 앤」의 앤처럼 제제도 주근깨 있고 나무나 꽃들에게 말을 걸어 자신의 마음을 이야기하는 상상력 뛰어난 아이이기 때문이다. 또 제제는 앤처럼 고아는 아니지만 집안 형편이 어렵다는 것도 비슷하다. <br/><br/>
-
-
-
-나는 제제가 뽀르뚜까 아저씨와 우정을 맺을 수 있었던 것은 뽀르뚜까 아저씨가 제제보다 더한 순수함과 천진스러움을 갖고 있어서 라고 생각한다. 어른들은 아이들의 행동을 이해해 주기 보다는 먼저 야단을 치는 것이 보통인데 뽀르뚜까 아저씨는 다르다. 뽀르뚜까 아저씨 같은 어른이 있다는 사실은 나에게도 흥미로웠다. 나도 제제처럼 어른 친구가 있었으면 한다. 그런데 요즘 어른들은 너무 우리 아이들을 깔보는 것 같다. 만약 내가 어른이라면 아이들을 잘 대해주고 깔보지 않겠다.<br/><br/>
-
-
-
-내가 이책에 나오는 오렌지 나무였다면 제제가 아파하는 마음을 이해해 주고 싶다. 제제는 때리는 아빠, 누나 등등을 이해하고 있다. 그리고 제제의 천진스러움은 누구에게 전해졌는지 정말 모르겠다. 만약 내가 제제라면 집이 싫어 가출했을 것 같다. 또 이 책이 지금까지 유명한 것은 아이와 어른사이에 우정이 맺어질 수 있다는 것을 알려주었기 때문이라고 생각한다. 그리고, 내게 동생이 있다면 제제처럼 잘 돌봐주겠다. 아쉬운 것이 있다면 제제가 철이 드는 모습을 좀 더 보여 주었으면 좋겠다는 것이다. 아마 제제도 앤처럼 공부를 잘 해서 어린이들의 마음을 알아주는 훌륭한 선생님이 되었을 것이다.
-
-
-
-
+      이 이야기는 순수한 마음을 자진 어린이 제제와 뽀르뚜까 아저씨와의 우정에
+      대한 이야기다. 브라질에 사는 제제라는 아이는 집안이 너무 가난하다.
+      장난꾸러기지만 깊은 생각을 하는 제제를 이해해 주는 친구가 없자 제제는
+      오렌지 나무와 상상으로 이야기한다. 그 뒤 제제를 이해해 주는 뽀르뚜까
+      아저씨를 만나지만 아저씨는 교통 사고로 죽고 만다. 그 후 제제는 다시 슬픔에
+      잠긴다는 이야기다.{" "}
+      <strong style={{ color: "#009EFF" }}>
+        나는 이 책을 통해서 「빨강 머리 앤」이 생각났다.
+      </strong>{" "}
+      왜냐하면 「빨강 머리 앤」의 앤처럼 제제도 주근깨 있고 나무나 꽃들에게 말을
+      걸어 자신의 마음을 이야기하는 상상력 뛰어난 아이이기 때문이다. 또 제제는
+      앤처럼 고아는 아니지만 집안 형편이 어렵다는 것도 비슷하다. <br />
+      <br />
+      나는 제제가 뽀르뚜까 아저씨와 우정을 맺을 수 있었던 것은 뽀르뚜까 아저씨가
+      제제보다 더한 순수함과 천진스러움을 갖고 있어서 라고 생각한다. 어른들은
+      아이들의 행동을 이해해 주기 보다는 먼저 야단을 치는 것이 보통인데 뽀르뚜까
+      아저씨는 다르다. 뽀르뚜까 아저씨 같은 어른이 있다는 사실은 나에게도
+      흥미로웠다. 나도 제제처럼 어른 친구가 있었으면 한다. 그런데 요즘 어른들은
+      너무 우리 아이들을 깔보는 것 같다. 만약 내가 어른이라면 아이들을 잘
+      대해주고 깔보지 않겠다.
+      <br />
+      <br />
+      내가 이책에 나오는 오렌지 나무였다면 제제가 아파하는 마음을 이해해 주고
+      싶다. 제제는 때리는 아빠, 누나 등등을 이해하고 있다. 그리고 제제의
+      천진스러움은 누구에게 전해졌는지 정말 모르겠다. 만약 내가 제제라면 집이
+      싫어 가출했을 것 같다. 또 이 책이 지금까지 유명한 것은 아이와 어른사이에
+      우정이 맺어질 수 있다는 것을 알려주었기 때문이라고 생각한다. 그리고, 내게
+      동생이 있다면 제제처럼 잘 돌봐주겠다. 아쉬운 것이 있다면 제제가 철이 드는
+      모습을 좀 더 보여 주었으면 좋겠다는 것이다. 아마 제제도 앤처럼 공부를 잘
+      해서 어린이들의 마음을 알아주는 훌륭한 선생님이 되었을 것이다.
     </p>
   </>,
   <>

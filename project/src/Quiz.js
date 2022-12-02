@@ -284,7 +284,7 @@ function Quiz() {
         </Button>
       </div>
       <div className={styles.backbutton}>
-        <button
+        <button className={styles.backbuttonbtn}
           onClick={() => {
             navigate("/home");
             // 마이페이지로 연결

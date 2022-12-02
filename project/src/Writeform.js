@@ -1,10 +1,9 @@
 /*eslint-disable */
-
 import { useParams, useNavigate } from "react-router-dom";
 import { Nav, Modal } from "react-bootstrap";
 import { useEffect, useState, useRef } from "react";
 import styles from "./Writeform.module.css";
-import { susa } from "susa-js";
+
 import axios from "axios";
 import { useSelector } from "react-redux";
 import owl from "./img/owl.png";
@@ -21,9 +20,34 @@ function Writefrom() {
   const title = param.title;
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [progress, setProgress] = useState(60);
+  const navigate = useNavigate();
   return (
     <>
-      {" "}
+      
+      <div className={styles.outercontainer}>
+        {
+          [
+            <Form0 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form1 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form2 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form3 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form4 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form5 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form6 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form7 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form8 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+          ][formnum]
+        }
+        <div className={styles.backbutton}>
+        <button
+          onClick={() => {
+            navigate("/home");
+            // 마이페이지로 연결
+          }}
+        >
+          돌아가기
+        </button>
+      </div>
       <div className={styles.ProgressContainer}>
         <ul>
           <div>단원별 활동</div>
@@ -40,20 +64,6 @@ function Writefrom() {
           </li>
         </ul>
       </div>
-      <div className={styles.outercontainer}>
-        {
-          [
-            <Form0 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form1 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form2 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form3 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form4 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form5 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form6 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form7 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form8 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-          ][formnum]
-        }
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import styles from "./Feedback.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import owl from "./img/owl.png";
@@ -11,13 +11,15 @@ function Feedback() {
   let param = useParams();
   const book = param.title;
   //   let [contents,setContentes] = useState({});
-  const [original, setOriginal] = useState("원본");
-  const [correct, setCorrect] = useState("맞춤법 교정해드림");
-  const [feedback, setFeedback] = useState("피드백데스");
-  
-
+  const [original, setOriginal] = useState("");
+  // let [original_red2, setOriginalRed2] = useState("");
+  const [correct, setCorrect] = useState("");
+  const [feedback, setFeedback] = useState("");
+  let [btn, setBtn] = useState(0);
+  const navigate = useNavigate();
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/${book}/feedback/`, {
@@ -34,10 +36,70 @@ function Feedback() {
       });
   }, []);
 
-//   const [report, setReport] = useState(original);
-  let [btn, setBtn] = useState(0);
-  const navigate = useNavigate();
+  const original_red2 = useMemo(() => {
+    let originallen = original.length;
+    let curoriginal = 0;
+    let curcorrect = 0;
+    let original_red = "";
+    let original_red2 = "";
 
+    while (curoriginal != originallen) {
+      if (original.charAt(curoriginal) == correct.charAt(curcorrect)) {
+        original_red += original.charAt(curoriginal);
+
+        curoriginal += 1;
+        curcorrect += 1;
+      } else if (original.charAt(curoriginal) == " ") {
+        //띄어쓰기 하지 말아야 하는데 한 경우
+        curoriginal += 1;
+        
+        original_red += " <div>";
+      } else if (correct.charAt(curcorrect) == " ") {
+        //띄어쓰기 해야 하는데 안 한 경우
+        curcorrect += 1;
+
+        original_red += "<div>";
+      } else {
+        original_red += "<div>";
+        original_red += original.charAt(curoriginal);
+
+        curoriginal += 1;
+        curcorrect += 1;
+      }
+    }
+    let flag = false;
+    let i = 0;
+    for (; i < original_red.length; ) {
+      if ((original_red.charAt(i) == "<") & (flag == false)) {
+        i += 5;
+
+        original_red2 += '<span style="color:red">';
+        flag = true;
+      } else if ((original_red.charAt(i) == "<") & (flag == true)) {
+        i += 5;
+      } else {
+        if ((original_red.charAt(i) == " " | original_red.charAt(i) == "\n" ) & (flag == true)) {
+          
+          original_red2 += original_red.charAt(i)
+          original_red2 += "</span>";
+          i += 1;
+          flag = false;
+        } else {
+          if (original_red.charAt(i) == "\n") {
+            original_red2 += "<br>";
+          } else {
+            original_red2 += original_red.charAt(i);
+          }
+          i += 1;
+        }
+      }
+    }
+    console.log(original)
+    console.log(correct)
+    console.log(original_red)
+
+    return original_red2;
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -51,13 +113,19 @@ function Feedback() {
             <div className={styles.title}>내 감상문</div>
           </div>
           <div className={styles.correctbtnbox}>
-            <button onClick={() => {btn == 0? setBtn(1) : setBtn(0)}}>{btn == 1 ? "원본 보기" :"맞춤법 교정"}</button>
+            <button
+              onClick={() => {
+                btn == 0 ? setBtn(1) : setBtn(0);
+              }}
+            >
+              {btn == 1 ? "원본 보기" : "맞춤법 교정"}
+            </button>
           </div>
         </div>
         <div className={styles.titleright}>
           <button
             onClick={() => {
-              navigate('/home');
+              navigate("/home");
               // 마이페이지로 연결
             }}
           >
@@ -68,10 +136,16 @@ function Feedback() {
 
       <div className={styles.contents}>
         <div className={styles.report} align="left">
-          <div className={styles.note}>{btn == 0 ? original : correct }</div>
+          <div className={styles.note}>
+            {btn == 0 ? (
+              <span dangerouslySetInnerHTML={{ __html: original_red2 }}></span>
+            ) : (
+              correct
+            )}
+          </div>
         </div>
         <div className={styles.comment}>
-          <div className={styles.feedback} >
+          <div className={styles.feedback}>
             <div align="left">{feedback}</div>
             <img src={stamp}></img>
           </div>

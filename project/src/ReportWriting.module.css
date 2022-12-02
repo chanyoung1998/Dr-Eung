@@ -113,7 +113,7 @@
 <button class="button-74" role="button">Button 74</button> */
 
 /* CSS */ 
-.button ,
+.buttonform ,
 .buttonmodal {
   background-color: #fbeee0;
   border: 2px solid #422800;
@@ -135,19 +135,19 @@
   margin: 20px auto;
 
 }
-.button{
+.buttonform{
   width: 140px;
   height: 100px;
 }
 
 .buttonmodal:hover,
-.button:hover {
+.buttonform:hover {
   background-color: #E1C591;
 }
 
 .clicked,
 .buttonmodal:active,
-.button:active  {
+.buttonform:active  {
   background-color: #E1C591;
   box-shadow: #422800 2px 2px 0 0;
   transform: translate(2px, 2px);
@@ -156,6 +156,25 @@
 .buttonmodal{
   width: 120px;
   height: 50px;
+}
+
+.backbutton > .backbuttonbtn{
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  /* transform: translate(-100%, -50%); */
+  height: 60px;
+  width: 150px;
+  min-height: 50px;
+  color:rgba(255, 255, 255, 0.781);
+  background-color: #704f4f;
+  box-shadow: 3px 5px 0 #472d2d;
+  
+}
+.backbutton > .backbuttonbtn:hover{
+
+  background-color: #722f2f;
+
 }
 
 

@@ -182,7 +182,7 @@
   position: absolute;
   width: 60%;
   top: 3%;
-  transform: translate(40%, 0);
+  transform: translate(30%, 0);
   padding: 0px 20px;
   border-radius: 30px;
   box-sizing: border-box;
@@ -238,4 +238,23 @@
   width:50px;
   transition-property: all;
   transition-duration: 2s;
+}
+
+.backbutton > button{
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  /* transform: translate(-100%, -50%); */
+  height: 60px;
+  width: 150px;
+  min-height: 50px;
+  color:rgba(255, 255, 255, 0.781);
+  background-color: #704f4f;
+  box-shadow: 3px 5px 0 #472d2d;
+  
+}
+.backbutton > button:hover{
+
+  background-color: #722f2f;
+
 }

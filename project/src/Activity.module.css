@@ -205,7 +205,8 @@
 #ReadButton {
   position: absolute;
   right: 26vw;
-  bottom: 5%;
+  bottom: 8%;
+  transform: translate(-20%,0);
   margin-top: 20px;
   color: rgba(255, 255, 255, 0.781);
   background-color: #704f4f;
@@ -214,7 +215,7 @@
 }
 
 #ReadButton:hover {
-  background-color: rgba(117, 87, 53, 0.938);
+  background-color: #722f2f;
 }
 
 .ta1,
@@ -324,6 +325,12 @@
   color:rgba(255, 255, 255, 0.781);
   background-color: #704f4f;
   box-shadow: 3px 5px 0 #472d2d;
+  
+}
+.backbutton > button:hover{
+
+  background-color: #722f2f;
+
 }
 
 #leftButton,
