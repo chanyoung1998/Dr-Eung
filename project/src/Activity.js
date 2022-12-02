@@ -306,7 +306,7 @@ function Activity() {
         </Button>
       <div className={styles.ProgressContainer}>
         <ul>
-          <div>단원별 활동</div>
+          <div>{`${curchapter}단원 활동`}</div>
           <li>
             <span
               className={`${styles.bar}`}

@@ -50,7 +50,7 @@ function Writefrom() {
       </div>
       <div className={styles.ProgressContainer}>
         <ul>
-          <div>단원별 활동</div>
+          <div>독후감 작성</div>
           <li>
             <span
               className={`${styles.bar}`}

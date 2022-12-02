@@ -59,6 +59,7 @@ function Read() {
         },
       })
       .then((data) => {
+        console.log(data.data);
         setRightTexts(data.data.page);
       });
 
@@ -69,6 +70,7 @@ function Read() {
         },
       })
       .then((data) => {
+        console.log(data.data);
         console.log(data.data);
         setHighlightLeft(data.data.index);
       });
@@ -83,7 +85,6 @@ function Read() {
         }
       )
       .then((data) => {
-        // console.log(data.data);
         setHighlightRight(data.data.index);
         setLoading(false);
       });
@@ -93,7 +94,7 @@ function Read() {
     setTimeout(2000, []);
     return (
       <div>
-        <img src={bookloading} />{" "}
+        <Loading />
       </div>
     );
   }
@@ -120,8 +121,11 @@ function Read() {
               <h6>&nbsp;</h6>
               <h6>{title}</h6>
             </header>
-
-            <article>{bookcontents}</article>
+            <article>
+              
+              <span>{LeftTexts}</span>
+              <span>{RightTexts}</span>
+            </article>
 
             <footer>
               <ol id="page-numbers">
@@ -150,7 +154,6 @@ function Read() {
                 },
               })
               .then((res) => {
-                console.log(res.data.item)
                 setDictdata(res.data.item);
                 setShow(true);
               });
@@ -237,7 +240,6 @@ function Read() {
 }
 
 function DictionaryModal({ show, setShow, dictdata }) {
-  
   return (
     <>
       <Modal
@@ -248,24 +250,25 @@ function DictionaryModal({ show, setShow, dictdata }) {
       >
         <Modal.Body style={{ background: "#FFF7E9" }}>
           <div className={styles.dictdiv}>
-            {dictdata.map(function (data, index) {
-              let datatitle = data.word;
-              let datacontent = data.sense.definition;
-              let link = data.sense.link;
-              let type = data.sense.type;
-              let pos = data.pos
-              console.log(datatitle)
-              console.log(datacontent)
-              return (
-                <>
-                  <li className={styles.dictli}>
-                    {datatitle}
-                    <ul className={styles.dictul}>{datacontent}</ul>
+            <ol data-list-style-type="ko">
+              {dictdata.map(function (data, index) {
+                let datatitle = data.word;
+                let datacontent = data.sense.definition;
+                let link = data.sense.link;
+                let type = data.sense.type;
+                let pos = data.pos;
+                console.log(datatitle);
+                console.log(datacontent);
+                return (
+                  <li className={styles.dictli} key={index}>
+                    <a href={link}>{datatitle}</a>
+                    <span style={{ fontSize: "0.8em" }}>{` 「${pos}」`}</span>
+                    <br></br>
+                    <span className={styles.dictul}>{datacontent}</span>
                   </li>
-                  <hr />
-                </>
-              );
-            })}
+                );
+              })}
+            </ol>
           </div>
         </Modal.Body>
       </Modal>

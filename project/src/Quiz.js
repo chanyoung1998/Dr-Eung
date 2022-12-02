@@ -104,8 +104,15 @@ function Quiz() {
           setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
 
           setLoading(false);
-        })
+        }) 
       );
+
+      if(localStorage.getItem(title)){
+        console.log("존재")
+      }
+      else{
+        // totalchapter 불러오기
+      }
   }, []);
 
   if (isLoading) {
@@ -295,7 +302,7 @@ function Quiz() {
       </div>
       <div className={styles.ProgressContainer}>
         <ul>
-          <div>단원별 활동</div>
+          <div >{`${currentChapter}단원 퀴즈`}</div>
           <li>
             <span
               className={`${styles.bar}`}

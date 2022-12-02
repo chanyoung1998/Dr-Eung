@@ -41,7 +41,15 @@ body {
   width: 50em;
   font-size: 25px;
   white-space: pre-line;
+
+  transform-origin: center;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in;
 }
+/* #readingwrapper:hover {
+  transform: rotateY(-90deg);
+  opacity: 0.4;
+} */
 
 #readingcontainer {
   float: left;
