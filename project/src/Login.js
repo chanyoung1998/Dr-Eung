@@ -7,6 +7,7 @@ import axios from "axios";
 import owl from "./img/owl.png";
 import leftimg from "./img/loginleft.png";
 import rightimg from "./img/loginright.png";
+import logo from "./img/logo.png";
 import { useSelector } from "react-redux";
 
 
@@ -62,14 +63,16 @@ function Login() {
       <div className={styles.center}>
         <div className={styles.innercontainer}>
           <div className={styles.logoimg}>
-            <img src={owl}></img>
+            <div><img className={styles.caracter} src={owl}></img></div>
+            <div><img className={styles.logo} src={logo}></img></div>
           </div>
 
           <div className={styles.아래}>
             <div className={styles.inputcontainer}>
-              <div className={styles.title}>
+              {/* <div className={styles.title}>
                 <h2>엉박사</h2>
-              </div>
+                <img src={logo}></img>
+              </div> */}
               <div className={styles.idInput}>
                 <Input
                   border={{

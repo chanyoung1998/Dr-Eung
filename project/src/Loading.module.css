@@ -1,0 +1,28 @@
+.loadingpage {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: 0.8fr 1fr;
+  }
+  
+  .loadingpage .loading{
+    position: relative;
+  }
+  
+  .loadingpage .loading img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100px;
+  }
+  
+  .loadingpage .loadingimg{
+    position: relative;
+  }
+  
+  .loadingpage .loadingimg img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
