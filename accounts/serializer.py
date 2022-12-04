@@ -118,6 +118,8 @@ class ProfileSerializer(serializers.BaseSerializer):
                 "nickname": user.nickname,
                 "school": user.school,
                 "introduction": user.introduction,
+                "bg": user.background,
+                "parts": user.accessories
             },
             "score": {
                 "ability": score,
@@ -128,3 +130,12 @@ class ProfileSerializer(serializers.BaseSerializer):
             },
             "tier": user.tier
         }
+
+class ImgSerializer(serializers.Serializer):
+
+    def to_internal_value(self, data):
+        user = data["user"]
+        user.background = data["bg"]
+        user.accessories = data["acc"]
+        user.save()
+        return "OK"

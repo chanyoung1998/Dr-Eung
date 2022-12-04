@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
 from .models import User
-from .serializer import RegisterSerializer, LoginSerializer, ProfileSerializer
+from .serializer import *
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -31,3 +31,14 @@ def id_view(request):
     if User.objects.filter(username=username).exists():
         return Response(True, status=status.HTTP_200_OK)
     return Response(False, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def img_update_view(request):
+    user = request.user
+    bg = request.data["bg"]
+    acc = request.data["acc"]
+    serializer = ImgSerializer(data={"user": user, "bg": bg, "acc": acc})
+    serializer.is_valid(raise_exception=True)
+    return Response(serializer.validated_data, status=status.HTTP_200_OK)
