@@ -19,6 +19,7 @@ import books from "./img/books.png";
 
 function ReportMenu() {
   let [report, setReport] = useState([{}]);
+  let [report_key,setReportKey] = useState([]);
   const BASE_URL = useSelector((state) => state.BASE_URL);
 
   const [isLoading, setLoading] = useState(true);
@@ -31,13 +32,14 @@ function ReportMenu() {
       })
       .then((data) => {
         setReport(data.data);
+        setReportKey(Object.keys(data.data))
         console.log(data.data)
         setLoading(false);
         
       });
   }, []);
 
-  const report_key = Object.keys(report);
+  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -59,12 +61,34 @@ function ReportMenu() {
           <Col md={{ span: 9 }} style={{ padding: "0px" }}>
             <InputGroup
               onKeyPress={(e) => {
+                
                 if (e.key === "Enter") {
+                  //가장 정확한 검색 결과
                   for (let index = 0; index < report_key.length; ++index) {
-                    if(report[report_key[index]]['책 제목'] == e.target.value || report[report_key[index]]['감상문 제목'] == e.target.value){
-                      console.log('find');
+                    if(e.target.value != '' & (report[report_key[index]]['책 제목'] == e.target.value || report[report_key[index]]['감상문 제목'] == e.target.value)){
+                      console.log(report);
+                      let temp = [...report_key];
+                      temp.splice(temp.indexOf(report_key[index]),1);
+                      temp.unshift(report_key[index])
+                      setReportKey(temp);
+                      e.defaultPrevented();
+                      return
                     }            
-                  }           
+                  } 
+                    // 차선으로 비슷한 결과
+                  for (let index = 0; index < report_key.length; ++index) {
+                    if(e.target.value != '' & (report[report_key[index]]['책 제목'].includes(e.target.value)  || report[report_key[index]]['감상문 제목'].includes(e.target.value))){
+                      console.log(report);
+                      let temp = [...report_key];
+                      temp.splice(temp.indexOf(report_key[index]),1);
+                      temp.unshift(report_key[index])
+                      setReportKey(temp);
+                      e.defaultPrevented();
+                      return
+                    }            
+                  } 
+
+                  alert("찾는 결과가 없습니다.")
                 }
               }}
             >

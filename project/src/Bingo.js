@@ -122,7 +122,18 @@ function Bingo() {
           bingo={bingo}
         />
       ) : (
-        <div><button className={styles.finishbutton} onClick={()=>{navigate('/home')}}>{finish == 1? '이겼습니다!' : '다음 기회에..'}</button>{pop()}</div>
+        <div>
+          <button
+            className={styles.finishbutton}
+            onClick={() => {
+              navigate("/home");
+            } 
+            }
+          >
+            {finish == 1 ? "이겼습니다!" : "다음 기회에.."}
+          </button>
+          {pop()}
+        </div>
       )}
     </div>
   );
