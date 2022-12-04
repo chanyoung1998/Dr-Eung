@@ -6,6 +6,7 @@ body {
   font-family: "Miwonfont";
   background: #fff7e9;
   word-break: keep-all;
+
 }
 
 @font-face {
@@ -46,10 +47,7 @@ body {
   transition-duration: 0.5s;
   transition-timing-function: ease-in;
 }
-/* #readingwrapper:hover {
-  transform: rotateY(-90deg);
-  opacity: 0.4;
-} */
+
 
 #readingcontainer {
   float: left;

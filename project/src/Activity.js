@@ -56,46 +56,41 @@ function Activity() {
   const ref3_1 = useRef(null);
   const ref4_1 = useRef(null);
 
-  // const [totalchapter,setTotalChapter] = useState(1);
-  let totalchapter = 1
-  const [progress, setProgress] = useState(
-    ((curchapter - 1) / totalchapter) * 60 +
-      (5 / 9) * (1 / totalchapter) * 60
-  );
+  
+  // let totalchapter = 100;
+  const [totalchapter,setTotalChapter] = useState(100);
+  const [progress, setProgress] = useState(0);
+  
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}report/${title}/${curchapter}/activity/`, {
-        headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-        },
-      })
-      .then((res) => {
-        console.log(res.data)
-        setQuestions(res.data);
-        setKeyword(res.data.keyword_answer);
-        setReason(res.data.reason_answer);
-        setSummary(res.data.summary_answer);
-        setFeeling(res.data.feeling_answer);
-        
+      .all([
+        axios.get(`${BASE_URL}report/${title}/${curchapter}/activity/`, {
+          headers: {
+            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          },
+        }),
+        axios.get(`${BASE_URL}book/${title}`, {
+          headers: {
+            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          },
+        })
+      ])
+      .then(
+        axios.spread((res,res2)=>{
+          console.log(res2.data)
+          setTotalChapter(res2.data.chapters)
+          setProgress(((curchapter - 1) / totalchapter) * 60 +(5 / 9) * (1 / totalchapter) * 60)
+          setQuestions(res.data);
+          setKeyword(res.data.keyword_answer);
+          setReason(res.data.reason_answer);
+          setSummary(res.data.summary_answer);
+          setFeeling(res.data.feeling_answer);
+          setLoading(false);
 
-      });
+        })
+      )
 
-      axios.get(`${BASE_URL}book/${title}`, {
-        headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-        },
-      })
-      .then((res)=>{
-        
-        // setTotalChapter(res.data.chapters)
-        totalchapter = res.data.chapters
-        setProgress(
-          ((curchapter - 1) / totalchapter) * 60 +
-            (1 / 9) * (1 / totalchapter) * 60 * 5
-        )
-        setTimeout(()=>{setLoading(false);  }, 2000)
-      });
   }, []);
 
   if (isLoading) {
