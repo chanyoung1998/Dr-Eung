@@ -51,6 +51,7 @@ function ReportWriting() {
   const [isLoading, setLoading] = useState(true);
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const navigate = useNavigate();
+  
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/${title}/`, {
@@ -73,7 +74,7 @@ function ReportWriting() {
   }
 
   return (
-    <>
+    <div >
       <div className={styles.backbutton}>
         <button className={styles.backbuttonbtn}
           onClick={() => {
@@ -160,7 +161,7 @@ function ReportWriting() {
             })}
           </Nav>
         </div>
-        {Object.keys(param).includes("formnum") ? (
+        {Object.keys(param).includes("formnum") | window.location.href.includes("bingo") ? (
           <Outlet></Outlet>
         ) : (
           <div className={styles.innerLayout}>
@@ -195,7 +196,7 @@ function ReportWriting() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

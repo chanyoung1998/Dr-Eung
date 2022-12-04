@@ -14,7 +14,7 @@ import Activity from "./Activity.js";
 import Login from "./Login";
 import Register from "./Register";
 import Writeform from "./Writeform.js"
-
+import Bingo from './Bingo.js'
 function App() {
   
   let navigate = useNavigate();
@@ -23,6 +23,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Login/>}/>
+        <Route path="/bingo" element={<Bingo/>}/>
         <Route path="/register" element={<Register/>}/>
         
         <Route path="/home" element={<HomeElement/>} />
@@ -30,6 +31,7 @@ function App() {
 
         <Route path="/writing/:title" element={<ReportWriting/>}>
           <Route path="form/:formnum" element={<Writeform/>}/>
+          <Route path="bingo" element={<Bingo/>}/>
         </Route>
         <Route path="/quiz/:title/:chapter" element={<Quiz/>}/>
         <Route path="/activity/:title/:chapter" element={<Activity/>}/>

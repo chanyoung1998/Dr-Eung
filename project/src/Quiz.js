@@ -45,8 +45,8 @@ function Quiz() {
   if (questionCount == 5) {
     navigate(`/activity/${title}/${currentChapter}/`);
   }
-  // const [totalchapter,setTotalChapter] = useState(3);
-  let totalchapter = 1
+  const [totalchapter,setTotalChapter] = useState(1);
+  // let totalchapter = 100
   const [progress, setProgress] = useState(
     ((currentChapter - 1) / totalchapter) * 60
   );
@@ -104,7 +104,7 @@ function Quiz() {
           // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
           setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
 
-          setLoading(false);
+          
         }) 
         
       )
@@ -115,8 +115,8 @@ function Quiz() {
       })
       .then((res)=>{
         
-        // setTotalChapter(res.data.chapters)
-        totalchapter = res.data.chapters
+        setTotalChapter(res.data.chapters)
+        // totalchapter = res.data.chapters
         setProgress(
           ((currentChapter - 1) / totalchapter) * 60
         );
