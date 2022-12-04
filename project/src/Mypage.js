@@ -1,10 +1,7 @@
 /*eslint-disable */
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart,
-  faUserFriends,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faUserFriends } from "@fortawesome/free-solid-svg-icons";
 
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Nav, Modal } from "react-bootstrap";
@@ -41,7 +38,6 @@ import owl2_eye2 from "./img/owl2_eye2.png";
 import noParts from "./img/defaultParts.png"
 import noBg from "./img/defaultBg.png"
 
-
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
 
@@ -54,16 +50,15 @@ function Mypage() {
   // const owlimg = [owl1, owl2, owl3, owl4, owl5, owl6][tier];
 
   const owlimg = {
-    "owl1": owl1,
-    "owl2": owl2,
-    "owl3": owl3,
-    "owl4": owl4,
-    "owl5": owl5,
-    "owl6": owl6,
-    "owl2_eye1": owl2_eye1,
-    "owl2_eye2": owl2_eye2,
-  }
-
+    owl1: owl1,
+    owl2: owl2,
+    owl3: owl3,
+    owl4: owl4,
+    owl5: owl5,
+    owl6: owl6,
+    owl2_eye1: owl2_eye1,
+    owl2_eye2: owl2_eye2,
+  };
 
   let [activities, setActivities] = useState([
     {
@@ -110,10 +105,13 @@ function Mypage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  const p = document.getElementsByTagName("particule");
+  for (let i = 0; i < p.length; i++) {
+    p[i].remove();
+  }
   return (
     <div className={styles.layout}>
-      <DecorateModal 
+      <DecorateModal
         show={show}
         setShow={setShow}
         bg={bg}
@@ -129,18 +127,12 @@ function Mypage() {
 
           <div style={{ margin: "30px auto 0" }}>
             <div className={styles.statuslayout} style={{ background: "none" }}>
-              <div
-                className={styles.graphArea}
- 
-              >
+              <div className={styles.graphArea}>
                 <div className={styles.status}>
                   <CustomRadar data={score1} categories={ability} />
                 </div>
               </div>
-              <div
-                className={styles.graphArea2}
-
-              >
+              <div className={styles.graphArea2}>
                 <div className={styles.status}>
                   <div className={styles.status}>
                     <CustomRadar data={score2} categories={genres} />
@@ -154,15 +146,22 @@ function Mypage() {
           <RecentActivity activities={activities} />
         </div>
       </div>
-      <div className={styles.owlcustomlayout} style={{backgroundImage: `url(${bg})`}}>
-        <div className={styles.owlcustomimg} style={{backgroundImage: `url(${owlimg[character]})`}}></div>
+      <div
+        className={styles.owlcustomlayout}
+        style={{ backgroundImage: `url(${bg})` }}
+      >
+        <div
+          className={styles.owlcustomimg}
+          style={{ backgroundImage: `url(${owlimg[character]})` }}
+        ></div>
 
         <div className={styles.btndiv}>
-          <Button 
-            id={styles.ReadButton} 
-            style={{ marginTop: "3%" }} 
-            size="lg" 
-            onClick={()=>setShow(true)}>
+          <Button
+            id={styles.ReadButton}
+            style={{ marginTop: "3%" }}
+            size="lg"
+            onClick={() => setShow(true)}
+          >
             꾸미러 가기
           </Button>
         </div>
@@ -176,8 +175,6 @@ function Profile({ profile }) {
     <div style={{ margin: "30px auto 0" }}>
       {/* <h2>자기소개</h2> */}
       <div className={styles.card}>
-
-
         <div className={styles.title}>{profile.nickname}</div>
         <div className={styles.title}>{profile.school}</div>
         <div className={styles.profilebox}>
@@ -437,20 +434,28 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
       })
   }, [bg, currentParts]);
 
-  return(
+  return (
     <>
       <Modal
         show={show}
         onHide={() => setShow(false)}
         centered
-        dialogClassName={styles.mymodal}>
-          <Modal.Header closeButton style={{ background: "#FFF7E9" , display:"grid", gridTemplateColumns:"1fr 0.1fr"}}>
+        dialogClassName={styles.mymodal}
+      >
+        <Modal.Header
+          closeButton
+          style={{
+            background: "#FFF7E9",
+            display: "grid",
+            gridTemplateColumns: "1fr 0.1fr",
+          }}
+        >
           <Nav
             id="bootstrap-overrides"
             justify
             variant="tabs"
             defaultActiveKey="Background"
-            style={{ background: "#FFF7E9"}}
+            style={{ background: "#FFF7E9" }}
           >
             <Nav.Item>
               <Nav.Link
@@ -478,31 +483,45 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
         </Modal.Header>
 
         <Modal.Body style={{ background: "#FFF7E9" }}>
-          {tab === 0 ? 
-            <BackGround bg={bg} setBg={setBg} setShow={setShow}/> : 
-            <Parts character={character} setCharacter={setCharacter} setShow={setShow} currentParts={currentParts} setCurrentParts={setCurrentParts} setTab={setTab}/>}
+          {tab === 0 ? (
+            <BackGround bg={bg} setBg={setBg} setShow={setShow} />
+          ) : (
+            <Parts
+              character={character}
+              setCharacter={setCharacter}
+              setShow={setShow}
+              currentParts={currentParts}
+              setCurrentParts={setCurrentParts}
+              setTab={setTab}
+            />
+          )}
         </Modal.Body>
       </Modal>
     </>
-  )
+  );
 }
 
 function BackGround({bg, setBg, setShow}){
   const bgs = [noBg, bg1, bg2, bg3, bg4, bg5, bg6, bg7]
   const n = Math.ceil(bgs.length / 4);
 
-  const [selected, setSelected] = useState(bgs.map((i)=>{if(i == bg) return true; else return false;}))
+  const [selected, setSelected] = useState(
+    bgs.map((i) => {
+      if (i == bg) return true;
+      else return false;
+    })
+  );
 
   const handleSelected = (key) => {
-    const copy = [...selected]
+    const copy = [...selected];
 
-    if(!copy[key]){
-      copy.fill(false)
+    if (!copy[key]) {
+      copy.fill(false);
     }
 
-    copy[key] = !copy[key]
-    setSelected(copy)
-  }
+    copy[key] = !copy[key];
+    setSelected(copy);
+  };
 
   const handleSubmit = () => {
     if(selected.indexOf(true) == 0){
@@ -513,34 +532,43 @@ function BackGround({bg, setBg, setShow}){
     setShow(false)
   }
 
-  return(
+  return (
     <>
-      <Container className={styles.table} sytle={{overflowY:"scroll"}}>
-      {Array.from({length:n}).map(function(_,i){
-        return(
-          <div className={styles.row}>
-              {[0,1,2,3].map(function(j){
-                if(bgs.length > 4*i+j){
-                  return(
+      <Container className={styles.table} sytle={{ overflowY: "scroll" }}>
+        {Array.from({ length: n }).map(function (_, i) {
+          return (
+            <div className={styles.row}>
+              {[0, 1, 2, 3].map(function (j) {
+                if (bgs.length > 4 * i + j) {
+                  return (
                     <div className={styles.cell}>
-                      <img 
-                      src={bgs[4*i+j]} className={selected[4*i+j] ? styles.selected : "" }
-                      onClick={()=>{handleSelected(4*i+j)}}/>
+                      <img
+                        src={bgs[4 * i + j]}
+                        className={selected[4 * i + j] ? styles.selected : ""}
+                        onClick={() => {
+                          handleSelected(4 * i + j);
+                        }}
+                      />
                     </div>
                   );
-                } else{return(<div />);}
+                } else {
+                  return <div />;
+                }
               })}
-        </div>
-        );
-      })}
+            </div>
+          );
+        })}
       </Container>
-      <Button 
-            id={styles.ReadButton} 
-            style={{ marginTop: "3%" }} 
-            size="lg" 
-            onClick={()=>{handleSubmit()}}>
-            적용하기
-          </Button>
+      <Button
+        id={styles.ReadButton}
+        style={{ marginTop: "3%" }}
+        size="lg"
+        onClick={() => {
+          handleSubmit();
+        }}
+      >
+        적용하기
+      </Button>
     </>
   );
 }
@@ -610,6 +638,6 @@ function Parts({character, setCharacter, setShow, currentParts, setCurrentParts,
           </Button>
     </>
   );
-
 }
+
 export default Mypage;

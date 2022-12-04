@@ -1,6 +1,6 @@
 /*eslint-disable */
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Nav, Modal, Row, Col, Button } from "react-bootstrap";
 import styles from "./Quiz.module.css";
 import axios from "axios";
@@ -21,11 +21,14 @@ import submiticon from "./img/submit3.png";
 import owl from "./img/owl.png";
 
 function Quiz() {
-  let param = useParams();
+  const param = useParams();
   const title = param.title;
   const currentChapter = param.chapter;
   const [isLoading, setLoading] = useState(true);
-
+  const ref = useRef(null);
+  const ref2 = useRef(null);
+  const [popup, setPopup] = useState(false);
+  let  [popuptext,setPopuptext] = useState("");
   // tab
   let [clicked, setClicked] = useState(0);
   // 클릭한 answer
@@ -45,7 +48,7 @@ function Quiz() {
   if (questionCount == 5) {
     navigate(`/activity/${title}/${currentChapter}/`);
   }
-  const [totalchapter,setTotalChapter] = useState(1);
+  const [totalchapter, setTotalChapter] = useState(1);
   // let totalchapter = 100
   const [progress, setProgress] = useState(
     ((currentChapter - 1) / totalchapter) * 60
@@ -103,28 +106,20 @@ function Quiz() {
         axios.spread((res1, res2, res3, res4, res5) => {
           // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
           setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
-
-          
-        }) 
-        
-      )
-      axios.get(`${BASE_URL}book/${title}`, {
+        })
+      );
+    axios
+      .get(`${BASE_URL}book/${title}`, {
         headers: {
           Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
         },
       })
-      .then((res)=>{
-        
-        setTotalChapter(res.data.chapters)
+      .then((res) => {
+        setTotalChapter(res.data.chapters);
         // totalchapter = res.data.chapters
-        setProgress(
-          ((currentChapter - 1) / totalchapter) * 60
-        );
+        setProgress(((currentChapter - 1) / totalchapter) * 60);
         setLoading(false);
       });
-
-        
-      
   }, []);
 
   if (isLoading) {
@@ -231,12 +226,30 @@ function Quiz() {
                           setProgress(
                             progress + (1 / 9) * (1 / totalchapter) * 60
                           );
+                          setPopuptext("정답입니다. 잘 했어요!")
+                          ref.current.classList.add(`${styles.open}`);
+                          ref2.current.classList.add(`${styles.progressbaropen}`);
+                          
+                          setTimeout(()=>{
+                            ref.current.classList.remove(`${styles.open}`);
+                            ref2.current.classList.remove(`${styles.progressbaropen}`);
+                          },3000)
+
                         } else {
                           let temp = [...imgShow];
                           temp[answerClicked] = true;
                           setImgShow(temp);
                           setWrongcount(wrongcount + 1);
                           setHint(res.data.hint.join(" "));
+                          setPopuptext("한번더 생각해보세요!")
+
+                          ref.current.classList.add(`${styles.open}`);
+                          ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+                          
+                          setTimeout(()=>{
+                            ref.current.classList.remove(`${styles.open}`);
+                            ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+                          },3000)
                         }
                       });
                   }
@@ -280,15 +293,15 @@ function Quiz() {
               axios
                 .get(`${BASE_URL}book/${title}/${currentChapter}/?page=1`, {
                   headers: {
-                    Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                    Authorization:
+                      "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
                   },
                 })
                 .then((data) => {
-                  
-                  navigate(`/reading/${title}/${currentChapter}/${data.data.pages}`);
-                  
-                  
-                })
+                  navigate(
+                    `/reading/${title}/${currentChapter}/${data.data.pages}`
+                  );
+                });
             }}
           />
         </Button>
@@ -303,7 +316,8 @@ function Quiz() {
         </Button>
       </div>
       <div className={styles.backbutton}>
-        <button className={styles.backbuttonbtn}
+        <button
+          className={styles.backbuttonbtn}
           onClick={() => {
             navigate("/home");
             // 마이페이지로 연결
@@ -314,7 +328,7 @@ function Quiz() {
       </div>
       <div className={styles.ProgressContainer}>
         <ul>
-          <div >{`${currentChapter}단원 퀴즈`}</div>
+          <div>{`${currentChapter}단원 퀴즈`}</div>
           <li>
             <span
               className={`${styles.bar}`}
@@ -327,6 +341,16 @@ function Quiz() {
             />
           </li>
         </ul>
+      </div>
+
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{popuptext}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
       </div>
     </>
   );
