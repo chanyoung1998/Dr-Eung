@@ -38,6 +38,9 @@ import eye2 from "./img/eye2.png";
 import owl2_eye1 from "./img/owl2_eye1.png";
 import owl2_eye2 from "./img/owl2_eye2.png";
 
+import noParts from "./img/defaultParts.png"
+import noBg from "./img/defaultBg.png"
+
 
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
@@ -74,13 +77,8 @@ function Mypage() {
 
   const [show, setShow] = useState(false);
   const [bg, setBg] = useState(bg1);
-  const [character, setCharacter] = useState("owl" + (tier + 1).toString());
-  const [currentParts, setCurrentParts] = useState({
-    head: "",
-    eyes: "",
-    body: ""
-  }
-  )
+  const [character, setCharacter] = useState("owl");
+  const [currentParts, setCurrentParts] = useState("0");
   useEffect(() => {
     axios
       .get(`${BASE_URL}MyPage/`, {
@@ -99,8 +97,15 @@ function Mypage() {
         setTier(data.data.tier);
         setCharacter("owl" + (tier + 1).toString());
         setLoading(false);
+        setBg(profile["bg"])
+        setCurrentParts(profile["parts"])
       });
-  }, []);
+  }, [tier]);
+
+  console.log(bg)
+  if(character == "owl2" && currentParts != "0"){
+    setCharacter(character + "_eye" + currentParts)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -419,7 +424,18 @@ function CustomRadar(props) {
 }
 
 function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts}){
+  const BASE_URL = useSelector((state) => state.BASE_URL);
   const [tab, setTab] = useState(0);
+  useEffect(() => {
+    axios
+    .put(`${BASE_URL}updateImg/`, { bg: bg, acc: currentParts }, {
+      headers: { 
+        "Content-Type": "multipart/form-data",
+        Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf"
+      }}).then((data)=>{
+        console.log(data) 
+      })
+  }, [bg, currentParts]);
 
   return(
     <>
@@ -472,7 +488,7 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
 }
 
 function BackGround({bg, setBg, setShow}){
-  const bgs = [bg1, bg2, bg3, bg4, bg5, bg6, bg7]
+  const bgs = [noBg, bg1, bg2, bg3, bg4, bg5, bg6, bg7]
   const n = Math.ceil(bgs.length / 4);
 
   const [selected, setSelected] = useState(bgs.map((i)=>{if(i == bg) return true; else return false;}))
@@ -489,7 +505,11 @@ function BackGround({bg, setBg, setShow}){
   }
 
   const handleSubmit = () => {
-    setBg(bgs[selected.indexOf(true)])
+    if(selected.indexOf(true) == 0){
+      setBg()
+    } else {
+      setBg(bgs[selected.indexOf(true)])
+    }
     setShow(false)
   }
 
@@ -526,10 +546,10 @@ function BackGround({bg, setBg, setShow}){
 }
 
 function Parts({character, setCharacter, setShow, currentParts, setCurrentParts, setTab}){
-  const parts = [eye1, eye2]
+  const parts = [noParts, eye1, eye2]
   const n = Math.ceil(parts.length / 4);
 
-  const [selected, setSelected] = useState(parts.map((i)=>{if(i == currentParts["eyes"]) return true; else return false;}))
+  const [selected, setSelected] = useState(parts.map((i)=>{if(i == parts[currentParts]) return true; else return false;}))
 
   const handleSelected = (key) => {
     const copy = [...selected]
@@ -543,15 +563,19 @@ function Parts({character, setCharacter, setShow, currentParts, setCurrentParts,
   }
 
   const handleSubmit = () => {
-    const copy = {...currentParts}
-    copy["eyes"] = parts[selected.indexOf(true)]
-    setCurrentParts(copy)
-    if(character.includes("eye")){
-      let num = (character.indexOf("eye") + 3)
-      setCharacter(character.substr(0, num) + (selected.indexOf(true) + 1).toString() + character.substr(num + 1))
+    setCurrentParts(selected.indexOf(true))
+    
+    if(selected.indexOf(true) != 0){
+      if(character.includes("eye")){
+        let num = (character.indexOf("eye") + 3)
+        setCharacter(character.substr(0, num) + (selected.indexOf(true)).toString() + character.substr(num + 1))
+      } else {
+        setCharacter(character + "_eye" + (selected.indexOf(true)).toString())
+      }
     } else {
-      setCharacter(character + "_eye" + (selected.indexOf(true) + 1).toString())
+      setCharacter(character.substr(0,4))
     }
+
     setTab(0)
     setShow(false)
   }
