@@ -139,7 +139,6 @@
   grid-template-rows: 1fr 1fr;
   height: 97%;
   /* transform: translate(0, 15%); */
-  background-image: url("./img/bg4.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -150,13 +149,12 @@
   margin:30px 30px 0 ;
   
   box-shadow: 5px 5px 0px rgba(183, 130, 90, 0.3);
-  
 }
 
 .owlcustomimg {
   width: 20vw;
   height: 40vh;
-  background-image: url("./img/owl2_eye2.png");
+  /* background-image: url("./img/owl2_eye2.png"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -188,6 +186,72 @@
   color: #515151;
 }
 
+.mymodal {
+  width: 70vw; /* Occupy the 90% of the screen width */
+  max-width: 70vw;
+}
+
+.mymodal div {
+  border-radius: 15px;
+  margin: 0;
+  border: 0 ;
+}
+
+.table{
+  height: 75vh;
+  overflow-y: scroll;
+}
+
+.table::-webkit-scrollbar {
+  display: none; 
+}
+
+.table .row{
+  float: none;
+  margin: 10px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.table .cell{
+  margin: 10px;
+  float: none;
+  margin: 0 auto;
+  position: relative;
+  width: 15vh;
+}
+
+.table img{
+  width: 140px;
+  height: 235px;
+  border: 10px solid white;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 5px 5px 0px rgba(183, 130, 90, 0.3);
+}
+
+.table .parts{
+  height: 140px;
+}
+
+.table img:hover{
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+
+.table img:active{
+  top: 0;
+  left: 0;
+}
+
+.table .selected{
+  top: 0;
+  left: 0;
+  border-color: #515151;
+  pointer-events: none;
+}
+
 @media (max-width: 1550px) {
   .recentactivity {
     font-size: 20px;
@@ -198,7 +262,6 @@
     font-size: 18px;
   }
 }
-
 
 @media(max-width:1000px){
   .recentactivity {

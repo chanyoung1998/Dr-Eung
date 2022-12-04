@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { Nav, Modal } from "react-bootstrap";
 
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -23,6 +24,21 @@ import owl6 from "./img/owl6.png";
 import default_profile from "./img/profile.png";
 import { useNavigate } from "react-router-dom";
 
+import bg1 from "./img/bg1.png";
+import bg2 from "./img/bg2.png";
+import bg3 from "./img/bg3.png";
+import bg4 from "./img/bg4.png";
+import bg5 from "./img/bg5.png";
+import bg6 from "./img/bg6.png";
+import bg7 from "./img/bg7.png";
+
+import eye1 from "./img/eye1.png";
+import eye2 from "./img/eye2.png";
+
+import owl2_eye1 from "./img/owl2_eye1.png";
+import owl2_eye2 from "./img/owl2_eye2.png";
+
+
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
 
@@ -32,7 +48,20 @@ function Mypage() {
   const [genres, setGenres] = useState([]);
   const [score2, setScore2] = useState([0, 0, 0, 0, 0]);
   const [tier, setTier] = useState(0);
-  const owlimg = [owl1, owl2, owl3, owl4, owl5, owl6][tier];
+  // const owlimg = [owl1, owl2, owl3, owl4, owl5, owl6][tier];
+
+  const owlimg = {
+    "owl1": owl1,
+    "owl2": owl2,
+    "owl3": owl3,
+    "owl4": owl4,
+    "owl5": owl5,
+    "owl6": owl6,
+    "owl2_eye1": owl2_eye1,
+    "owl2_eye2": owl2_eye2,
+  }
+
+
   let [activities, setActivities] = useState([
     {
       id: "어린왕자",
@@ -42,6 +71,16 @@ function Mypage() {
     },
   ]);
   const [isLoading, setLoading] = useState(true);
+
+  const [show, setShow] = useState(false);
+  const [bg, setBg] = useState(bg1);
+  const [character, setCharacter] = useState("owl" + (tier + 1).toString());
+  const [currentParts, setCurrentParts] = useState({
+    head: "",
+    eyes: "",
+    body: ""
+  }
+  )
   useEffect(() => {
     axios
       .get(`${BASE_URL}MyPage/`, {
@@ -58,6 +97,7 @@ function Mypage() {
         setScore2(Object.values(data.data.score.genres));
         setActivities(data.data.activities.recent);
         setTier(data.data.tier);
+        setCharacter("owl" + (tier + 1).toString());
         setLoading(false);
       });
   }, []);
@@ -68,6 +108,16 @@ function Mypage() {
 
   return (
     <div className={styles.layout}>
+      <DecorateModal 
+        show={show}
+        setShow={setShow}
+        bg={bg}
+        setBg={setBg}
+        character={character}
+        setCharacter={setCharacter}
+        currentParts={currentParts}
+        setCurrentParts={setCurrentParts}
+      />
       <div className={styles.innerLayout}>
         <div className={styles.innerinnerLayout} align="left">
           <Profile profile={profile} />
@@ -99,12 +149,15 @@ function Mypage() {
           <RecentActivity activities={activities} />
         </div>
       </div>
-      <div className={styles.owlcustomlayout}>
-        {/* <img src={owlimg} className={styles.owlcustomimg} /> */}
-        <div className={styles.owlcustomimg}></div>
+      <div className={styles.owlcustomlayout} style={{backgroundImage: `url(${bg})`}}>
+        <div className={styles.owlcustomimg} style={{backgroundImage: `url(${owlimg[character]})`}}></div>
 
         <div className={styles.btndiv}>
-          <Button id={styles.ReadButton} style={{ marginTop: "3%" }} size="lg">
+          <Button 
+            id={styles.ReadButton} 
+            style={{ marginTop: "3%" }} 
+            size="lg" 
+            onClick={()=>setShow(true)}>
             꾸미러 가기
           </Button>
         </div>
@@ -365,4 +418,174 @@ function CustomRadar(props) {
   );
 }
 
+function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts}){
+  const [tab, setTab] = useState(0);
+
+  return(
+    <>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        dialogClassName={styles.mymodal}>
+          <Modal.Header closeButton style={{ background: "#FFF7E9" , display:"grid", gridTemplateColumns:"1fr 0.1fr"}}>
+          <Nav
+            id="bootstrap-overrides"
+            justify
+            variant="tabs"
+            defaultActiveKey="Background"
+            style={{ background: "#FFF7E9"}}
+          >
+            <Nav.Item>
+              <Nav.Link
+                eventKey="Background"
+                style={{ color: "#B2B2B2" }}
+                onClick={() => {
+                  setTab(0);
+                }}
+              >
+                <h1>배경</h1>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                eventKey="Parts"
+                style={{ color: "#B2B2B2" }}
+                onClick={() => {
+                  setTab(1);
+                }}
+              >
+                <h1>악세사리</h1>
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </Modal.Header>
+
+        <Modal.Body style={{ background: "#FFF7E9" }}>
+          {tab === 0 ? 
+            <BackGround bg={bg} setBg={setBg} setShow={setShow}/> : 
+            <Parts character={character} setCharacter={setCharacter} setShow={setShow} currentParts={currentParts} setCurrentParts={setCurrentParts} setTab={setTab}/>}
+        </Modal.Body>
+      </Modal>
+    </>
+  )
+}
+
+function BackGround({bg, setBg, setShow}){
+  const bgs = [bg1, bg2, bg3, bg4, bg5, bg6, bg7]
+  const n = Math.ceil(bgs.length / 4);
+
+  const [selected, setSelected] = useState(bgs.map((i)=>{if(i == bg) return true; else return false;}))
+
+  const handleSelected = (key) => {
+    const copy = [...selected]
+
+    if(!copy[key]){
+      copy.fill(false)
+    }
+
+    copy[key] = !copy[key]
+    setSelected(copy)
+  }
+
+  const handleSubmit = () => {
+    setBg(bgs[selected.indexOf(true)])
+    setShow(false)
+  }
+
+  return(
+    <>
+      <Container className={styles.table} sytle={{overflowY:"scroll"}}>
+      {Array.from({length:n}).map(function(_,i){
+        return(
+          <div className={styles.row}>
+              {[0,1,2,3].map(function(j){
+                if(bgs.length > 4*i+j){
+                  return(
+                    <div className={styles.cell}>
+                      <img 
+                      src={bgs[4*i+j]} className={selected[4*i+j] ? styles.selected : "" }
+                      onClick={()=>{handleSelected(4*i+j)}}/>
+                    </div>
+                  );
+                } else{return(<div />);}
+              })}
+        </div>
+        );
+      })}
+      </Container>
+      <Button 
+            id={styles.ReadButton} 
+            style={{ marginTop: "3%" }} 
+            size="lg" 
+            onClick={()=>{handleSubmit()}}>
+            적용하기
+          </Button>
+    </>
+  );
+}
+
+function Parts({character, setCharacter, setShow, currentParts, setCurrentParts, setTab}){
+  const parts = [eye1, eye2]
+  const n = Math.ceil(parts.length / 4);
+
+  const [selected, setSelected] = useState(parts.map((i)=>{if(i == currentParts["eyes"]) return true; else return false;}))
+
+  const handleSelected = (key) => {
+    const copy = [...selected]
+
+    if(!copy[key]){
+      copy.fill(false)
+    }
+
+    copy[key] = !copy[key]
+    setSelected(copy)
+  }
+
+  const handleSubmit = () => {
+    const copy = {...currentParts}
+    copy["eyes"] = parts[selected.indexOf(true)]
+    setCurrentParts(copy)
+    if(character.includes("eye")){
+      let num = (character.indexOf("eye") + 3)
+      setCharacter(character.substr(0, num) + (selected.indexOf(true) + 1).toString() + character.substr(num + 1))
+    } else {
+      setCharacter(character + "_eye" + (selected.indexOf(true) + 1).toString())
+    }
+    setTab(0)
+    setShow(false)
+  }
+  
+  return(
+    <>
+      <Container className={styles.table} sytle={{overflowY:"scroll"}}>
+      {Array.from({length:n}).map(function(_,i){
+        return(
+          <div className={styles.row}>
+              {[0,1,2,3].map(function(j){
+                if(parts.length > 4*i+j){
+                  return(
+                    <div className={styles.cell}>
+                      <img 
+                      src={parts[4*i+j]} className={selected[4*i+j] ? `${styles.selected} ${styles.parts}` : styles.parts }
+                      onClick={()=>{handleSelected(4*i+j)}}/>
+                    </div>
+                  );
+                } else{return(<div />);}
+              })}
+        </div>
+        );
+      })}
+      </Container>
+      <Button 
+            id={styles.ReadButton} 
+            style={{ marginTop: "3%" }} 
+            size="lg" 
+            onClick={()=>{handleSubmit()}}>
+            적용하기
+          </Button>
+    </>
+  );
+
+}
 export default Mypage;
