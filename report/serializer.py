@@ -113,7 +113,7 @@ class WritingTextSerializer(serializers.Serializer):
         #text.correct = "\n".join(correct["correct"].split('.'))
         print(text.correct)
 
-        feedback = ReportConfig.model.getFeedBack(text.correct)
+        feedback = ReportConfig.model.getFeedBack(text.correct, correct["score"])
         text.feedback = feedback["feedback"]
 
         text.save()

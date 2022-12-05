@@ -96,7 +96,7 @@ class Feedback():
 
         return model_outputs.tolist()[0]
 
-    def getFeedBack(self, text, age=11):
+    def getFeedBack(self, text, correct_score, age=11):
         result = {"feedback": "", "score": []}
         result["score"] = self.getScore(text)
         scores = list(map(lambda x: math.floor(3 * x), result["score"]))
@@ -106,6 +106,20 @@ class Feedback():
 
         feedback_good = []
         feedback_bad = []
+
+
+        scores[0] = math.floor(correct_score / 25)
+
+        n = len(text)
+        if n < 150 : 
+            scores[6] = 0
+        elif n < 400 : 
+            scores[6] = 1
+        elif n < 800 : 
+            scores[6] = 2
+        else : 
+            scores[6] = 3
+
 
         feedback_order = [(i, weight, score) for i, (weight, score) in enumerate(zip(self.weight_list[age], scores))]
         random.shuffle(feedback_order)

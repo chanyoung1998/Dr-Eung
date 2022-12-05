@@ -20,8 +20,8 @@ class User(AbstractUser):
         default=list([0,0,0,0,0])
     )
     tier = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
-    background = models.CharField(default="", max_length=255)
-    accessories = models.CharField(default="", max_length=255)
+    background = models.CharField(default="", blank=True, max_length=255)
+    accessories = models.CharField(default="", blank=True, max_length=255)
 
     def updateScore(self, score):
         n = len(self.report.filter(complete=True))

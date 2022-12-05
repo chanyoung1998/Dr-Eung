@@ -44,7 +44,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             user.nickname = validated_data['nickname']
         if 'school' in validated_data.keys():
             user.school = validated_data['school']
-        if ' introduction' in validated_data.keys():
+        if 'introduction' in validated_data.keys():
             user.introduction = validated_data['introduction']
 
         user.save()
@@ -76,6 +76,7 @@ class ProfileSerializer(serializers.BaseSerializer):
         }
 
         n = sum(user.genres)
+        if n == 0 : n = 1
         genre_score = {
             "소설": int((user.genres[0] / n) * 100),
             "수필": int((user.genres[1] / n) * 100),
