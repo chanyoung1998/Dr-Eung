@@ -111,6 +111,7 @@ class WritingTextSerializer(serializers.Serializer):
         correct = ReportConfig.model.spellCheck(text.original)
         text.correct = correct["correct"]
         #text.correct = "\n".join(correct["correct"].split('.'))
+        print(text.correct)
 
         feedback = ReportConfig.model.getFeedBack(text.correct)
         text.feedback = feedback["feedback"]

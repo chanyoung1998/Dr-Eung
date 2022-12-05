@@ -148,12 +148,14 @@ class Feedback():
         #    checked["errors"] += tmp["errors"]
         #    checked["words"].update(tmp["words"])
         #    print(checked)
-        txtcontextlist = txt.split('\n')
+        txtcontextlist = txt.split('\r\n')
         for txtcontext in txtcontextlist:
             tmp = spell_checker.check(txtcontext).as_dict()
-            checked["checked"] += tmp["checked"] + '\n'
+            checked["checked"] += tmp["checked"] + '\r\n'
             checked["errors"] += tmp["errors"]
             checked["words"].update(tmp["words"])
+        print(txtcontextlist)
+        print(checked["checked"])
 
         return {
             "correct": checked["checked"],

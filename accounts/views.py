@@ -37,8 +37,8 @@ def id_view(request):
 @permission_classes([IsAuthenticated])
 def img_update_view(request):
     user = request.user
-    bg = request.data["bg"]
-    acc = request.data["acc"]
+    bg = request.data.get("bg", "")
+    acc = request.data.get("acc", "0")
     serializer = ImgSerializer(data={"user": user, "bg": bg, "acc": acc})
     serializer.is_valid(raise_exception=True)
     return Response(serializer.validated_data, status=status.HTTP_200_OK)
