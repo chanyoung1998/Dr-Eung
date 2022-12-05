@@ -34,7 +34,8 @@ function BookMenu() {
   let [searchedbook, setSearchedbook] = useState({});
   let [next, setNext] = useState(null);
   const BASE_URL = useSelector((state) => state.BASE_URL);
-  const TOKEN = useSelector((state) => state.TOKEN);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {

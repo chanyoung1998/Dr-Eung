@@ -48,7 +48,7 @@ function Mypage() {
   const [score1, setScore1] = useState([0, 0, 0, 0, 0]);
   const [genres, setGenres] = useState([]);
   const [score2, setScore2] = useState([0, 0, 0, 0, 0]);
-  const [tier, setTier] = useState(0);
+  const [tier, setTier] = useState(-1);
   // const owlimg = [owl1, owl2, owl3, owl4, owl5, owl6][tier];
 
   const owlimg = {

@@ -20,7 +20,9 @@ function Writefrom() {
   const title = param.title;
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
+  
   const TOKEN = localStorage.getItem('TOKEN')
+  console.log(TOKEN)
   const [progress, setProgress] = useState(60);
   const navigate = useNavigate();
 

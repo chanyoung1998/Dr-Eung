@@ -1,5 +1,5 @@
 /*eslint-disable */
-import { useNavigate, useParam } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Nav, Modal, Row, Col, Button } from "react-bootstrap";
 import styles from "./Activity.module.css";
@@ -332,7 +332,7 @@ function Activity() {
                 headers: {
                   "Content-Type": "multipart/form-data",
                   Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                    TOKEN,
                 },
               }
             );
