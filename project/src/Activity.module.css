@@ -359,6 +359,86 @@
 }
 
 
+.popup {
+  overflow: hidden;
+  position: absolute;
+  display: grid;
+  grid-template-columns: 200px 200px;
+  top: 15%;
+
+  background-color: #e0ae7c;
+  transform: translateX(-410px);
+
+  height: 200px;
+  width: 400px;
+  transition: all 800ms cubic-bezier(0.8, 0, 0.33, 1);
+  border-radius: 20px;
+  box-shadow: 5px 5px 0 #b4afaf;
+}
+.open{
+  transform: translateX(10px);
+}
+
+.popup img {
+  width: 190px;
+}
+.popuptext{
+  position: relative;
+}
+.popuptext p{
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%)
+
+}
+.progressbar {
+  width: 400px;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e0ae7c(255, 255, 255);
+  position: relative;
+}
+.progressbaropen {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  width: 0;
+  background: #3eef27;
+  animation: progress 3s ease forwards 1;
+}
+
+.progressbaropenwrong {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  width: 0;
+  background: #f41a1a;
+  animation: progress 3s ease forwards 1;
+}
+@keyframes progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0px;
+  }
+}
+.progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
+
 @media (max-width: 1300px) {
   #navlink h1 {
     font-size: 20px;

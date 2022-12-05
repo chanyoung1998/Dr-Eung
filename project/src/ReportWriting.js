@@ -214,10 +214,10 @@ function ReportModal({ data, show, setShow, curChapter, tabname }) {
             <h2>{tabname}</h2>
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ background: "#FFF7E9" }}>
+        <Modal.Body className={styles.modalbody} style={{ background: "#FFF7E9" }}>
           {["keyword", "reason", "summary", "feeling"].map(function (e) {
             return (
-              <div style={{ lineHeight: "90%" }}>
+              <div style={{ lineHeight: "90%" }} className={styles.reportmodal}>
                 <h3>질문. {data[0]["activities"][curChapter][e][0]}</h3>
                 <br />
                 <h4 style={{ color: "gray" }}>

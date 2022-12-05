@@ -21,55 +21,110 @@ function Writefrom() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [progress, setProgress] = useState(60);
   const navigate = useNavigate();
+
+
   return (
     <>
-      
       <div className={styles.outercontainer}>
         {
           [
-            <Form0 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form1 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form2 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form3 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form4 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form5 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form6 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form7 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
-            <Form8 title={title} BASE_URL={BASE_URL} progress={progress} setProgress={setProgress}/>,
+            <Form0
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+ 
+            />,
+            <Form1
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form2
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form3
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form4
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form5
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form6
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form7
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
+            <Form8
+              title={title}
+              BASE_URL={BASE_URL}
+              progress={progress}
+              setProgress={setProgress}
+            />,
           ][formnum]
         }
         <div className={styles.backbutton}>
-        <button
-          onClick={() => {
-            navigate("/home");
-            // 마이페이지로 연결
-          }}
-        >
-          돌아가기
-        </button>
+          <button
+            onClick={() => {
+              navigate("/home");
+              // 마이페이지로 연결
+            }}
+          >
+            돌아가기
+          </button>
+        </div>
+        <div className={styles.ProgressContainer}>
+          <ul>
+            <div>독후감 작성</div>
+            <li>
+              <span
+                className={`${styles.bar}`}
+                style={{ width: `${progress}%` }}
+              />
+              <img
+                className={styles.bar_img}
+                src={owl}
+                style={{ left: `${progress + 20}%` }}
+              />
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className={styles.ProgressContainer}>
-        <ul>
-          <div>독후감 작성</div>
-          <li>
-            <span
-              className={`${styles.bar}`}
-              style={{ width: `${progress}%` }}
-            />
-            <img
-              className={styles.bar_img}
-              src={owl}
-              style={{ left: `${progress + 20}%` }}
-            />
-          </li>
-        </ul>
-      </div>
-      </div>
+      
     </>
   );
 }
 
-function Form0({ title, BASE_URL,progress,setProgress }) {
+function Form0({
+  title,
+  BASE_URL,
+  progress,
+  setProgress,
+  setPopuptext,
+
+}) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -102,7 +157,8 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
     질문6: "",
     질문7: "",
   });
-
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   const finish = 8;
 
   return (
@@ -154,10 +210,28 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
       </div>
       <button
         className={styles.button}
-        onClick={() => {  
-          setProgress(progress + 20/Object.keys(작성내용).length)
+        onClick={() => {
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
+
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
@@ -198,7 +272,7 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
             if (질문번호 < 5 && 질문번호 >= 1) {
@@ -213,11 +287,20 @@ function Form0({ title, BASE_URL,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form1({ title, BASE_URL,progress,setProgress }) {
+function Form1({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "누구에게 편지를 쓸지 생각해보세요! 책속에 등장하는 인물뿐만 아니라 무생물이나 동물에게도 적용할 수 있어요!",
@@ -241,6 +324,8 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
     질문2: "",
   });
   let [질문번호, set질문번호] = useState(0);
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   const finish = 3;
   return (
     <>
@@ -277,10 +362,26 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
-            
+
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
@@ -299,11 +400,9 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
                   Authorization:
                     "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
                 },
-              })
-              setTimeout(2000,navigate(`/feedback/${title}`));
-            
-            
-            ;
+              }
+            );
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
             textareas[0].value = "";
@@ -313,10 +412,19 @@ function Form1({ title, BASE_URL,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
-function Form2({ title, BASE_URL ,progress,setProgress}) {
+function Form2({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     ["감상문의 제목을 적어보세요!", "비교할 책 제목이 뭔가요?"],
@@ -333,6 +441,8 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
     질문3: "",
   });
   const finish = 4;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
@@ -378,9 +488,24 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
-            
             console.log("제출");
             axios.post(
               `${BASE_URL}report/${title}/`,
@@ -406,7 +531,7 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -417,11 +542,20 @@ function Form2({ title, BASE_URL ,progress,setProgress}) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form3({ title, BASE_URL,progress,setProgress }) {
+function Form3({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "책에서 인상 깊었던 구절이 있나요? 시의 제목을 생각해보세요!",
@@ -437,11 +571,13 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
     질문0: { 제목0: "", 내용0: "" },
   });
   const finish = 1;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
 
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
-      <div className={styles.container} style={{top:"60%"}}>
+      <div className={styles.container} style={{ top: "60%" }}>
         <>
           <h3 align="left">{질문[0]}</h3>
           <textarea
@@ -468,7 +604,23 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -486,7 +638,7 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -497,11 +649,20 @@ function Form3({ title, BASE_URL,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form4({ title, BASE_URL,progress,setProgress }) {
+function Form4({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "비평문의 제목을 적어보세요!",
@@ -517,6 +678,8 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
     질문1: "",
   });
   const finish = 2;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
@@ -555,7 +718,23 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -573,7 +752,7 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -584,11 +763,20 @@ function Form4({ title, BASE_URL,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form5({ title, BASE_URL ,progress,setProgress}) {
+function Form5({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -600,6 +788,8 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
     질문1: "",
   });
   const finish = 2;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
@@ -638,7 +828,23 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -656,7 +862,7 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -667,11 +873,20 @@ function Form5({ title, BASE_URL ,progress,setProgress}) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form6({ title, BASE_URL ,progress,setProgress }) {
+function Form6({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -700,6 +915,8 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
     질문3: "",
   });
   const finish = 4;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
 
   return (
@@ -736,7 +953,23 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -761,7 +994,7 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -772,10 +1005,19 @@ function Form6({ title, BASE_URL ,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
-function Form7({ title, BASE_URL,progress,setProgress }) {
+function Form7({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -792,6 +1034,8 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
     질문3: "",
   });
   const finish = 4;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
@@ -827,7 +1071,23 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -852,7 +1112,7 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -863,11 +1123,20 @@ function Form7({ title, BASE_URL,progress,setProgress }) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }
 
-function Form8({ title, BASE_URL ,progress,setProgress}) {
+function Form8({ title, BASE_URL, progress, setProgress }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -886,6 +1155,8 @@ function Form8({ title, BASE_URL ,progress,setProgress}) {
     질문3: "",
   });
   const finish = 4;
+  const ref = useRef(null);
+  const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
   return (
     <>
@@ -921,7 +1192,23 @@ function Form8({ title, BASE_URL ,progress,setProgress}) {
       <button
         className={styles.button}
         onClick={() => {
-          setProgress(progress + 20/Object.keys(작성내용).length)
+          let ta = document.getElementsByTagName("textarea");
+          let totallength = 0;
+          for (let i = 0; i < ta.length; i++) {
+            totallength += ta.item(i).textLength;
+          }
+          if (totallength <= 10) {
+
+            ref.current.classList.add(`${styles.open}`);
+            ref2.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref.current.classList.remove(`${styles.open}`);
+              ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
+          setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
             axios.post(
@@ -946,7 +1233,7 @@ function Form8({ title, BASE_URL ,progress,setProgress}) {
                 },
               }
             );
-            setTimeout(2000,navigate(`/feedback/${title}`));
+            setTimeout(2000, navigate(`/feedback/${title}`));
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -957,6 +1244,15 @@ function Form8({ title, BASE_URL ,progress,setProgress}) {
       >
         {finish == 질문번호 + 1 ? "제출하기!" : "다음으로!"}
       </button>
+      <div className={styles.popup} ref={ref}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{"글을 조금 더 입력해주세요!"}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref2}>
+          <span className={styles.progress}></span>
+        </div>
+      </div>
     </>
   );
 }

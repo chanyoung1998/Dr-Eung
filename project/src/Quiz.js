@@ -28,7 +28,7 @@ function Quiz() {
   const ref = useRef(null);
   const ref2 = useRef(null);
   const [popup, setPopup] = useState(false);
-  let  [popuptext,setPopuptext] = useState("");
+  let [popuptext, setPopuptext] = useState("");
   // tab
   let [clicked, setClicked] = useState(0);
   // 클릭한 answer
@@ -41,18 +41,25 @@ function Quiz() {
   // 실제 정답
   let [answer, setAnswer] = useState(null);
   let [wrongcount, setWrongcount] = useState(0);
+  // 푼 정답 statew 저장
+  let [answerstate, setAnswerstate] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   // 문제 풀면 activity로 이동하기 위함.
   let [questionCount, setQuestioncount] = useState(0);
   let navigate = useNavigate();
   if (questionCount == 5) {
-    navigate(`/activity/${title}/${currentChapter}/`);
+    setTimeout(() => {
+      navigate(`/activity/${title}/${currentChapter}/`);
+    }, 3000);
   }
-  const [totalchapter, setTotalChapter] = useState(1);
-  // let totalchapter = 100
-  const [progress, setProgress] = useState(
-    ((currentChapter - 1) / totalchapter) * 60
-  );
+
+  const [progress, setProgress] = useState(0);
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
@@ -106,20 +113,9 @@ function Quiz() {
         axios.spread((res1, res2, res3, res4, res5) => {
           // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
           setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
+          setLoading(false);
         })
       );
-    axios
-      .get(`${BASE_URL}book/${title}`, {
-        headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-        },
-      })
-      .then((res) => {
-        setTotalChapter(res.data.chapters);
-        // totalchapter = res.data.chapters
-        setProgress(((currentChapter - 1) / totalchapter) * 60);
-        setLoading(false);
-      });
   }, []);
 
   if (isLoading) {
@@ -222,34 +218,47 @@ function Quiz() {
                           temp[answerClicked] = true;
                           setAnswer(answerClicked);
                           setImgShow(temp);
-                          setQuestioncount(questionCount + 1);
-                          setProgress(
-                            progress + (1 / 9) * (1 / totalchapter) * 60
-                          );
-                          setPopuptext("정답입니다. 잘 했어요!")
-                          ref.current.classList.add(`${styles.open}`);
-                          ref2.current.classList.add(`${styles.progressbaropen}`);
                           
-                          setTimeout(()=>{
-                            ref.current.classList.remove(`${styles.open}`);
-                            ref2.current.classList.remove(`${styles.progressbaropen}`);
-                          },3000)
+                          setPopuptext("정답입니다. 잘 했어요!");
+                          ref.current.classList.add(`${styles.open}`);
+                          ref2.current.classList.add(
+                            `${styles.progressbaropen}`
+                          );
 
+                          setTimeout(() => {
+                            ref.current.classList.remove(`${styles.open}`);
+                            ref2.current.classList.remove(
+                              `${styles.progressbaropen}`
+                            );
+                          }, 3000);
+
+                          if(answerstate[clicked] == false){
+                            setProgress(progress + 16);
+                            let temp = [...answerstate]
+                            temp[clicked] = true
+                            setAnswerstate(temp)
+                            setQuestioncount(questionCount + 1);
+                          }
+                          
                         } else {
                           let temp = [...imgShow];
                           temp[answerClicked] = true;
                           setImgShow(temp);
                           setWrongcount(wrongcount + 1);
                           setHint(res.data.hint.join(" "));
-                          setPopuptext("한번더 생각해보세요!")
+                          setPopuptext("한번더 생각해보세요!");
 
                           ref.current.classList.add(`${styles.open}`);
-                          ref2.current.classList.add(`${styles.progressbaropenwrong}`);
-                          
-                          setTimeout(()=>{
+                          ref2.current.classList.add(
+                            `${styles.progressbaropenwrong}`
+                          );
+
+                          setTimeout(() => {
                             ref.current.classList.remove(`${styles.open}`);
-                            ref2.current.classList.remove(`${styles.progressbaropenwrong}`);
-                          },3000)
+                            ref2.current.classList.remove(
+                              `${styles.progressbaropenwrong}`
+                            );
+                          }, 3000);
                         }
                       });
                   }

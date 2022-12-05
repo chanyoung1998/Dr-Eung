@@ -25,7 +25,6 @@ function Activity() {
   let navigate = useNavigate();
   const title = param.title;
   const curchapter = Number(param.chapter);
-  
 
   // let [clicked, setClicked] = useState(0);
   let clicked = 0;
@@ -56,11 +55,12 @@ function Activity() {
   const ref3_1 = useRef(null);
   const ref4_1 = useRef(null);
 
-  
-  // let totalchapter = 100;
-  const [totalchapter,setTotalChapter] = useState(100);
+  const ref5 = useRef(null);
+  const ref6 = useRef(null);
+  let [popuptext, setPopuptext] = useState("");
+
   const [progress, setProgress] = useState(0);
-  
+  let [save, setSave] = useState([false, false, false, false]);
 
   useEffect(() => {
     axios
@@ -70,34 +70,23 @@ function Activity() {
             Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
           },
         }),
-        axios.get(`${BASE_URL}book/${title}`, {
-          headers: {
-            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-          },
-        })
       ])
       .then(
-        axios.spread((res,res2)=>{
-          console.log(res2.data)
-          setTotalChapter(res2.data.chapters)
-          setProgress(((curchapter - 1) / totalchapter) * 60 +(5 / 9) * (1 / totalchapter) * 60)
+        axios.spread((res) => {
           setQuestions(res.data);
           setKeyword(res.data.keyword_answer);
           setReason(res.data.reason_answer);
           setSummary(res.data.summary_answer);
           setFeeling(res.data.feeling_answer);
           setLoading(false);
-
         })
-      )
-
+      );
   }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  
   return (
     <>
       <div className={styles.container}>
@@ -116,7 +105,6 @@ function Activity() {
                     id={styles.navlink}
                     eventKey={i}
                     onClick={() => {
-                      
                       clicked = i;
 
                       ref1.current.classList.remove(`${styles.zindex}`);
@@ -184,23 +172,90 @@ function Activity() {
                 src={submiticon}
                 className={styles.submiticon}
                 onClick={() => {
-                  setProgress(progress + (1 / 9) * (1 / totalchapter) * 60);
                   if (clicked == 0) {
+                    if (ref1.current.value.length == 0) {
+                      setPopuptext("핵심 단어를 입력해주세요!");
+
+                      ref5.current.classList.add(`${styles.open}`);
+                      ref6.current.classList.add(
+                        `${styles.progressbaropenwrong}`
+                      );
+
+                      setTimeout(() => {
+                        ref5.current.classList.remove(`${styles.open}`);
+                        ref6.current.classList.remove(
+                          `${styles.progressbaropenwrong}`
+                        );
+                      }, 3000);
+                      return;
+                    }
+
                     setKeyword(ref1.current.value);
-                    // keywordinput = ref.current.value;
                   } else if (clicked == 1) {
+                    if (ref2.current.value.length <= 20) {
+                      setPopuptext("글이 너무 짧아요!");
+
+                      ref5.current.classList.add(`${styles.open}`);
+                      ref6.current.classList.add(
+                        `${styles.progressbaropenwrong}`
+                      );
+
+                      setTimeout(() => {
+                        ref5.current.classList.remove(`${styles.open}`);
+                        ref6.current.classList.remove(
+                          `${styles.progressbaropenwrong}`
+                        );
+                      }, 3000);
+                      return;
+                    }
                     setReason(ref2.current.value);
-                    // reasoninput = ref.current.value;
                   } else if (clicked == 2) {
+                    if (ref3.current.value.length <= 20) {
+                      setPopuptext("글이 너무 짧아요!");
+
+                      ref5.current.classList.add(`${styles.open}`);
+                      ref6.current.classList.add(
+                        `${styles.progressbaropenwrong}`
+                      );
+
+                      setTimeout(() => {
+                        ref5.current.classList.remove(`${styles.open}`);
+                        ref6.current.classList.remove(
+                          `${styles.progressbaropenwrong}`
+                        );
+                      }, 3000);
+                      return;
+                    }
                     setSummary(ref3.current.value);
-                    // summaryinput = ref.current.value;
                   } else if (clicked == 3) {
+                    if (ref4.current.value.length <= 20) {
+                      setPopuptext("글이 너무 짧아요!");
+
+                      ref5.current.classList.add(`${styles.open}`);
+                      ref6.current.classList.add(
+                        `${styles.progressbaropenwrong}`
+                      );
+
+                      setTimeout(() => {
+                        ref5.current.classList.remove(`${styles.open}`);
+                        ref6.current.classList.remove(
+                          `${styles.progressbaropenwrong}`
+                        );
+                      }, 3000);
+                      return;
+                    }
                     setFeeling(ref4.current.value);
-                    // feelinginput = ref.current.value;
+                  }
+
+                  if (save[clicked] == false) {
+                    setProgress(progress + 20);
+                    let temp = [...save];
+                    temp[clicked] = true;
+                    setSave(temp);
+                    
                   }
                 }}
               />
-  
             </Col>
           </Row>
           <div style={{ position: "relative" }}>
@@ -209,26 +264,51 @@ function Activity() {
               ref={ref2}
               className={`${styles.writelayer} ${styles.note} ${styles.ta2}`}
               placeholder="왜 그렇게 생각했나요?"
+              onChange={() => {
+                clicked = 1;
+              }}
+              onFocus={() => {
+                clicked = 1;
+              }}
             ></textarea>
             <textarea
               id="textarea"
               ref={ref3}
               className={`${styles.writelayer} ${styles.note} ${styles.ta3}`}
               placeholder="이번 단원을 4~5문장으로 요약해보세요!"
+              onChange={() => {
+                clicked = 2;
+              }}
+              onFocus={() => {
+                clicked = 2;
+              }}
             ></textarea>
             <textarea
               id="textarea"
               ref={ref4}
               className={`${styles.writelayer} ${styles.note} ${styles.ta4}`}
               placeholder="이번 단원에서 느낀점을 적어보세요!"
+              onChange={() => {
+                clicked = 3;
+              }}
+              onFocus={() => {
+                clicked = 3;
+              }}
             ></textarea>
             <textarea
               id="textarea"
               ref={ref1}
               className={`${styles.writelayer} ${styles.note} ${styles.ta1}`}
               placeholder="이번 단원에서 가장 기억에 남는 단어는 무엇인지 적어보세요!"
-              
-            >{keywordinput}</textarea>
+              onChange={() => {
+                clicked = 0;
+              }}
+              onFocus={() => {
+                clicked = 0;
+              }}
+            >
+              {keywordinput}
+            </textarea>
           </div>
         </div>
       </div>
@@ -237,22 +317,36 @@ function Activity() {
         id={styles.ReadButton}
         size="lg"
         onClick={() => {
-          axios.post(
-            `${BASE_URL}report/${title}/${curchapter}/activity/`,
-            {
-              keyword: keywordinput,
-              reason: reasoninput,
-              summary: summaryinput,
-              feeling: feelinginput,
-            },
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          if (progress == 80) {
+            axios.post(
+              `${BASE_URL}report/${title}/${curchapter}/activity/`,
+              {
+                keyword: keywordinput,
+                reason: reasoninput,
+                summary: summaryinput,
+                feeling: feelinginput,
               },
-            }
-          );
-          navigate(`/reading/${title}/${curchapter + 1}/1`);
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization:
+                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                },
+              }
+            );
+            navigate(`/reading/${title}/${curchapter + 1}/1`);
+          } else {
+            setPopuptext("작성하지 않은 항목이 있어요!");
+
+            ref5.current.classList.add(`${styles.open}`);
+            ref6.current.classList.add(`${styles.progressbaropenwrong}`);
+
+            setTimeout(() => {
+              ref5.current.classList.remove(`${styles.open}`);
+              ref6.current.classList.remove(`${styles.progressbaropenwrong}`);
+            }, 3000);
+            return;
+          }
         }}
       >
         제출하기
@@ -272,7 +366,8 @@ function Activity() {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization:
+                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
                 },
               }
             );
@@ -284,39 +379,40 @@ function Activity() {
         </button>
       </div>
       <Button id={styles.leftButton}>
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            size="6x"
-            onClick={() => {
-              setLoading(true);
-              axios.post(
-                `${BASE_URL}report/${title}/${curchapter}/activity/`,
-                {
-                  keyword: keywordinput,
-                  reason: reasoninput,
-                  summary: summaryinput,
-                  feeling: feelinginput,
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          size="6x"
+          onClick={() => {
+            setLoading(true);
+            axios.post(
+              `${BASE_URL}report/${title}/${curchapter}/activity/`,
+              {
+                keyword: keywordinput,
+                reason: reasoninput,
+                summary: summaryinput,
+                feeling: feelinginput,
+              },
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization:
+                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
                 },
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-                  },
-                }
-              );
-              navigate(`/quiz/${title}/${curchapter}`);
-            }}
-          />
-        </Button>
-        <Button id={styles.rightButton}>
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            size="6x"
-            onClick={() => {
-              navigate(1);
-            }}
-          />
-        </Button>
+              }
+            );
+            navigate(`/quiz/${title}/${curchapter}`);
+          }}
+        />
+      </Button>
+      <Button id={styles.rightButton}>
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          size="6x"
+          onClick={() => {
+            navigate(1);
+          }}
+        />
+      </Button>
       <div className={styles.ProgressContainer}>
         <ul>
           <div>{`${curchapter}단원 활동`}</div>
@@ -332,6 +428,15 @@ function Activity() {
             />
           </li>
         </ul>
+      </div>
+      <div className={styles.popup} ref={ref5}>
+        <img src={owl} />
+        <div className={styles.popuptext}>
+          <p>{popuptext}</p>
+        </div>
+        <div className={styles.progressbar} ref={ref6}>
+          <span className={styles.progress}></span>
+        </div>
       </div>
     </>
   );
