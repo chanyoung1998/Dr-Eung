@@ -227,6 +227,10 @@ button:active{
     );
     background-size: 100% 2em;
 }
+.button{
+    color:black;
+
+}
 
 .note > p {
     margin: 0;

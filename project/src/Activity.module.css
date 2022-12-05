@@ -374,16 +374,20 @@
   transition: all 800ms cubic-bezier(0.8, 0, 0.33, 1);
   border-radius: 20px;
   box-shadow: 5px 5px 0 #b4afaf;
+  z-index: 999;
 }
 .open{
   transform: translateX(10px);
+  z-index: 999;
 }
 
 .popup img {
   width: 190px;
+  z-index: 999;
 }
 .popuptext{
   position: relative;
+  z-index: 999;
 }
 .popuptext p{
   color: white;
@@ -391,7 +395,8 @@
   position: absolute;
   top:50%;
   left:50%;
-  transform:translate(-50%,-50%)
+  transform:translate(-50%,-50%);
+  z-index: 999;
 
 }
 .progressbar {
@@ -401,6 +406,7 @@
   overflow: hidden;
   background: #e0ae7c(255, 255, 255);
   position: relative;
+  z-index: 999;
 }
 .progressbaropen {
   content: "";
@@ -411,6 +417,7 @@
   width: 0;
   background: #3eef27;
   animation: progress 3s ease forwards 1;
+  z-index: 999;
 }
 
 .progressbaropenwrong {
@@ -422,6 +429,7 @@
   width: 0;
   background: #f41a1a;
   animation: progress 3s ease forwards 1;
+  z-index: 999;
 }
 @keyframes progress {
   0% {

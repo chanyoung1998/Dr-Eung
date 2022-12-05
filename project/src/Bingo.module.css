@@ -1,12 +1,24 @@
-
+.logo{
+  position: absolute;
+  background-image: url('./img/logo.png');
+  background-repeat: no-repeat;
+  background-size:cover;
+  opacity: 0.5;
+  width: 100vh;
+  height: 50vh;
+  top: 40%;
+  left:55%;
+  transform: translate(-50%,-50%);
+}
 
 .boardwrapper{
     position: absolute;
-    transform: translate(10%,10%);
+    left:50%;
+    transform: translate(-45%,10%);
     display: grid;
     width: 140vh;
     grid-template-columns: 1fr 1fr;
-    column-gap: 10vh;
+    column-gap: 10vh; 
 
 }
 
@@ -55,8 +67,8 @@
 }
 .usercell{
     position: relative;
-    width: 15vh;
-    height: 15vh;
+    width: 18vh;
+    height: 18vh;
     margin: 10px;
     background: rgb(240, 217, 177);
     border-radius: 20%;
@@ -79,8 +91,8 @@
 
 
 .flip {
-  width: 15vh;
-  height: 15vh;
+  width: 18vh;
+  height: 18vh;
   margin: 10px;
   perspective: 1100px;
 }
@@ -129,7 +141,7 @@
 
 .inputwrapper {
   position: absolute;
-  bottom:0%;
+  bottom:0;
   display: grid;
   grid-template-rows: 1fr;
   width: 15em;
@@ -148,11 +160,11 @@
   transform: translate(0,-7px);
   box-shadow: 2px 2px 2px gray;
 }
-.turnbutton{
+/* .turnbutton{
     position: absolute;
-    top:50%;
+    bottom:0%;
     left:50%;
-    transform: translate(-75%,-50%);
+    transform: translate(650%,-50%);
     height: 12vh;  
     width:12vh;
     border-radius: 40%;
@@ -160,7 +172,30 @@
 }
 .turnbutton:hover{
     background-color: #af2d2d;
+} */
+
+.turnbutton{
+  position: absolute;
+  bottom:0%;
+  left:50%;
+  transform: translate(398%,-50%);
+  height: 60px;
+  width: 150px;
+  min-height: 50px;
+  color:rgba(255, 255, 255, 0.781);
+  background-color: #704f4f;
+  box-shadow: 3px 5px 0 #472d2d;
+  
 }
+.turnbutton:hover{
+
+  background-color: #722f2f;
+
+}
+
+
+
+
 .startbutton{
     height: 15vh;  
     width:15vh;
@@ -283,8 +318,8 @@
     right: 47%;
     bottom: 20vh;
     /* transform: translate(-100%, -50%); */
-    height: 70px;
-    width: 150px;
+    height: 80px;
+    width: 200px;
     min-height: 50px;
     color:rgba(255, 255, 255, 0.781);
     background-color: #704f4f;

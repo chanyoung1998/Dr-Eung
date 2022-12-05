@@ -166,12 +166,14 @@
 #ReadButton {
   position: absolute;
   top: 80%;
-  left: 50%;
+  left: 45%;
   transform: translateX(-50%);
   color: black;
   background-color: rgb(146, 66, 66);
   border: none;
   border-color: rgb(218, 221, 224);
+  box-shadow: 3px 5px 0 #472d2d;
+  /* width: 100px; */
 }
 
 #ReadButton:hover {

@@ -175,7 +175,7 @@ function Activity() {
                 className={styles.submiticon}
                 onClick={() => {
                   if (clicked == 0) {
-                    if (ref1.current.value.length == 0) {
+                    if (ref1.current.value.length < 3) {
                       setPopuptext("핵심 단어를 입력해주세요!");
 
                       ref5.current.classList.add(`${styles.open}`);

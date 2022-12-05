@@ -10,7 +10,7 @@ import { parse } from "@fortawesome/fontawesome-svg-core";
 function Bingo() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
-  const TOKEN = localStorage.getItem('TOKEN')
+  const TOKEN = localStorage.getItem("TOKEN");
   const param = useParams();
   const title = param.title;
   const navigate = useNavigate();
@@ -94,7 +94,8 @@ function Bingo() {
 
   return (
     <div className={styles.popbody}>
-      <h1>엉박사와 함께하는 {title} 빙고</h1>
+      {/* <h1>엉박사와 함께하는 {title} 빙고</h1> */}
+      <div className={styles.logo}></div>
       <div className={styles.boardwrapper}>
         <BoardUser
           userKeyword={userKeyword}
@@ -106,6 +107,7 @@ function Bingo() {
           setBingo={setBingo}
           contentsCom={contentsCom}
           setFinish={setFinish}
+          title={title}
         />
         <BoardComputer
           contents={contentsCom}
@@ -124,18 +126,7 @@ function Bingo() {
           bingo={bingo}
         />
       ) : (
-        <div>
-          <button
-            className={styles.finishbutton}
-            onClick={() => {
-              navigate("/home");
-            } 
-            }
-          >
-            {finish == 1 ? "이겼습니다!" : "다음 기회에.."}
-          </button>
-          {pop()}
-        </div>
+        pop()
       )}
     </div>
   );
@@ -186,7 +177,10 @@ function BoardUser({
   setBingo,
   contentsCom,
   setFinish,
+  title,
 }) {
+  const navigate = useNavigate();
+
   let [turn, setTurn] = useState(0);
   let [userclicked, setUserClicked] = useState([
     false,
@@ -241,8 +235,22 @@ function BoardUser({
 
   if (userbingo >= 3) {
     setFinish(1);
+    setTimeout(() => {
+      navigate(`/feedback/${title}`);
+      const p = document.getElementsByTagName("particule");
+      for (let i = 0; i < p.length; i++) {
+        p[i].remove();
+      }
+    }, 3000);
   } else if (computerbingo >= 3) {
     setFinish(2);
+    setTimeout(() => {
+      navigate(`/feedback/${title}`);
+      const p = document.getElementsByTagName("particule");
+      for (let i = 0; i < p.length; i++) {
+        p[i].remove();
+      }
+    }, 3000);
   }
 
   return (
@@ -353,10 +361,12 @@ function Input({ userKeyword, setUserKeyword, start, setStart, bingo }) {
                       temp.push(ref.current.value);
                       setUserKeyword(temp);
                       ref.current.value = "";
+                    } else {
+                      setStart(true);
                     }
                   }}
                 >
-                  단어 추가
+                  {userKeyword.length < 9 ? "단어 추가" : "시작 하기"}
                 </button>
               </div>
               <div>
@@ -415,19 +425,6 @@ function Input({ userKeyword, setUserKeyword, start, setStart, bingo }) {
                 </div>
               );
             })}
-
-            {userKeyword.length == 9 ? (
-              <button
-                className={styles.startbutton}
-                onClick={() => {
-                  setStart(true);
-                }}
-              >
-                시작하기
-              </button>
-            ) : (
-              ""
-            )}
           </div>
         </div>
       ) : (

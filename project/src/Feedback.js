@@ -117,6 +117,7 @@ function Feedback() {
           </div>
           <div className={styles.correctbtnbox}>
             <button
+              className={styles.button}
               onClick={() => {
                 btn == 0 ? setBtn(1) : setBtn(0);
               }}
@@ -127,6 +128,7 @@ function Feedback() {
         </div>
         <div className={styles.titleright}>
           <button
+            className={styles.button}
             onClick={() => {
               navigate("/home");
               // 마이페이지로 연결

@@ -164,15 +164,18 @@ p.title {
 .container {
   position: relative;
   height: 80vh;
+  /* background-image: url('./img/books.png'); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
 }
 .bookimg {
   position: absolute;
-  top: 25%;
+  top: 0%;
   left: 0%;
   /* transform: translate(-30%,-50%); */
 
-  width: 90%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   /* height: 300px; */
   /* min-width: 350px; */
 }

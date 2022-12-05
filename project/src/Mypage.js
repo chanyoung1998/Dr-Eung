@@ -166,7 +166,7 @@ function Mypage() {
             size="lg"
             onClick={() => setShow(true)}
           >
-            꾸미러 가기
+            꾸미기
           </Button>
         </div>
       </div>

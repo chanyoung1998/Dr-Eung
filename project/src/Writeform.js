@@ -245,8 +245,6 @@ function Form0({
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                  작성내용.제목0 +
-                  "\n\n" +
                   작성내용.질문1.인터뷰1 +
                   "\n\n" +
                   작성내용.질문1.내용1 +
@@ -516,10 +514,10 @@ function Form2({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                  작성내용.질문0.제목1 +
-                  "\n\n" +
-                  작성내용.질문0.제목2 +
-                  "\n\n" +
+                  // 작성내용.질문0.제목1 +
+                  // "\n\n" +
+                  // 작성내용.질문0.제목2 +
+                  // "\n\n" +
                   작성내용.질문1 +
                   "\n\n" +
                   작성내용.질문2 +
@@ -629,7 +627,9 @@ function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
-                original: 작성내용.질문0.제목0 + "\n\n" + 작성내용.질문0.내용0,
+                original:
+                //  작성내용.질문0.제목0 + "\n\n" + 
+                 작성내용.질문0.내용0,
                 title: 작성내용.질문0.제목0,
                 format: "3",
               },
@@ -741,7 +741,9 @@ function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
-                original: 작성내용.질문0 + "\n\n" + 작성내용.질문1,
+                original:
+                //  작성내용.질문0 + "\n\n" +
+                  작성내용.질문1,
                 title: 작성내용.질문0,
                 format: "4",
               },
@@ -846,11 +848,13 @@ function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
           setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
-            // console.log(작성내용.질문0.split('\r\n').join("") + "\n\n" + 작성내용.질문1.split('\r\n').join(""))
+
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
-                original: 작성내용.질문0 + "\n\n" + 작성내용.질문1,
+                original:
+                //  작성내용.질문0 + "\n\n" + 
+                 작성내용.질문1,
                 title: 작성내용.질문0,
                 format: "5",
               },
@@ -976,8 +980,8 @@ function Form6({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                  작성내용.질문0 +
-                  "\n\n" +
+                  // 작성내용.질문0 +
+                  // "\n\n" +
                   작성내용.질문1 +
                   "\n\n" +
                   작성내용.질문2 +
@@ -1092,8 +1096,8 @@ function Form7({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                  작성내용.질문0 +
-                  "\n\n" +
+                  // 작성내용.질문0 +
+                  // "\n\n" +
                   작성내용.질문1 +
                   "\n\n" +
                   작성내용.질문2 +
@@ -1211,8 +1215,8 @@ function Form8({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                  작성내용.질문0 +
-                  "\n\n" +
+                  // 작성내용.질문0 +
+                  // "\n\n" +
                   작성내용.질문1 +
                   "\n\n" +
                   작성내용.질문2 +
