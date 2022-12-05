@@ -50,13 +50,15 @@ function ReportWriting() {
   ]);
   const [isLoading, setLoading] = useState(true);
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   const navigate = useNavigate();
   
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/${title}/`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((d) => {

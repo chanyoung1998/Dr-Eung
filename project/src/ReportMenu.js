@@ -21,13 +21,15 @@ function ReportMenu() {
   let [report, setReport] = useState([{}]);
   let [report_key,setReportKey] = useState([]);
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
 
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/list/`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((data) => {
@@ -205,6 +207,7 @@ function Report({ index, report_indexed }) {
         style={{
           background: `${bgColor}`,
           backgroundImage: `linear-gradient(to right,${bColor} 5px, ${bColor} 5px, transparent 7px)`,
+          wordBreak:"break-all"
         }}
       >
         <p className={styles.title} style={{ color: `${fColor}` }}>

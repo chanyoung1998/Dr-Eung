@@ -62,6 +62,8 @@ function Quiz() {
   const [progress, setProgress] = useState(0);
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
 
   useEffect(() => {
@@ -71,7 +73,7 @@ function Quiz() {
           `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${1}`,
           {
             headers: {
-              Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+              Authorization: TOKEN,
             },
           }
         ),
@@ -79,7 +81,7 @@ function Quiz() {
           `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${2}`,
           {
             headers: {
-              Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+              Authorization: TOKEN,
             },
           }
         ),
@@ -87,7 +89,7 @@ function Quiz() {
           `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${3}`,
           {
             headers: {
-              Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+              Authorization: TOKEN,
             },
           }
         ),
@@ -95,7 +97,7 @@ function Quiz() {
           `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${4}`,
           {
             headers: {
-              Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+              Authorization: TOKEN,
             },
           }
         ),
@@ -103,7 +105,7 @@ function Quiz() {
           `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${5}`,
           {
             headers: {
-              Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+              Authorization: TOKEN,
             },
           }
         ),
@@ -208,7 +210,7 @@ function Quiz() {
                           headers: {
                             "Content-Type": "multipart/form-data",
                             Authorization:
-                              "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                              TOKEN,
                           },
                         }
                       )
@@ -303,7 +305,7 @@ function Quiz() {
                 .get(`${BASE_URL}book/${title}/${currentChapter}/?page=1`, {
                   headers: {
                     Authorization:
-                      "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                      TOKEN,
                   },
                 })
                 .then((data) => {

@@ -8,8 +8,8 @@ import owl from "./img/owl.png";
 import leftimg from "./img/loginleft.png";
 import rightimg from "./img/loginright.png";
 import logo from "./img/logo.png";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import {changeToken} from "./store.js"
 
 /*
   해야되는거
@@ -35,6 +35,7 @@ function Login() {
 
   const token = "";
   let navigate = useNavigate();
+  let dispatch = useDispatch();
   const handleLogin = () => {
     console.log(idInput, passwordInput)
     axios
@@ -42,6 +43,10 @@ function Login() {
       .then((data) => {
         if (data.status === 200) {
           let token = data.data.token;
+          console.log(token)
+          localStorage.setItem('TOKEN','Token '+String(token))
+          dispatch(changeToken(token))
+
           navigate('/home')
 
         } else {

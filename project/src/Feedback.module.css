@@ -81,12 +81,13 @@ button:active{
 
 .contents{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50vw 50vw;
     white-space: pre-line;
     width:100vw;
 }
 
 .notes {
+    word-break: break-all;
     overflow-y:scroll ;
     font-size: 1.5rem;
     background-attachment: local;
@@ -105,6 +106,7 @@ button:active{
     border-radius: 20px;
     box-shadow: 5px 5px 5px gray;
     height: 84vh;
+    
 }
 .notes::-webkit-scrollbar {
     width: 10px; /* 스크롤바의 너비 */

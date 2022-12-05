@@ -3,12 +3,9 @@
   position: relative;
   cursor: pointer;
   backface-visibility: visible;
-  display:inline-block;
+  display: inline-block;
   height: 260px;
-  margin-right: 15%;
-  margin-left: 15%;
-  
-  
+  margin-right: 400px;
 }
 
 .front,
@@ -29,11 +26,11 @@
   transition: transform 0.5s ease-in-out, box-shadow 0.35s ease-in-out;
 }
 
-
-
-.front{
-    
-    box-shadow: inset -1px 0px 0px 0px #f3f2f0, inset -2px 1px 0px 0px #d8d3bd ,inset -3px 2px 0px 0px #f3f2f0, inset -4px 0px 0px 0px #d8d3bd ,inset -5px 0px 0px 0px #f3f2f0, inset -6px 0px 0px 0px #d8d3bd  ,inset -7px 0px 0px 0px #f3f2f0, inset -8px 0px 0px 0px #d8d3bd  ;  
+.front {
+  box-shadow: inset -1px 0px 0px 0px #f3f2f0, inset -2px 1px 0px 0px #d8d3bd,
+    inset -3px 2px 0px 0px #f3f2f0, inset -4px 0px 0px 0px #d8d3bd,
+    inset -5px 0px 0px 0px #f3f2f0, inset -6px 0px 0px 0px #d8d3bd,
+    inset -7px 0px 0px 0px #f3f2f0, inset -8px 0px 0px 0px #d8d3bd;
 }
 
 .front,
@@ -80,127 +77,109 @@
   transform: rotateY(-160deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-  
 }
 
 .book:hover .page1 {
   transform: rotateY(-150deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-
 }
 
 .book:hover .page2 {
   transform: rotateY(-30deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-  
 }
 
 .book:hover .page3 {
   transform: rotateY(-140deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-
 }
 
 .book:hover .page4 {
   transform: rotateY(-40deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-  
 }
 
 .book:hover .page5 {
   transform: rotateY(-130deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-  
 }
 
 .book:hover .page6 {
   transform: rotateY(-50deg) scale(1.1);
   box-shadow: 0 1em 3em 0 rgba(0, 0, 0, 0.2);
   height: 280px;
-  
 }
 
 .book:hover .back {
   transform: rotateY(-20deg) scale(1.1);
   height: 280px;
-  
 }
-
 
 .scrollmenu {
-    width:100%;
-    overflow-y:hidden;
-    overflow-x: auto;
-    white-space: nowrap;
-    box-sizing: border-box;
-    /* margin-top: 5%; */
-    padding:5%;
-    /* margin-left:25%; */
-    
-}
+  width: 75%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+  box-sizing: border-box;
   
-.scrollmenu::-webkit-scrollbar{
-    
-    height: 10px;
+  padding: 5%;
+  position: absolute;
+  left:50%;
+  transform: translate(-50%,0);
 }
 
-.scrollmenu::-webkit-scrollbar-thumb{
-    display: none; 
-    background-color: rgb(214, 181, 163); /*스크롤바의 색상*/
-    /* background-clip: padding-box; */
-    border: 5px solid transparent;
-    border-radius: 10px;
-    
+.scrollmenu::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-#dropdownItemButton{
-    color: black;
-    font-weight: bold;
-    background-color: white;
-    border-color: rgb(218, 221, 224);
+.scrollmenu::-webkit-scrollbar-thumb {
+  /* display: none;  */
+
+  background-color: rgb(214, 181, 163); /*스크롤바의 색상*/
+  /* background-clip: padding-box; */
+  border: 5px solid transparent;
+  border-radius: 10px;
 }
 
-p.title{
-
-padding:5% 10% 5% 5%;
-white-space: normal;
-line-height: 1.2;
-font-size: 20px;
-
-
+#dropdownItemButton {
+  color: black;
+  font-weight: bold;
+  background-color: white;
+  border-color: rgb(218, 221, 224);
 }
 
-.container{
+p.title {
+  padding: 5% 10% 5% 5%;
+  white-space: normal;
+  line-height: 1.2;
+  font-size: 20px;
+}
+
+.container {
   position: relative;
   height: 80vh;
 }
-.bookimg{
+.bookimg {
   position: absolute;
-  top:25%;
-  left:0%;
+  top: 25%;
+  left: 0%;
   /* transform: translate(-30%,-50%); */
 
   width: 90%;
   height: 80%;
   /* height: 300px; */
   /* min-width: 350px; */
-
 }
 
-
-
-#itembutton:active{
-  
+#itembutton:active {
   background-color: rgb(167, 167, 167);
 }
 
-
 @media (max-width: 900px) {
-
-  
 }

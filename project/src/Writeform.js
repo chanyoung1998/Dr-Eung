@@ -19,9 +19,10 @@ function Writefrom() {
   const formnum = param.formnum;
   const title = param.title;
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   const [progress, setProgress] = useState(60);
   const navigate = useNavigate();
-
 
   return (
     <>
@@ -33,55 +34,63 @@ function Writefrom() {
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
- 
+              TOKEN={TOKEN}
             />,
             <Form1
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form2
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form3
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form4
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form5
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form6
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form7
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
             <Form8
               title={title}
               BASE_URL={BASE_URL}
               progress={progress}
               setProgress={setProgress}
+              TOKEN={TOKEN}
             />,
           ][formnum]
         }
@@ -112,7 +121,6 @@ function Writefrom() {
           </ul>
         </div>
       </div>
-      
     </>
   );
 }
@@ -123,7 +131,7 @@ function Form0({
   progress,
   setProgress,
   setPopuptext,
-
+  TOKEN,
 }) {
   let navigate = useNavigate();
   const 질문 = [
@@ -217,7 +225,6 @@ function Form0({
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -267,8 +274,7 @@ function Form0({
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -300,7 +306,7 @@ function Form0({
   );
 }
 
-function Form1({ title, BASE_URL, progress, setProgress }) {
+function Form1({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "누구에게 편지를 쓸지 생각해보세요! 책속에 등장하는 인물뿐만 아니라 무생물이나 동물에게도 적용할 수 있어요!",
@@ -368,7 +374,6 @@ function Form1({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -397,8 +402,7 @@ function Form1({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -424,7 +428,7 @@ function Form1({ title, BASE_URL, progress, setProgress }) {
     </>
   );
 }
-function Form2({ title, BASE_URL, progress, setProgress }) {
+function Form2({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     ["감상문의 제목을 적어보세요!", "비교할 책 제목이 뭔가요?"],
@@ -494,7 +498,6 @@ function Form2({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -526,8 +529,7 @@ function Form2({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -555,7 +557,7 @@ function Form2({ title, BASE_URL, progress, setProgress }) {
   );
 }
 
-function Form3({ title, BASE_URL, progress, setProgress }) {
+function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "책에서 인상 깊었던 구절이 있나요? 시의 제목을 생각해보세요!",
@@ -610,7 +612,6 @@ function Form3({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -633,8 +634,7 @@ function Form3({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -662,7 +662,7 @@ function Form3({ title, BASE_URL, progress, setProgress }) {
   );
 }
 
-function Form4({ title, BASE_URL, progress, setProgress }) {
+function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "비평문의 제목을 적어보세요!",
@@ -724,7 +724,6 @@ function Form4({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -747,8 +746,7 @@ function Form4({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -776,7 +774,7 @@ function Form4({ title, BASE_URL, progress, setProgress }) {
   );
 }
 
-function Form5({ title, BASE_URL, progress, setProgress }) {
+function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -834,7 +832,6 @@ function Form5({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -847,6 +844,7 @@ function Form5({ title, BASE_URL, progress, setProgress }) {
           setProgress(progress + 20 / Object.keys(작성내용).length);
           if (finish == 질문번호 + 1) {
             console.log("제출");
+            // console.log(작성내용.질문0.split('\r\n').join("") + "\n\n" + 작성내용.질문1.split('\r\n').join(""))
             axios.post(
               `${BASE_URL}report/${title}/`,
               {
@@ -857,12 +855,13 @@ function Form5({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setTimeout(() => {
+              navigate(`/feedback/${title}`);
+            }, 1000);
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -886,7 +885,7 @@ function Form5({ title, BASE_URL, progress, setProgress }) {
   );
 }
 
-function Form6({ title, BASE_URL, progress, setProgress }) {
+function Form6({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -959,7 +958,6 @@ function Form6({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -989,8 +987,7 @@ function Form6({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -1017,7 +1014,7 @@ function Form6({ title, BASE_URL, progress, setProgress }) {
     </>
   );
 }
-function Form7({ title, BASE_URL, progress, setProgress }) {
+function Form7({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -1077,7 +1074,6 @@ function Form7({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -1107,8 +1103,7 @@ function Form7({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );
@@ -1136,7 +1131,7 @@ function Form7({ title, BASE_URL, progress, setProgress }) {
   );
 }
 
-function Form8({ title, BASE_URL, progress, setProgress }) {
+function Form8({ title, BASE_URL, progress, setProgress, TOKEN }) {
   let navigate = useNavigate();
   const 질문 = [
     "감상문의 제목을 적어보세요!",
@@ -1198,7 +1193,6 @@ function Form8({ title, BASE_URL, progress, setProgress }) {
             totallength += ta.item(i).textLength;
           }
           if (totallength <= 10) {
-
             ref.current.classList.add(`${styles.open}`);
             ref2.current.classList.add(`${styles.progressbaropenwrong}`);
 
@@ -1228,8 +1222,7 @@ function Form8({ title, BASE_URL, progress, setProgress }) {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );

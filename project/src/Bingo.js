@@ -9,6 +9,8 @@ import { parse } from "@fortawesome/fontawesome-svg-core";
 
 function Bingo() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   const param = useParams();
   const title = param.title;
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ function Bingo() {
     axios
       .get(`${BASE_URL}book/${title}/keywords?num=9`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((res) => {

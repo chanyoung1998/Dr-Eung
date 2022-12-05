@@ -34,6 +34,7 @@ function BookMenu() {
   let [searchedbook, setSearchedbook] = useState({});
   let [next, setNext] = useState(null);
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  const TOKEN = useSelector((state) => state.TOKEN);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,12 +42,12 @@ function BookMenu() {
       .all([
         axios.get(`${BASE_URL}book/list/`, {
           headers: {
-            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+            Authorization: TOKEN,
           },
         }),
         axios.get(`${BASE_URL}report/list/`, {
           headers: {
-            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+            Authorization: TOKEN,
           },
         }),
       ])
@@ -101,7 +102,7 @@ function BookMenu() {
                                 {
                                   headers: {
                                     Authorization:
-                                      "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                                      TOKEN,
                                   },
                                 }
                               )
@@ -201,7 +202,7 @@ function BookMenu() {
                             .get(`${next}`, {
                               headers: {
                                 Authorization:
-                                  "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                                  TOKEN,
                               },
                             })
                             .then((res) => {

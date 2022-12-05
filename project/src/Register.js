@@ -13,10 +13,12 @@ import Input from "./Input";
 import axios from "axios";
 import leftimg from "./img/loginleft.png";
 import rightimg from "./img/loginright.png";
+import { useSelector } from "react-redux";
 
 function Register() {
   // const LOGIN_URL = "#";
-  const REGISTER_API_URL = "http://3.38.215.109";
+  // const REGISTER_API_URL = "http://3.38.215.109";
+  const BASE_URL = useSelector((state) => state.BASE_URL);
 
   const [inputField, setInput] = useState({
     idInput: "",
@@ -75,7 +77,7 @@ function Register() {
       }
     } else {
       axios
-        .post(REGISTER_API_URL + "/register/", {
+        .post(BASE_URL + "register/", {
           username: idInput,
           password: passwordInput,
           password2: passwordCheckInput,
@@ -109,7 +111,7 @@ function Register() {
   const handleIdCheck = () => {
     setIdCheck(true);
     axios
-      .get(REGISTER_API_URL + "/register/id?id=" + inputField.idInput)
+      .get(BASE_URL + "register/id?id=" + inputField.idInput)
       .then((data) => {
         console.log(data)
         if (!data.data) {
@@ -141,7 +143,7 @@ function Register() {
                 border={[activeBorder, setActiveBorder]}
                 input={[inputField, setInput]}
                 setIdCheck={setIdCheck}
-                url={REGISTER_API_URL}
+                url={BASE_URL}
               />
               <div className={styles.btns}>
                 <btn className={styles.btn} onClick={() => handleRegister()}>

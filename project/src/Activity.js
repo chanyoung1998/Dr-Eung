@@ -1,5 +1,5 @@
 /*eslint-disable */
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParam } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Nav, Modal, Row, Col, Button } from "react-bootstrap";
 import styles from "./Activity.module.css";
@@ -21,6 +21,8 @@ import owl from "./img/owl.png";
 import { useSelector } from "react-redux";
 
 function Activity() {
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   let param = useParams();
   let navigate = useNavigate();
   const title = param.title;
@@ -61,13 +63,13 @@ function Activity() {
 
   const [progress, setProgress] = useState(0);
   let [save, setSave] = useState([false, false, false, false]);
-
+  console.log(TOKEN)
   useEffect(() => {
     axios
       .all([
         axios.get(`${BASE_URL}report/${title}/${curchapter}/activity/`, {
           headers: {
-            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+            Authorization: TOKEN,
           },
         }),
       ])
@@ -366,8 +368,7 @@ function Activity() {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization:TOKEN,
                 },
               }
             );
@@ -395,8 +396,7 @@ function Activity() {
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
-                  Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                  Authorization: TOKEN,
                 },
               }
             );

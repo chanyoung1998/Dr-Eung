@@ -40,7 +40,9 @@ import noBg from "./img/defaultBg.png"
 
 function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
-
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
+  console.log(TOKEN)
   let [profile, setProfile] = useState({});
   const [ability, setAbility] = useState([]);
   const [score1, setScore1] = useState([0, 0, 0, 0, 0]);
@@ -78,7 +80,7 @@ function Mypage() {
     axios
       .get(`${BASE_URL}MyPage/`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((data) => {
@@ -91,9 +93,10 @@ function Mypage() {
         setActivities(data.data.activities.recent);
         setTier(data.data.tier);
         setCharacter("owl" + (tier + 1).toString());
-        setLoading(false);
         setBg(profile["bg"])
         setCurrentParts(profile["parts"])
+        
+        setLoading(false);
       });
   }, [tier]);
 
@@ -120,6 +123,7 @@ function Mypage() {
         setCharacter={setCharacter}
         currentParts={currentParts}
         setCurrentParts={setCurrentParts}
+        TOKEN={TOKEN}
       />
       <div className={styles.innerLayout}>
         <div className={styles.innerinnerLayout} align="left">
@@ -420,7 +424,7 @@ function CustomRadar(props) {
   );
 }
 
-function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts}){
+function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts,TOKEN}){
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [tab, setTab] = useState(0);
   useEffect(() => {
@@ -428,7 +432,7 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
     .put(`${BASE_URL}updateImg/`, { bg: bg, acc: currentParts }, {
       headers: { 
         "Content-Type": "multipart/form-data",
-        Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf"
+        Authorization: TOKEN
       }}).then((data)=>{
         console.log(data) 
       })
@@ -603,6 +607,7 @@ function Parts({character, setCharacter, setShow, currentParts, setCurrentParts,
     } else {
       setCharacter(character.substr(0,4))
     }
+
 
     setTab(0)
     setShow(false)

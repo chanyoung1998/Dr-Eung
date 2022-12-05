@@ -22,7 +22,8 @@ function Read() {
   let curpage = Number(param.page);
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
-
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   let navigate = useNavigate();
 
   let [LeftTexts, setLeftTexts] = useState([]);
@@ -55,7 +56,7 @@ function Read() {
     axios
       .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage + 1}`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((data) => {
@@ -66,7 +67,7 @@ function Read() {
     axios
       .get(`${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage}`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((data) => {
@@ -80,7 +81,7 @@ function Read() {
         `${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage + 1}`,
         {
           headers: {
-            Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+            Authorization: TOKEN,
           },
         }
       )
@@ -150,7 +151,7 @@ function Read() {
               .get(`${BASE_URL}book/dictionary?word=${selected}`, {
                 headers: {
                   Authorization:
-                    "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                    TOKEN,
                 },
               })
               .then((res) => {
@@ -195,7 +196,7 @@ function Read() {
                       {
                         headers: {
                           Authorization:
-                            "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+                            TOKEN,
                         },
                       }
                     )

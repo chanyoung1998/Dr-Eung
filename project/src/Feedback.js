@@ -6,7 +6,7 @@ import owl from "./img/owl.png";
 import bookstack from "./img/bookstack.png";
 import stamp from "./img/stamp.png";
 import { useNavigate, useParams } from "react-router-dom";
-
+import Loading from "./Loading.js"
 function Feedback() {
   let param = useParams();
   const book = param.title;
@@ -18,13 +18,15 @@ function Feedback() {
   let [btn, setBtn] = useState(0);
   const navigate = useNavigate();
   const BASE_URL = useSelector((state) => state.BASE_URL);
+  // const TOKEN = useSelector((state) => state.TOKEN);
+  const TOKEN = localStorage.getItem('TOKEN')
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`${BASE_URL}report/${book}/feedback/`, {
         headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+          Authorization: TOKEN,
         },
       })
       .then((data) => {
@@ -86,7 +88,8 @@ function Feedback() {
           flag = false;
         } else {
           if (original_red.charAt(i) == "\n") {
-            original_red2 += "<br>";
+            // 안되면 <br>넣기
+            original_red2 += "";
           } else {
             original_red2 += original_red.charAt(i);
           }
@@ -96,13 +99,13 @@ function Feedback() {
     }
     console.log(original)
     console.log(correct)
-    console.log(original_red)
+    console.log(original_red2)
 
     return original_red2;
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   return (
@@ -138,7 +141,7 @@ function Feedback() {
         <div className={styles.report} align="left">
           <div className={styles.note}>
             {btn == 0 ? (
-              <span dangerouslySetInnerHTML={{ __html: original_red2 }}></span>
+              <span style={{wordBreak:"break-all"}} dangerouslySetInnerHTML={{ __html: original_red2 }}></span>
             ) : (
               correct
             )}
