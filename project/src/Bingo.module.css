@@ -16,9 +16,9 @@
     left:50%;
     transform: translate(-45%,10%);
     display: grid;
-    width: 140vh;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 10vh; 
+    width: 70vw;
+    grid-template-columns: 35vw 35vw;
+    /* column-gap: 10vh;  */
 
 }
 
@@ -30,7 +30,7 @@
     "cell1 cell2 cell3"
     "cell4 cell5 cell6"
     "cell7 cell8 cell9";
-  width: 60vh;
+  width: 30vw;
   /* display: none; */
 }
 
@@ -67,8 +67,8 @@
 }
 .usercell{
     position: relative;
-    width: 18vh;
-    height: 18vh;
+    width: 8vw;
+    height: 8vw;
     margin: 10px;
     background: rgb(240, 217, 177);
     border-radius: 20%;
@@ -91,8 +91,8 @@
 
 
 .flip {
-  width: 18vh;
-  height: 18vh;
+  width: 8vw;
+  height: 8vw;
   margin: 10px;
   perspective: 1100px;
 }
@@ -159,6 +159,7 @@
   height: 3em;
   transform: translate(0,-7px);
   box-shadow: 2px 2px 2px gray;
+  color:black;
 }
 /* .turnbutton{
     position: absolute;
@@ -176,9 +177,10 @@
 
 .turnbutton{
   position: absolute;
-  bottom:0%;
-  left:50%;
-  transform: translate(398%,-50%);
+  /* bottom:0%; */
+  right:0%;
+  /* transform: translate(398%,-50%); */
+  transform:translate(8.5vw,0);
   height: 60px;
   width: 150px;
   min-height: 50px;
@@ -224,8 +226,8 @@
 }
 .word{
     position: relative;
-    width: 14vh;
-    height: 14vh;
+    width: 7vw;
+    height: 7vw;
     background-color: bisque;
     border-radius: 20%;
     margin:10px;

@@ -166,10 +166,22 @@
 #ReadButton {
   position: absolute;
   top: 80%;
-  left: 45%;
+  left: 50%;
   transform: translateX(-50%);
   color: black;
-  background-color: rgb(146, 66, 66);
+  background-color: rgba(146, 66, 66,0.8);
+  border: none;
+  border-color: rgb(218, 221, 224);
+  box-shadow: 3px 5px 0 #472d2d;
+  /* width: 100px; */
+}
+#ReadButton2 {
+  position: absolute;
+  top: 80%;
+  left: 1/4vw-100px;
+  transform: translateX(-50%);
+  color: black;
+  background-color: rgba(146, 66, 66,0.8);
   border: none;
   border-color: rgb(218, 221, 224);
   box-shadow: 3px 5px 0 #472d2d;

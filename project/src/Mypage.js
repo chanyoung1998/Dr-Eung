@@ -161,8 +161,8 @@ function Mypage() {
 
         <div className={styles.btndiv}>
           <Button
-            id={styles.ReadButton}
-            style={{ marginTop: "3%" }}
+            id={styles.ReadButton2}
+            // style={{ marginTop: "3%" }}
             size="lg"
             onClick={() => setShow(true)}
           >
