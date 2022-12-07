@@ -49,75 +49,94 @@ function Quiz() {
     false,
     false,
   ]);
-
+  const [progress, setProgress] = useState(0);
   // 문제 풀면 activity로 이동하기 위함.
   let [questionCount, setQuestioncount] = useState(0);
   let navigate = useNavigate();
-  if (questionCount == 5) {
+  if (progress==80) {
     setTimeout(() => {
       navigate(`/activity/${title}/${currentChapter}/`);
     }, 3000);
   }
 
-  const [progress, setProgress] = useState(0);
+  
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
   const TOKEN = localStorage.getItem("TOKEN");
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
-
+  
+  
   useEffect(() => {
+    let quiztemp = [];  
     axios
-      .all([
-        axios.get(
-          `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${1}`,
-          {
-            headers: {
-              Authorization: TOKEN,
-            },
-          }
-        ),
-        axios.get(
-          `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${2}`,
-          {
-            headers: {
-              Authorization: TOKEN,
-            },
-          }
-        ),
-        axios.get(
-          `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${3}`,
-          {
-            headers: {
-              Authorization: TOKEN,
-            },
-          }
-        ),
-        axios.get(
-          `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${4}`,
-          {
-            headers: {
-              Authorization: TOKEN,
-            },
-          }
-        ),
-        axios.get(
-          `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${5}`,
-          {
-            headers: {
-              Authorization: TOKEN,
-            },
-          }
-        ),
-      ])
+      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${1}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      })
+      .then((e) => {
+        
+        quiztemp.push(e.data)
+        
+        
+      })
+      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
+    axios
+      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${2}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      })
+      .then((e) => {
+        quiztemp.push(e.data)
+      })
+      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
 
-      .then(
-        axios.spread((res1, res2, res3, res4, res5) => {
-          // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
-          setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
-          setLoading(false);
-        })
-      );
+    axios
+      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${3}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      })
+      .then((e) => {
+        quiztemp.push(e.data)
+      })
+      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
+
+    axios
+      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${4}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      })
+      .then((e) => {
+        quiztemp.push(e.data)
+      })
+      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
+
+    axios
+      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${5}`, {
+        headers: {
+          Authorization: TOKEN,
+        },
+      })
+      .then((e) => {
+        
+        quiztemp.push(e.data)
+        setQuizs(quiztemp)
+        setLoading(false)
+      })
+      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
+
+      
+    // .then(
+    //   axios.spread((res1, res2, res3, res4, res5) => {
+    //     // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
+    //     setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
+    //     setLoading(false);
+    //   })
+    // );
   }, []);
 
   if (isLoading) {
@@ -135,7 +154,7 @@ function Quiz() {
           defaultActiveKey="0"
           style={{ border: "none", zIndex: "0" }}
         >
-          {numbers.map(function (e, i) {
+          {numbers.slice(0,quizs.length).map(function (e, i) {
             let leftmove = [
               styles.leftmove0,
               styles.leftmove1,
@@ -234,7 +253,7 @@ function Quiz() {
                           }, 3000);
 
                           if (answerstate[clicked] == false) {
-                            setProgress(progress + 16);
+                            setProgress(progress + 16*5/quizs.length);
                             let temp = [...answerstate];
                             temp[clicked] = true;
                             setAnswerstate(temp);
