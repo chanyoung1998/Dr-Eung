@@ -42,7 +42,7 @@ function Mypage() {
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
   const TOKEN = localStorage.getItem('TOKEN')
-  console.log(TOKEN)
+  // console.log(TOKEN)
   let [profile, setProfile] = useState({});
   const [ability, setAbility] = useState([]);
   const [score1, setScore1] = useState([0, 0, 0, 0, 0]);
@@ -84,7 +84,7 @@ function Mypage() {
         },
       })
       .then((data) => {
-        console.log(data.data);
+        // console.log(data.data);
         setProfile(data.data.profile);
         setAbility(Object.keys(data.data.score.ability));
         setScore1(Object.values(data.data.score.ability));
@@ -100,7 +100,7 @@ function Mypage() {
       });
   }, [tier]);
 
-  console.log(bg)
+  // console.log(bg)
   if(character == "owl2" && currentParts != "0"){
     setCharacter(character + "_eye" + currentParts)
   }
@@ -133,13 +133,13 @@ function Mypage() {
             <div className={styles.statuslayout} style={{ background: "none" }}>
               <div className={styles.graphArea}>
                 <div className={styles.status}>
-                  <CustomRadar data={score1} categories={ability} />
+                  <CustomRadar data={score1} categories={ability} title={"능력치"}/>
                 </div>
               </div>
               <div className={styles.graphArea2}>
                 <div className={styles.status}>
                   <div className={styles.status}>
-                    <CustomRadar data={score2} categories={genres} />
+                    <CustomRadar data={score2} categories={genres} title={"장르"}/>
                   </div>
                 </div>
               </div>
@@ -189,12 +189,12 @@ function Profile({ profile }) {
           <div className={styles.imgbox}></div>
         </div>
         <div className={styles.actions}>
-          <button className={styles.button}>
-            <FontAwesomeIcon icon={faHeart} />
-          </button>
-          <button className={styles.button}>
-            <FontAwesomeIcon icon={faUserFriends} />
-          </button>
+          
+            <FontAwesomeIcon className={styles.iconbutton} icon={faHeart} />
+          
+          
+            <FontAwesomeIcon className={styles.iconbutton} icon={faUserFriends} />
+          
         </div>
       </div>
     </div>
@@ -343,7 +343,7 @@ function CustomRadar(props) {
   let state = {
     series: [
       {
-        name: "장르",
+        name: props.title,
         data: props.data,
       },
     ],
@@ -434,7 +434,7 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
         "Content-Type": "multipart/form-data",
         Authorization: TOKEN
       }}).then((data)=>{
-        console.log(data) 
+        // console.log(data) 
       })
   }, [bg, currentParts]);
 

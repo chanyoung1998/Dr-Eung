@@ -35,7 +35,7 @@ function ReportMenu() {
       .then((data) => {
         setReport(data.data);
         setReportKey(Object.keys(data.data))
-        console.log(data.data)
+        // console.log(data.data)
         setLoading(false);
         
       });
@@ -55,7 +55,7 @@ function ReportMenu() {
           <Col
             md={{ span: 1 }}
             onClick={() => {
-              console.log("cliced");
+              // console.log("cliced");
             }}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
@@ -68,7 +68,7 @@ function ReportMenu() {
                   //가장 정확한 검색 결과
                   for (let index = 0; index < report_key.length; ++index) {
                     if(e.target.value != '' & (report[report_key[index]]['책 제목'] == e.target.value || report[report_key[index]]['감상문 제목'] == e.target.value)){
-                      console.log(report);
+                      // console.log(report);
                       let temp = [...report_key];
                       temp.splice(temp.indexOf(report_key[index]),1);
                       temp.unshift(report_key[index])
@@ -80,12 +80,12 @@ function ReportMenu() {
                     // 차선으로 비슷한 결과
                   for (let index = 0; index < report_key.length; ++index) {
                     if(e.target.value != '' & (report[report_key[index]]['책 제목'].includes(e.target.value)  || report[report_key[index]]['감상문 제목'].includes(e.target.value))){
-                      console.log(report);
+                      // console.log(report);
                       let temp = [...report_key];
                       temp.splice(temp.indexOf(report_key[index]),1);
                       temp.unshift(report_key[index])
                       setReportKey(temp);
-                      e.defaultPrevented();
+                      // e.defaultPrevented();
                       return
                     }            
                   } 
@@ -109,32 +109,43 @@ function ReportMenu() {
                 style={{ fontSize: "15px" }}
                 as="button"
                 onClick={() => {
-                  console.log("책갈피만");
+                  // console.log(report)
+                  let newArray = [...report_key];
+
+                  newArray.sort(function (a, b) {
+                    var keyA = report[a]['책 제목'];
+                    var keyB = report[b]['책 제목'];
+                    if (keyA < keyB) return -1;
+                    if (keyA > keyB) return 1;
+                    return 0;
+                  });
+                  setReportKey(newArray);
                 }}
               >
-                제목순으로
+                책 제목
+              </Dropdown.Item>
+              <Dropdown.Item
+                id={styles.itembutton}
+                style={{ fontSize: "15px" }}
+                as="button"
+                onClick={() => {
+                  // console.log(report)
+                  let newArray = [...report_key];
+
+                  newArray.sort(function (a, b) {
+                    var keyA = report[a]['감상문 제목'];
+                    var keyB = report[b]['감상문 제목'];
+                    if (keyA < keyB) return -1;
+                    if (keyA > keyB) return 1;
+                    return 0;
+                  });
+                  setReportKey(newArray);
+                }}
+              >
+                감상문 제목
               </Dropdown.Item>
 
-              <Dropdown.Item
-                id={styles.itembutton}
-                style={{ fontSize: "15px" }}
-                as="button"
-                onClick={() => {
-                  console.log("책갈피만");
-                }}
-              >
-                책갈피
-              </Dropdown.Item>
-              <Dropdown.Item
-                id={styles.itembutton}
-                style={{ fontSize: "15px" }}
-                as="button"
-                onClick={() => {
-                  console.log("책갈피만");
-                }}
-              >
-                작성 완료
-              </Dropdown.Item>
+
             </DropdownButton>
           </Col>
         </Row>

@@ -349,3 +349,53 @@
   right: 0;
   z-index: 99;
 }
+.select{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  /* width:30%; */
+  /* height: 50%; */
+  background-color: #e0ae7c;
+  border-radius: 30px;
+}
+
+.mymodal {
+ 
+  max-width: 40vw;
+
+}
+.mymodal div{
+  border-radius: 30px;
+}
+.mymodal .modalbody {
+  border-radius: 30px;
+  border:0;
+  /* word-break: break-all; */
+  /* overflow-y: scroll; */
+}
+.buttongrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  transform: translate(7%,0);
+}
+.yes, .no{
+    color:#ffffff;
+    font-size: 30px;
+    width:70%;
+    height: 1.5em;
+
+}
+
+.yes{
+  background-color:#d13a3a;
+}
+.yes:hover{
+  background-color:#9e0808;
+}
+.no{
+  background-color: #2738ef;
+}
+.no:hover{
+  background-color: #0616c9;
+}

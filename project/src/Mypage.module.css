@@ -44,7 +44,7 @@
 }
 .card .desc {
   padding: 0.5rem 1rem;
-  font-size: 18px;
+  font-size: 1em;
 }
 .card .actions {
   display: grid;
@@ -57,18 +57,20 @@
   height: 30px;
 }
 
-.button {
+.iconbutton {
+  transform: translate(200%,0);
   border: none;
   background: none;
   font-size: 24px;
   color: #e17774;
   cursor: pointer;
   transition: 0.5s;
+  
 }
-/* .button:hover {
-  color: #a65845;
-  transform: rotate(22deg);
-} */
+.button:hover {
+  /* color: #a65845; */
+  /* transform: rotate(22deg); */
+}
 
 .layout {
   display: grid;

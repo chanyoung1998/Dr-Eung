@@ -20,9 +20,9 @@ function Writefrom() {
   const title = param.title;
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
-  
-  const TOKEN = localStorage.getItem('TOKEN')
-  console.log(TOKEN)
+
+  const TOKEN = localStorage.getItem("TOKEN");
+  console.log(TOKEN);
   const [progress, setProgress] = useState(60);
   const navigate = useNavigate();
 
@@ -123,6 +123,7 @@ function Writefrom() {
           </ul>
         </div>
       </div>
+
     </>
   );
 }
@@ -170,7 +171,7 @@ function Form0({
   const ref = useRef(null);
   const ref2 = useRef(null);
   const finish = 8;
-
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -278,7 +279,7 @@ function Form0({
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
             if (질문번호 < 5 && 질문번호 >= 1) {
@@ -302,6 +303,7 @@ function Form0({
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -333,6 +335,7 @@ function Form1({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   const finish = 3;
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -406,7 +409,7 @@ function Form1({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
             textareas[0].value = "";
@@ -425,6 +428,7 @@ function Form1({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -448,6 +452,7 @@ function Form2({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -533,7 +538,7 @@ function Form2({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -553,6 +558,7 @@ function Form2({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -577,6 +583,7 @@ function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref2 = useRef(null);
 
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container} style={{ top: "60%" }}>
@@ -628,8 +635,8 @@ function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                //  작성내용.질문0.제목0 + "\n\n" + 
-                 작성내용.질문0.내용0,
+                  //  작성내용.질문0.제목0 + "\n\n" +
+                  작성내용.질문0.내용0,
                 title: 작성내용.질문0.제목0,
                 format: "3",
               },
@@ -640,7 +647,7 @@ function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -660,6 +667,7 @@ function Form3({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -683,6 +691,7 @@ function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -742,7 +751,7 @@ function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                //  작성내용.질문0 + "\n\n" +
+                  //  작성내용.질문0 + "\n\n" +
                   작성내용.질문1,
                 title: 작성내용.질문0,
                 format: "4",
@@ -754,7 +763,7 @@ function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -774,6 +783,7 @@ function Form4({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -793,6 +803,8 @@ function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
+  
   return (
     <>
       <div className={styles.container}>
@@ -853,8 +865,8 @@ function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
               `${BASE_URL}report/${title}/`,
               {
                 original:
-                //  작성내용.질문0 + "\n\n" + 
-                 작성내용.질문1,
+                  //  작성내용.질문0 + "\n\n" +
+                  작성내용.질문1,
                 title: 작성내용.질문0,
                 format: "5",
               },
@@ -865,9 +877,7 @@ function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(() => {
-              navigate(`/feedback/${title}`);
-            }, 1000);
+            setShow(true);
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -887,6 +897,7 @@ function Form5({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title} />
     </>
   );
 }
@@ -923,6 +934,7 @@ function Form6({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
 
   return (
     <>
@@ -997,7 +1009,7 @@ function Form6({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -1017,6 +1029,7 @@ function Form6({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -1040,6 +1053,7 @@ function Form7({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -1113,7 +1127,7 @@ function Form7({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -1133,6 +1147,7 @@ function Form7({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
@@ -1159,6 +1174,7 @@ function Form8({ title, BASE_URL, progress, setProgress, TOKEN }) {
   const ref = useRef(null);
   const ref2 = useRef(null);
   let [질문번호, set질문번호] = useState(0);
+  let [show, setShow] = useState(false);
   return (
     <>
       <div className={styles.container}>
@@ -1232,7 +1248,7 @@ function Form8({ title, BASE_URL, progress, setProgress, TOKEN }) {
                 },
               }
             );
-            setTimeout(2000, navigate(`/feedback/${title}`));
+            setShow(true)
           } else {
             let textareas = document.getElementsByTagName("textarea");
 
@@ -1252,8 +1268,75 @@ function Form8({ title, BASE_URL, progress, setProgress, TOKEN }) {
           <span className={styles.progress}></span>
         </div>
       </div>
+      <MenuModal show={show} setShow={setShow} title={title}/>
     </>
   );
 }
 
 export default Writefrom;
+
+function MenuModal({ show, setShow, title }) {
+  let navigate = useNavigate();
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        centered
+        dialogClassName={styles.mymodal}
+      >
+        <Modal.Body style={{ background: "#FFF7E9", color: "#2f2f2f" }}>
+          <div>
+            <div style={{ fontSize: "30px" ,margin:"0px"}}>
+              <div align="center">엉박사님의 <span style={{color:"red"}}>피드백</span>을 확인해 볼까요?</div>
+              <br />
+              <div className={styles.buttongrid}>
+                <button
+                  className={styles.yes}
+                  onClick={() => {
+                    navigate(`/feedback/${title}`);
+                  }}
+                >
+                  확인 하기
+                </button>
+                <button
+                  className={styles.no}
+                  onClick={() => {
+                    navigate(`/home`);
+                  }}
+                >
+                  아니요
+                </button>
+              </div>
+
+              <br />
+
+              <div align="center"><span style={{color:"red"}}>빙고</span> 게임 하러 가 볼까요?</div>
+              <br />
+              <div className={styles.buttongrid}>
+                <button
+                  className={styles.yes}
+                  onClick={() => {
+                    navigate(`/writing/${title}/bingo`);
+                  }}
+                >
+                  하러 가기
+                </button>
+                <button
+                  className={styles.no}
+                  onClick={() => {
+                    navigate(`/home`);
+                  }}
+                >
+                  아니요
+                </button>
+              </div>
+
+
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}

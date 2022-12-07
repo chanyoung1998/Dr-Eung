@@ -63,7 +63,7 @@ function Quiz() {
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
-  const TOKEN = localStorage.getItem('TOKEN')
+  const TOKEN = localStorage.getItem("TOKEN");
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
 
   useEffect(() => {
@@ -209,8 +209,7 @@ function Quiz() {
                         {
                           headers: {
                             "Content-Type": "multipart/form-data",
-                            Authorization:
-                              TOKEN,
+                            Authorization: TOKEN,
                           },
                         }
                       )
@@ -220,7 +219,7 @@ function Quiz() {
                           temp[answerClicked] = true;
                           setAnswer(answerClicked);
                           setImgShow(temp);
-                          
+
                           setPopuptext("정답입니다. 잘 했어요!");
                           ref.current.classList.add(`${styles.open}`);
                           ref2.current.classList.add(
@@ -234,14 +233,13 @@ function Quiz() {
                             );
                           }, 3000);
 
-                          if(answerstate[clicked] == false){
+                          if (answerstate[clicked] == false) {
                             setProgress(progress + 16);
-                            let temp = [...answerstate]
-                            temp[clicked] = true
-                            setAnswerstate(temp)
+                            let temp = [...answerstate];
+                            temp[clicked] = true;
+                            setAnswerstate(temp);
                             setQuestioncount(questionCount + 1);
                           }
-                          
                         } else {
                           let temp = [...imgShow];
                           temp[answerClicked] = true;
@@ -304,14 +302,21 @@ function Quiz() {
               axios
                 .get(`${BASE_URL}book/${title}/${currentChapter}/?page=1`, {
                   headers: {
-                    Authorization:
-                      TOKEN,
+                    Authorization: TOKEN,
                   },
                 })
                 .then((data) => {
-                  navigate(
-                    `/reading/${title}/${currentChapter}/${data.data.pages}`
-                  );
+                  if (data.data.pages % 2 == 0) {
+                    navigate(
+                      `/reading/${title}/${currentChapter}/${
+                        data.data.pages - 1
+                      }`
+                    );
+                  } else {
+                    navigate(
+                      `/reading/${title}/${currentChapter}/${data.data.pages}`
+                    );
+                  }
                 });
             }}
           />

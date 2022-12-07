@@ -97,9 +97,9 @@ function Feedback() {
         }
       }
     }
-    console.log(original)
-    console.log(correct)
-    console.log(original_red2)
+    // console.log(original)
+    // console.log(correct)
+    // console.log(original_red2)
 
     return original_red2;
   });

@@ -62,37 +62,38 @@ function Read() {
       .then((data) => {
         console.log(data.data);
         setRightTexts(data.data.page);
-      });
-
-    axios
-      .get(`${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((data) => {
-        console.log(data.data);
-        console.log(data.data);
-        setHighlightLeft(data.data.index);
-      });
-
-    axios
-      .get(
-        `${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage + 1}`,
-        {
-          headers: {
-            Authorization: TOKEN,
-          },
-        }
-      )
-      .then((data) => {
-        setHighlightRight(data.data.index);
         setLoading(false);
       });
+
+    // axios
+    //   .get(`${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage}`, {
+    //     headers: {
+    //       Authorization: TOKEN,
+    //     },
+    //   })
+    //   .then((data) => {
+    //     console.log(data.data);
+    //     console.log(data.data);
+    //     setHighlightLeft(data.data.index);
+    //   });
+
+    // axios
+    //   .get(
+    //     `${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage + 1}`,
+    //     {
+    //       headers: {
+    //         Authorization: TOKEN,
+    //       },
+    //     }
+    //   )
+    //   .then((data) => {
+    //     setHighlightRight(data.data.index);
+    //     
+    //   });
   }, [param]);
 
   if (isLoading) {
-    setTimeout(2000, []);
+    setTimeout(1000, []);
     return (
       <div>
         <Loading />

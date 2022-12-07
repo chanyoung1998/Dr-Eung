@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import owl from "./img/owl.png";
+import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 function BookMenu() {
   let navigate = useNavigate();
   let [selectedIndex, setSelectedIndex] = useState(0);
@@ -59,7 +60,7 @@ function BookMenu() {
           setBooks(res1.data.results);
           setReports(Object.values(res2.data));
           // console.log(res1.data.results);
-          console.log(res2.data);
+          // console.log(res2.data);
           setLoading(false);
         })
       );
@@ -88,10 +89,10 @@ function BookMenu() {
                     <Col
                       md={{ span: 1 }}
                       onClick={() => {
-                        console.log("cliced");
+                        // console.log("cliced");
                       }}
                     >
-                      <FontAwesomeIcon icon={faMagnifyingGlass} size="2x" />
+                    <FontAwesomeIcon className={styles.searchicon} icon={faMagnifyingGlass} size="2x"/>
                     </Col>
                     <Col md={{ span: 9 }} style={{ padding: "0px" }}>
                       <InputGroup
@@ -111,7 +112,8 @@ function BookMenu() {
                                 // console.log(res.data)
                                 setSearchedbook(res.data);
                                 setShow(true);
-                              });
+                              })
+                              .catch(()=>{alert('찾는 결과가 없습니다.')});
                           }
                         }}
                       >
@@ -152,7 +154,23 @@ function BookMenu() {
                           style={{ fontSize: "15px" }}
                           as="button"
                           onClick={() => {
-                            console.log("책갈피만");
+                            // console.log("책갈피만");
+                            let temp = [...books];
+                            let temp2 = []
+                            
+                            for(let i=0;i<reports.length;i++){
+
+                              for(let j=0;j<temp.length;j++){
+                                if(temp[j]['title'] == reports[i]['책 제목']){
+                                  
+                                  temp2.push(temp[j])
+                                  temp.splice(j,1)
+                                  break;
+                                }
+                              }
+                              
+                            }
+                            setBooks([...temp2,...temp]);
                           }}
                         >
                           책갈피
@@ -161,6 +179,25 @@ function BookMenu() {
                           id={styles.itembutton}
                           style={{ fontSize: "15px" }}
                           as="button"
+                          onClick={() => {
+                            // console.log("완료만");
+                            let temp = [...books];
+                            let temp2 = []
+                            
+                            for(let i=0;i<reports.length;i++){
+
+                              for(let j=0;j<temp.length;j++){
+                                if(temp[j]['title'] == reports[i]['책 제목'] & reports[i].complete){
+                                  
+                                  temp2.push(temp[j])
+                                  temp.splice(j,1)
+                                  break;
+                                }
+                              }
+                              
+                            }
+                            setBooks([...temp2,...temp]);
+                          }}
                         >
                           작성 완료
                         </Dropdown.Item>
@@ -199,15 +236,17 @@ function BookMenu() {
                       pageStart={0}
                       loadMore={() => {
                         if (next != null) {
+                          // console.log(next)
+                          
                           axios
-                            .get(`${next}`, {
+                            .get(`${next.replace('http','https')}`, {
                               headers: {
                                 Authorization:
                                   TOKEN,
                               },
                             })
                             .then((res) => {
-                              console.log("더더더");
+                              // console.log("더더더");
                               let temp = [...books, ...res.data.results];
                               setNext(res.data.next);
                               setBooks(temp);
