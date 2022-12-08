@@ -311,7 +311,7 @@ function RecentActivity({ activities }) {
                             //독후감 작성(단원별 내용 작성)
                             else if (activity.info.state == 4) {
                               navigate(
-                                `/writing/${activity.id}/form/${activity.info.format}`
+                                `/writing/${activity.id}/`
                               );
                             }
                           }}

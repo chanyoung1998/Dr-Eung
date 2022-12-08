@@ -515,7 +515,7 @@ function Bookmarkmodal({ show, setShow, bookmark, book, info, complete }) {
                 }
                 //독후감 작성(단원별 내용 작성)
                 else if (info.state == 4) {
-                  navigate(`/writing/${book["title"]}/form/${info.format}`);
+                  navigate(`/writing/${book["title"]}`);
                 }
               }
             }}

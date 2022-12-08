@@ -23,7 +23,7 @@ function Read() {
 
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
-  const TOKEN = localStorage.getItem('TOKEN')
+  const TOKEN = localStorage.getItem("TOKEN");
   let navigate = useNavigate();
 
   let [LeftTexts, setLeftTexts] = useState([]);
@@ -88,17 +88,16 @@ function Read() {
     //   )
     //   .then((data) => {
     //     setHighlightRight(data.data.index);
-    //     
+    //
     //   });
   }, [param]);
 
   if (isLoading) {
-    setTimeout(1000, []);
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
+
+    
+    // return <Loading/>
+
+
   }
 
   const bookcontents = LeftTexts + RightTexts;
@@ -124,7 +123,6 @@ function Read() {
               <h6>{title}</h6>
             </header>
             <article>
-              
               <span>{LeftTexts}</span>
               <span>{RightTexts}</span>
             </article>
@@ -151,8 +149,7 @@ function Read() {
             axios
               .get(`${BASE_URL}book/dictionary?word=${selected}`, {
                 headers: {
-                  Authorization:
-                    TOKEN,
+                  Authorization: TOKEN,
                 },
               })
               .then((res) => {
@@ -196,8 +193,7 @@ function Read() {
                       }`,
                       {
                         headers: {
-                          Authorization:
-                            TOKEN,
+                          Authorization: TOKEN,
                         },
                       }
                     )
