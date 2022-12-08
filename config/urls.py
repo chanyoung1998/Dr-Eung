@@ -29,12 +29,14 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+base_url = 'api/'
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('report/',include('report.urls')),
-    path('book/', include('book.urls')),
-    path('quiz/', include('quiz.urls')),
-    path('', include('accounts.urls')),
+    path(base_url + 'admin/', admin.site.urls),
+    path(base_url + 'report/',include('report.urls')),
+    path(base_url + 'book/', include('book.urls')),
+    path(base_url + 'quiz/', include('quiz.urls')),
+    path(base_url + '', include('accounts.urls')),
 ]
 
 urlpatterns += [

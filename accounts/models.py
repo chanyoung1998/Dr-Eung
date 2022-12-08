@@ -39,7 +39,7 @@ class User(AbstractUser):
             self.tier = 3
         elif sum(self.genres) >= 15 and sum(self.score) / 5 >= 15:
             self.tier = 2
-        elif sum(self.genres) >= 5:
+        elif sum(self.genres) >= 1:
             self.tier = 1
 
 

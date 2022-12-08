@@ -47,7 +47,7 @@ class ContentSerializer(serializers.BaseSerializer):
             report.save()
 
         if report.curr_chapter == chapter and report.page < page:
-            report.page = page
+            report.page = page if page % 2 == 1 else page - 1
             report.save()
 
         contents = content_chapter.content[(page - 1) * LETTERS: page * LETTERS]

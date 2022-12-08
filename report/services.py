@@ -16,6 +16,8 @@ from transformers import AutoTokenizer, AutoModel
 
 from kss import split_sentences
 from .pyhanspellmaster.hanspell import spell_checker
+from eunjeon import Mecab
+
 
 ROOT_DIR = os.getcwd()
 
@@ -30,32 +32,32 @@ class Feedback():
         self.model = tf.keras.models.load_model(ROOT_DIR + '/report/model/kobert_model2.h5')
         print("feedback model created")
         self.feedback_list = {
-            0: {3: '글을 문법에 따라 참 잘 작성했어요. ', 2: '글을 문법에 따라 잘 작성했어요. 그렇지만 틀린 부분을 확인하고 더 정확하게 작성할 수 있도록 노력해보세요.',
-                1: '글에 문법적 오류가 조금 많아요. 엉박사님의 맞춤법 교정을 참고해 보세요.',
-                0: '글에 문법적 오류가 많아요. 엉박사님의 맞춤법 교정을 참고하여 문법에 따라 글을 다시 한번 작성해 보세요.'},
-            1: {3: '어휘력이 정말 뛰어나요!', 2: '어휘력이 좋아요!', 1: '단어의 사용이 적절하지 않은 부분이 있어요.',
-                0: '단어의 사용이 적절하지 않은 부분이 많아요. 단어를 다양하게 사용해 보고 글을 다시 작성해 보세요.'},
+            0: {3: '맞춤법을 지켜서 글을 참 잘 작성했어요. ', 2: '맞춤법을 잘 지켰지만 틀린 부분을 확인하고 더 정확하게 작성할 수 있도록 노력해보세요. ',
+                1: '글에 문법적 오류가 조금 많아요. 엉박사님의 맞춤법 교정을 참고해 보세요. ',
+                0: '글에 문법적 오류가 많아요. 엉박사님의 맞춤법 교정을 참고하여 문법에 따라 글을 다시 한번 작성해 보세요. '},
+            1: {3: '어휘력이 정말 뛰어나요! ', 2: '어휘력이 좋아요! ', 1: '단어를 조금 더 다양하게 사용하는 연습을 해 보세요. ',
+                0: '단어를 다양하게 사용해 보고, 상황에 맞는 단어를 써서  글을 다시 작성해 보세요. '},
             2: {3: '', 2: '', 1: '', 0: ''},
-            3: {3: '글을 짜임새 있게 잘 작성했어요!', 2: '글을 짜임새 있게 작성했어요.', 1: '작성한 글을 다시 읽어보고 어색한 부분이 없는지 확인해 보세요.',
-                0: '글의 짜임새가 부족한 것 같아요. 작성한 글을 다시 한번 읽어 보고 어색한 부분을 찾아보세요.'},
-            4: {3: '형식에 따라 글을 잘 작성했어요!', 2: '형식에 따라 글을 잘 작성했어요! ', 1: '형식에 따라 글을 재구성해보세요.',
-                0: '글을 작성하기 전 어떤 형식으로 작성할지 생각하고 글을 작성하는 연습을 해보세요.'},
-            5: {3: '글의 흐름이 매우 자연스럽네요!', 2: '글의 흐름이 자연스러워요!', 1: '글의 연결이 부자연스러워요. 글의 연결이 어색한 부분을 찾아보세요.',
-                0: '글의 연결이 부자연스러워요. 글의 연결이 어색한 부분을 찾아보세요.'},
-            6: {3: '적절한 분량의 글을 잘 작성했어요!', 2: '적절한 분량의 글을 잘 작성했어요!', 1: '분량에 알맞게 글을 작성해보세요.', 0: '분량에 알맞게 글을 작성해보세요.'},
-            7: {3: '주제가 명료하고 글 전체가 하나의 주제를 잘 뒷받침 하고 있어요.', 2: '주제가 명료하게 드러나 있지만 관련 없는 문장이 존재하는 것 같아요.',
-                1: '주제가 명료하지 않고 주제와 관련되지 않은 문장이 많아요. 글의 주제를 정하고 다시 한번 글을 작성해보세요.',
-                0: '주제가 명료하지 않고 주제와 관련되지 않은 문장이 많아요. 글의 주제를 정하고 다시 한번 글을 작성해보세요.'},
-            8: {3: '모든 설명이 구체적이고 상세하게 잘 작성 했어요.', 2: '모든 설명이 구체적이고 상세하게 작성 했어요.', 1: '몇몇 문장이 구체적이지 않아요.',
-                0: '주제에 대한 설명이 부족해요. '},
+            3: {3: '글을 짜임새 있게 잘 작성했어요! ', 2: '글을 짜임새 있게 작성했어요. ', 1: '작성한 글을 다시 읽어보고 어색한 부분이 없는지 확인해 보세요. ',
+                0: '글의 짜임새가 부족한 것 같아요. 작성한 글을 다시 한번 읽어 보고 어색한 부분을 찾아보세요. '},
+            4: {3: '형식에 따라 글을 잘 작성했어요! ', 2: '형식에 따라 글을 잘 작성했어요! ', 1: '형식에 따라 글을 재구성해보세요. ',
+                0: '글을 작성하기 전 어떤 형식으로 작성할지 생각하고 글을 작성하는 연습을 해보세요. '},
+            5: {3: '글의 흐름이 매우 자연스럽네요! ', 2: '글의 흐름이 자연스러워요! ', 1: '글의 연결이 부자연스러워요. 글의 연결이 어색한 부분을 찾아보세요. ',
+                0: '글의 연결이 부자연스러워요. 글의 연결이 어색한 부분을 찾아보세요. '},
+            6: {3: '적절한 분량의 글을 잘 작성했어요! ', 2: '적절한 분량의 글을 잘 작성했어요! ', 1: '글을 조금 더 많이 작성하는 연습을 해 보세요. ', 0: '챕터별 활동을 참고해서 글을 더 많이 적는 연습을 해 보세요. '},
+            7: {3: '주제가 명료하고 글 전체가 하나의 주제를 잘 뒷받침 하고 있어요. ', 2: '주제에 맞게 글을 잘 작성했어요. ',
+                1: '글을 쓸 때 주제를 먼저 정하고, 주제를 생각하면서 글을 쓰는 연습을 해 보세요. ',
+                0: '챕터별 활동을 보면서 하나의 주제를 정하고 그 주제에 맞게 글을 적는 연습을 해 보세요. '},
+            8: {3: '글을 구체적이고 상세하게 잘 작성 했어요. ', 2: '글을 구체적이고 상세하게 작성 했어요. ', 1: '챕터별 활동을 참고해서 글을 구체적으로 적어보는 연습을 해 보세요. ',
+                0: '챕터별 활동을 참고해서 글을 구체적으로 적어보는 연습을 해 보세요. '},
             9: {3: '', 2: '', 1: '', 0: ''},
-            10: {3: '글을 서술함에 있어 특이하며 매우 논리적이에요. 새로운 발상이나 관점 전환을 시도했으며 내용이 매우 적절해요.',
-                 2: '글을 서술함에 있어 특이하지만, 논리력이 약간 부족한 부분이 있어요. 새로운 발상이나 관점 전환을 시도했지만, 내용이 약간 빈약해요. ',
-                 1: '글을 서술함에 있어 논리력이 부족해요. 새로운 발상이나 관점 전환을 시도했지만, 글과 알맞지 않은 것 같아요.',
-                 0: '글을 서술할 때 특이한 통찰이 보이지 않고 새로운 발상이나 관점 전환을 시도하지 않은 것 같아요. 한번 나만의 이야기를 적어보세요.'},
+            10: {3: '글을 창의적이고 논리적으로 잘 작성했어요. 새로운 발상이나 관점 전환을 시도했으며 내용이 매우 적절해요. ',
+                 2: '글을 창의적으로 잘 작성했지만, 논리적으로 약간 부족한 부분이 있어요. ',
+                 1: '논리적으로 글을 쓰는 연습이 필요해 보여요. 새로운 발상이나 관점 전환을 시도했지만, 글과 알맞지 않은 것 같아요. ',
+                 0: '창의적이고 짜임새 있게 글을 쓰는 연습이 필요해 보여요. '},
         }
         self.weight_list = {
-            11: [4, 3, 0, 0, 5, 0, 1, 4, 2, 0, 4],
+            11: [4, 3, 0, 0, 0, 0, 1, 4, 2, 0, 4],
             12: [4, 3, 0, 0, 5, 0, 1, 4, 2, 0, 4],
             13: [3, 3, 0, 1, 5, 1, 1, 4, 2, 0, 4],
         }
@@ -99,7 +101,7 @@ class Feedback():
     def getFeedBack(self, text, correct_score, age=11):
         result = {"feedback": "", "score": []}
         result["score"] = self.getScore(text)
-        scores = list(map(lambda x: math.floor(3 * x), result["score"]))
+        scores = list(map(lambda x: math.floor(3.99 * x), result["score"]))
 
         feedback_dict = {0: 0, 1: 0, 2: 0, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 2, 9: 2, 10: 2}
         feedback_element = [False, False, False]  # 표현 영역, 구성 영역, 내용 영역 각 1개의 피드백만 포함하도록.
@@ -108,7 +110,23 @@ class Feedback():
         feedback_bad = []
 
 
-        scores[0] = math.floor(correct_score / 25)
+        scores[0] = math.floor(correct_score / 26)
+
+        mecab = Mecab("/usr/local/lib/mecab/dic/mecab-ko-dic")
+        words = [word for word,tag in mecab.pos(text)]
+        words_unique = list(set(words))
+        words_score = math.floor(len(words_unique) / len(words) * 3.99)
+        
+        print('words_score: ', words_score)
+        print('scores[1] : ', scores[1])
+       
+        if len(words) <= 50 :
+            scores[1] = 1
+        elif words_score >= 2 and scores[1] >=2:
+            scores[1] = words_score
+        else:
+            scores[1] = min(words_score,scores[1])
+        print('scores[1] : ', scores[1])
 
         n = len(text)
         if n < 150 : 
@@ -137,11 +155,11 @@ class Feedback():
                 feedback_element[feedback_dict[i]] = True
 
         if not feedback_bad:
-            result["feedback"] = ' 또한 '.join(feedback_good[:2])
+            result["feedback"] = ''.join(feedback_good[:2])
         elif not feedback_good:
-            result["feedback"] = ' 그리고 '.join(feedback_bad[:2])
+            result["feedback"] = ''.join(feedback_bad[:2])
         else:
-            result["feedback"] = feedback_good[0] + ' 하지만 ' + feedback_bad[0]
+            result["feedback"] = feedback_good[0] + '' + feedback_bad[0]
 
         return result
 
@@ -168,12 +186,10 @@ class Feedback():
             checked["checked"] += tmp["checked"] + '\r\n'
             checked["errors"] += tmp["errors"]
             checked["words"].update(tmp["words"])
-        print(txtcontextlist)
-        print(checked["checked"])
 
         return {
             "correct": checked["checked"],
-            "score": int((1 - checked["errors"] / len(checked["words"])) * 100)
+            "score": int((1 - min(len(checked['words']), (2 * checked["errors"])) / len(checked["words"])) * 100)
         }
 
 
