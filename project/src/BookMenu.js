@@ -36,7 +36,7 @@ function BookMenu() {
   let [next, setNext] = useState(null);
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
-  const TOKEN = localStorage.getItem('TOKEN')
+  const TOKEN = localStorage.getItem("TOKEN");
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -92,28 +92,30 @@ function BookMenu() {
                         // console.log("cliced");
                       }}
                     >
-                    <FontAwesomeIcon className={styles.searchicon} icon={faMagnifyingGlass} size="2x"/>
+                      <FontAwesomeIcon
+                        className={styles.searchicon}
+                        icon={faMagnifyingGlass}
+                        size="2x"
+                      />
                     </Col>
                     <Col md={{ span: 9 }} style={{ padding: "0px" }}>
                       <InputGroup
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
                             axios
-                              .get(
-                                `${BASE_URL}book/${e.target.value}`,
-                                {
-                                  headers: {
-                                    Authorization:
-                                      TOKEN,
-                                  },
-                                }
-                              )
+                              .get(`${BASE_URL}book/${e.target.value}`, {
+                                headers: {
+                                  Authorization: TOKEN,
+                                },
+                              })
                               .then((res) => {
                                 // console.log(res.data)
                                 setSearchedbook(res.data);
                                 setShow(true);
                               })
-                              .catch(()=>{alert('찾는 결과가 없습니다.')});
+                              .catch(() => {
+                                alert("찾는 결과가 없습니다.");
+                              });
                           }
                         }}
                       >
@@ -156,21 +158,18 @@ function BookMenu() {
                           onClick={() => {
                             // console.log("책갈피만");
                             let temp = [...books];
-                            let temp2 = []
-                            
-                            for(let i=0;i<reports.length;i++){
+                            let temp2 = [];
 
-                              for(let j=0;j<temp.length;j++){
-                                if(temp[j]['title'] == reports[i]['책 제목']){
-                                  
-                                  temp2.push(temp[j])
-                                  temp.splice(j,1)
+                            for (let i = 0; i < reports.length; i++) {
+                              for (let j = 0; j < temp.length; j++) {
+                                if (temp[j]["title"] == reports[i]["책 제목"]) {
+                                  temp2.push(temp[j]);
+                                  temp.splice(j, 1);
                                   break;
                                 }
                               }
-                              
                             }
-                            setBooks([...temp2,...temp]);
+                            setBooks([...temp2, ...temp]);
                           }}
                         >
                           책갈피
@@ -182,21 +181,21 @@ function BookMenu() {
                           onClick={() => {
                             // console.log("완료만");
                             let temp = [...books];
-                            let temp2 = []
-                            
-                            for(let i=0;i<reports.length;i++){
+                            let temp2 = [];
 
-                              for(let j=0;j<temp.length;j++){
-                                if(temp[j]['title'] == reports[i]['책 제목'] & reports[i].complete){
-                                  
-                                  temp2.push(temp[j])
-                                  temp.splice(j,1)
+                            for (let i = 0; i < reports.length; i++) {
+                              for (let j = 0; j < temp.length; j++) {
+                                if (
+                                  (temp[j]["title"] == reports[i]["책 제목"]) &
+                                  reports[i].complete
+                                ) {
+                                  temp2.push(temp[j]);
+                                  temp.splice(j, 1);
                                   break;
                                 }
                               }
-                              
                             }
-                            setBooks([...temp2,...temp]);
+                            setBooks([...temp2, ...temp]);
                           }}
                         >
                           작성 완료
@@ -235,23 +234,23 @@ function BookMenu() {
                     <InfiniteScroll
                       pageStart={0}
                       loadMore={() => {
-                        if (next != null) {
-                          // console.log(next)
-                          
-                          axios
-                            .get(`${next.replace('http','https')}`, {
-                              headers: {
-                                Authorization:
-                                  TOKEN,
-                              },
-                            })
-                            .then((res) => {
-                              // console.log("더더더");
-                              let temp = [...books, ...res.data.results];
-                              setNext(res.data.next);
-                              setBooks(temp);
-                            });
-                        }
+                        setTimeout(() => {
+                          if (next != null) {
+                
+                            axios
+                              .get(`${next.replace("http", "https")}`, {
+                                headers: {
+                                  Authorization: TOKEN,
+                                },
+                              })
+                              .then((res) => {
+                                
+                                let temp = [...books, ...res.data.results];
+                                setNext(res.data.next);
+                                setBooks(temp);
+                              });
+                          }
+                        }, 2000);
                       }}
                       hasMore={true || false}
                       useWindow={false}
@@ -331,11 +330,11 @@ function Book({
   reports,
 }) {
   let selected = index == selectedIndex ? styles.selected : styles.nonSelected;
-  
+
   let bookmark = faBookmark;
   let complete = false;
   let info = {};
-  let [bookmarkmodalshow,setBookmarkmodalshow] = useState(false);
+  let [bookmarkmodalshow, setBookmarkmodalshow] = useState(false);
 
   for (let index = 0; index < reports.length; ++index) {
     if (reports[index]["책 제목"] == book["title"]) {
@@ -371,7 +370,14 @@ function Book({
           {book.author}
         </Col>
         <Col md={{ span: 2 }} style={{ margin: "auto" }}>
-          <Bookmarkmodal show={bookmarkmodalshow} setShow={setBookmarkmodalshow} bookmark={bookmark} book={book} info={info} complete={complete}/>
+          <Bookmarkmodal
+            show={bookmarkmodalshow}
+            setShow={setBookmarkmodalshow}
+            bookmark={bookmark}
+            book={book}
+            info={info}
+            complete={complete}
+          />
           {bookmark == chekcedBookmark ? (
             <FontAwesomeIcon
               className={styles.bookmark}
@@ -379,7 +385,6 @@ function Book({
               onClick={() => {
                 setBookmarkmodalshow(true);
               }}
-              
             />
           ) : (
             <FontAwesomeIcon icon={bookmark} />
@@ -462,8 +467,7 @@ function SearchResultModal({ show, setShow, book }) {
   );
 }
 
-
-function Bookmarkmodal({ show, setShow,bookmark,book,info,complete }) {
+function Bookmarkmodal({ show, setShow, bookmark, book, info, complete }) {
   let navigate = useNavigate();
   return (
     <>
@@ -481,7 +485,7 @@ function Bookmarkmodal({ show, setShow,bookmark,book,info,complete }) {
         </Modal.Header>
         <Modal.Body style={{ background: "#FFF7E9" }}>
           {book["description"]}
-        </Modal.Body> 
+        </Modal.Body>
         <Modal.Footer>
           <Button
             id={styles.ReadButton}
