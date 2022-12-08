@@ -124,6 +124,7 @@ function Mypage() {
         currentParts={currentParts}
         setCurrentParts={setCurrentParts}
         TOKEN={TOKEN}
+        tier={tier}
       />
       <div className={styles.innerLayout}>
         <div className={styles.innerinnerLayout} align="left">
@@ -424,7 +425,7 @@ function CustomRadar(props) {
   );
 }
 
-function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts,TOKEN}){
+function DecorateModal({show, setShow, bg, setBg, character, setCharacter, currentParts, setCurrentParts,TOKEN,tier}){
   const BASE_URL = useSelector((state) => state.BASE_URL);
   const [tab, setTab] = useState(0);
   useEffect(() => {
@@ -497,6 +498,7 @@ function DecorateModal({show, setShow, bg, setBg, character, setCharacter, curre
               currentParts={currentParts}
               setCurrentParts={setCurrentParts}
               setTab={setTab}
+              tier={tier}
             />
           )}
         </Modal.Body>
@@ -577,8 +579,8 @@ function BackGround({bg, setBg, setShow}){
   );
 }
 
-function Parts({character, setCharacter, setShow, currentParts, setCurrentParts, setTab}){
-  const parts = [noParts, eye1, eye2]
+function Parts({character, setCharacter, setShow, currentParts, setCurrentParts, setTab,tier}){
+  const parts = tier == 0 ? [noParts] :[noParts, eye1, eye2] ;
   const n = Math.ceil(parts.length / 4);
 
   const [selected, setSelected] = useState(parts.map((i)=>{if(i == parts[currentParts]) return true; else return false;}))
