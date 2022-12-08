@@ -12,6 +12,7 @@ import {
   faSlash,
   faChevronRight,
   faChevronLeft,
+  faSleigh,
 } from "@fortawesome/free-solid-svg-icons";
 
 import leaf from "./img/leaf.png";
@@ -36,7 +37,7 @@ function Quiz() {
   let [imgShow, setImgShow] = useState([false, false, false, false, false]);
   // modal
   let [show, setShow] = useState(false);
-  const numbers = ["일 번", "이 번", "삼 번", "사 번", "오 번"];
+  let [numbers, setNumbers] = useState([]);
   let [hint, setHint] = useState("");
   // 실제 정답
   let [answer, setAnswer] = useState(null);
@@ -53,90 +54,103 @@ function Quiz() {
   // 문제 풀면 activity로 이동하기 위함.
   let [questionCount, setQuestioncount] = useState(0);
   let navigate = useNavigate();
-  if (progress==80) {
+  if (progress == 80) {
     setTimeout(() => {
       navigate(`/activity/${title}/${currentChapter}/`);
     }, 3000);
   }
 
-  
-
   const BASE_URL = useSelector((state) => state.BASE_URL);
   // const TOKEN = useSelector((state) => state.TOKEN);
   const TOKEN = localStorage.getItem("TOKEN");
   let [quizs, setQuizs] = useState([{}, {}, {}, {}, {}]);
-  
-  
+  let [flag, setFlag] = useState(true);
+
+  // useEffect(() => {
+  //   let quiztemp = [];
+  //   if(flag){
+  //     axios
+  //     .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${1}`, {
+  //       headers: {
+  //         Authorization: TOKEN,
+  //       },
+  //     })
+  //     .then((e) => {
+
+  //       quiztemp.push(e.data)
+
+  //     })
+  //     .catch((e) => {setQuizs(quiztemp); setNumbers([]); setFlag(false);setLoading(false)});
+  //   }
+  //   if(flag){
+  //     axios
+  //     .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${2}`, {
+  //       headers: {
+  //         Authorization: TOKEN,
+  //       },
+  //     })
+  //     .then((e) => {
+  //       quiztemp.push(e.data)
+  //     })
+  //     .catch((e) => {setQuizs(quiztemp); setNumbers(['일 번']); setFlag(false);setLoading(false)});
+
+  //   }
+  //   if(flag){
+  //     axios
+  //     .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${3}`, {
+  //       headers: {
+  //         Authorization: TOKEN,
+  //       },
+  //     })
+  //     .then((e) => {
+  //       quiztemp.push(e.data)
+  //     })
+  //     .catch((e) => {setQuizs(quiztemp); setNumbers(['일 번','이 번']);setFlag(false); setLoading(false)});
+  //   }
+
+  //   if(flag){
+  //     axios
+      // .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${4}`, {
+      //   headers: {
+      //     Authorization: TOKEN,
+      //   },
+      // })
+  //     .then((e) => {
+  //       quiztemp.push(e.data)
+  //     })
+  //     .catch((e) => {setQuizs(quiztemp);setNumbers(['일 번','이 번','삼 번']); setFlag(false);setLoading(false)});
+
+  //   }
+  //   if(flag){
+  //     axios
+  //     .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${5}`, {
+  //       headers: {
+  //         Authorization: TOKEN,
+  //       },
+  //     })
+  //     .then((e) => {
+  //       setNumbers(['일 번','이 번','삼 번','사 번','오 번'])
+  //       quiztemp.push(e.data)
+  //       setQuizs(quiztemp)
+  //       setLoading(false)
+  //     })
+  //     .catch((e) => {setQuizs(quiztemp); setNumbers(['일 번','이 번','삼 번','사 번']);setFlag(false);setLoading(false)});
+
+  //   }
+
+  // }, []);
   useEffect(() => {
-    let quiztemp = [];  
-    axios
-      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${1}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((e) => {
-        
-        quiztemp.push(e.data)
-        
-        
-      })
-      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
-    axios
-      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${2}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((e) => {
-        quiztemp.push(e.data)
-      })
-      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
-
-    axios
-      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${3}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((e) => {
-        quiztemp.push(e.data)
-      })
-      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
-
-    axios
-      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${4}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((e) => {
-        quiztemp.push(e.data)
-      })
-      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
-
-    axios
-      .get(`${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${5}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      })
-      .then((e) => {
-        
-        quiztemp.push(e.data)
-        setQuizs(quiztemp)
-        setLoading(false)
-      })
-      .catch((e) => {setQuizs(quiztemp); setLoading(false)});
-
-      
-    // .then(
-    //   axios.spread((res1, res2, res3, res4, res5) => {
-    //     // let temp = [res1.data, res2.data, res3.data, res4.data, res5.data];
-    //     setQuizs([res1.data, res2.data, res3.data, res4.data, res5.data]);
-    //     setLoading(false);
-    //   })
-    // );
+    axios.get(`${BASE_URL}quiz/${title}/${currentChapter}/all`, {
+      headers: {
+        Authorization: TOKEN,
+      },
+    })
+    .then((res) => {
+      console.log(res.data);
+      setQuizs(res.data.results)
+      setNumbers(['일 번','이 번','삼 번','사 번','오 번'].slice(0,res.data.count))
+      setLoading(false)
+    });
   }, []);
 
   if (isLoading) {
@@ -154,7 +168,7 @@ function Quiz() {
           defaultActiveKey="0"
           style={{ border: "none", zIndex: "0" }}
         >
-          {numbers.slice(0,quizs.length).map(function (e, i) {
+          {numbers.map(function (e, i) {
             let leftmove = [
               styles.leftmove0,
               styles.leftmove1,
@@ -221,9 +235,7 @@ function Quiz() {
                   if (answer == null) {
                     axios
                       .put(
-                        `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${
-                          clicked + 1
-                        }`,
+                        `${BASE_URL}quiz/${title}/${currentChapter}/?quiz_number=${quizs[clicked]["quiz_number"]}`,
                         { answer: answerClicked + 1 },
                         {
                           headers: {
@@ -253,7 +265,7 @@ function Quiz() {
                           }, 3000);
 
                           if (answerstate[clicked] == false) {
-                            setProgress(progress + 16*5/quizs.length);
+                            setProgress(progress + (16 * 5) / quizs.length);
                             let temp = [...answerstate];
                             temp[clicked] = true;
                             setAnswerstate(temp);
