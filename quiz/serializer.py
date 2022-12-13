@@ -5,7 +5,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        fields = ['question', 'choice']
+        fields = ['quiz_number', 'question', 'choice']
 
 class AnswerSerializer(serializers.Serializer):
     def to_internal_value(self, data):

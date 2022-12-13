@@ -127,18 +127,20 @@ class WritingTextSerializer(serializers.Serializer):
             int((sum(feedback["score"][3:7]) / (4 * MAX_SCORE)) * 100),             # 구성 점수
             int((sum(feedback["score"][7:]) / (4 * MAX_SCORE)) * 100),              # 내용 점수
         ]
-        user.updateScore(score)
 
         if text.report.complete is False:
             user.genres[GENRE[text.report.book.genre]] += 1
 
+        user.updateScore(score)
+        
         user.save()
-
+        
         report = text.report
         report.title = data["title"]
         report.format = data["format"]
         report.complete = True
         report.save()
+        print(report.title)
 
         return "감상문이 저장되었습니다"
 

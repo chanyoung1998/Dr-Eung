@@ -132,11 +132,11 @@ class KeywordExtractor():
         nouns_embedding = model.encode(nouns)  # encode each nouns into vector
         distances = util.cos_sim(doc_embedding, nouns_embedding)  # compute distances between text and each nouns
 
-        keywords = [nouns[index] for index in distances.argsort()[0][:]]  # extract top_n keywords
-        # keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
+        #keywords = [nouns[index] for index in distances.argsort()[0][:]]  # extract top_n keywords
+        keywords_max_sum = self.max_sum_sim(doc_embedding,nouns_embedding,nouns,top_n,10)
 
-        return keywords[-top_n:]
-        # return keywords_max_sum
+        #return keywords[-top_n:]
+        return keywords_max_sum
 
     def extract_keyword_ngram(self, text, top_n=3, ngram_range=(1, 2)):
         model = self.model

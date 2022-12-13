@@ -21,7 +21,7 @@ class User(AbstractUser):
     )
     tier = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     background = models.CharField(default="", blank=True, max_length=255)
-    accessories = models.CharField(default="", blank=True, max_length=255)
+    accessories = models.CharField(default="0", blank=True, max_length=255)
 
     def updateScore(self, score):
         n = len(self.report.filter(complete=True))
@@ -31,17 +31,17 @@ class User(AbstractUser):
             if self.ability[i] > 100:
                 self.ability[i] = 100
 
-        if sum(self.genres) >= 100 and sum(self.score) / 5 >= 80:
+        if sum(self.genres) >= 100 and sum(self.ability) / 5 >= 80:
             self.tier = 5
-        elif sum(self.genres) >= 70 and sum(self.score) / 5 >= 60:
+        elif sum(self.genres) >= 70 and sum(self.ability) / 5 >= 60:
             self.tier = 4
-        elif sum(self.genres) >= 40 and sum(self.score) / 5 >= 30:
+        elif sum(self.genres) >= 40 and sum(self.ability) / 5 >= 30:
             self.tier = 3
-        elif sum(self.genres) >= 15 and sum(self.score) / 5 >= 15:
+        elif sum(self.genres) >= 15 and sum(self.ability) / 5 >= 15:
             self.tier = 2
         elif sum(self.genres) >= 1:
             self.tier = 1
-
+            self.accessories = "0"
 
     def __str__(self):
         return self.name

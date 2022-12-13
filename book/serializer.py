@@ -56,6 +56,8 @@ class ContentSerializer(serializers.BaseSerializer):
             keyword = BookConfig.models["keyword_extractor"].extract_keyword(content_chapter.content, 3)
             for k in keyword:
                 book.keywords.append(k)
+            print(type(book.keywords))
+            book.keywords = list(set(book.keywords))
             book.save()
 
         return {"page": contents,
