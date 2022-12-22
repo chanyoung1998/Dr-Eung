@@ -275,9 +275,23 @@
 }
 @media (max-width: 1220px) {
   .recentactivity {
-    font-size: 18px;
+    font-size: 16px;
   }
+
+  .layout {
+    display: grid;
+  
+    grid-template-columns: 2.5fr 1fr;
+    height: 80%;
+  }
+
+  .owlcustomimg{
+    height: 30vh;
+    transform: translate(5%, 30%);
+  }
+
 }
+
 
 @media(max-width:1000px){
   .recentactivity {
