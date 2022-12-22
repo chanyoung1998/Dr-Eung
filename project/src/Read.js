@@ -70,10 +70,8 @@ function Read() {
         }
         setRange(temp);
         let papers = document.getElementsByName("paper");
-
-        for (let i = 0; i < papers.length; i++) {
-          papers[i].style.zIndex = papers.length - i;
-        }
+        console.log(papers)
+    
         setLoading(false);
       })
       .catch((error) => {
@@ -147,7 +145,7 @@ function Read() {
           let b = `b${e}`;
           let f = `f${e}`;
           return (
-            <div  className={styles.paper} name="paper">
+            <div  className={styles.paper} name="paper" key={i} style={{zIndex:range.length-i}}>
               <div className={styles.front}>
                 <div id={styles[f]} className={styles.frontContent}>
                   {/* <h1>Front {e}</h1> */}
