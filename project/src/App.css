@@ -62,7 +62,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.5) 0 1em 3em;
   color: #000;
   padding: 2em;
-  height: 28em;
+  /* height: 28em; */
 }
 
 .open-book * {
@@ -353,3 +353,5 @@ b.highlight:before {
     /* text-indent: 3em; */
   }
 }
+
+

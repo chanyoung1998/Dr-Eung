@@ -8,7 +8,7 @@ import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Read.module.css";
+import styles from "./Read.module.scss";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import bookloading from "./img/loading_book.gif";
@@ -30,92 +30,92 @@ function Read() {
   let [RightTexts, setRightTexts] = useState([]);
   let [totalpages, setTotalpages] = useState(0);
   let [totalchapters, setTotalchapters] = useState(0);
-  let [highlightIndexLeft, setHighlightLeft] = useState([]);
-  let [highlightIndexRight, setHighlightRight] = useState([]);
-  let [isHighlight, setIsHighlight] = useState(false);
+
   let [dictdata, setDictdata] = useState([]);
   let [show, setShow] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage}`, {
-        headers: {
-          Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
-        },
-      })
-      .then((data) => {
-        console.log(data.data);
-        setLeftTexts(data.data.page);
-        setTotalpages(data.data.pages);
-        setTotalchapters(data.data.chapters);
-      })
-      .catch((error) => {
-        navigate(`/writing/${title}`);
-      });
 
+
+  
+  let [totalTexts,setTotalTexts] = useState("")
+  let [currentLocation,setCurrentLocation] = useState(1)
+  let [numOfPapers,setNumofPapers] = useState(0)
+  let [maxLocation,setMaxLocation] = useState(numOfPapers+1)
+  let [range,setRange] = useState([])
+  // let currentLocation = 1;
+  // let numOfPapers = 3;
+  // let maxLocation = numOfPapers + 1;
+  
+
+  const SIZEOFPAGE = 300;
+  useEffect(()=>{
     axios
-      .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage + 1}`, {
+      .get(`${BASE_URL}book/${title}/${curchapter}/`, {
         headers: {
           Authorization: TOKEN,
         },
       })
-      .then((data) => {
-        console.log(data.data);
-        setRightTexts(data.data.page);
-        setLoading(false);
+      .then((res) => {
+        console.log(res.data);
+        setTotalTexts(res.data.page);
+        setTotalpages(res.data.pages);
+        setTotalchapters(res.data.chapters);
+        console.log(Math.ceil(res.data.page.length / SIZEOFPAGE ))
+        setNumofPapers(Math.ceil((res.data.page.length / SIZEOFPAGE)/ 2 ))
+        setMaxLocation(Math.ceil((res.data.page.length / SIZEOFPAGE)/ 2 )+1)
+        let temp = [];
+        for(let i = 1; i <= Math.ceil(Math.ceil(res.data.page.length / SIZEOFPAGE )/2) ; i++){
+          temp.push(i)
+        }
+        setRange(temp);
+        setLoading(false)
+        
+      })
+      .catch((error) => {
+        navigate(`/writing/${title}`);
       });
+  },[])
 
-    // axios
-    //   .get(`${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage}`, {
-    //     headers: {
-    //       Authorization: TOKEN,
-    //     },
-    //   })
-    //   .then((data) => {
-    //     console.log(data.data);
-    //     console.log(data.data);
-    //     setHighlightLeft(data.data.index);
-    //   });
+  // useEffect(() => {
+  //   axios
+  //     .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage}`, {
+  //       headers: {
+  //         Authorization: "Token 6ea207c7412c800ec623637b51877c483d2f2cdf",
+  //       },
+  //     })
+  //     .then((data) => {
+  //       console.log(data.data);
+  //       setLeftTexts(data.data.page);
+  //       setTotalpages(data.data.pages);
+  //       setTotalchapters(data.data.chapters);
+  //     })
+  //     .catch((error) => {
+  //       navigate(`/writing/${title}`);
+  //     });
 
-    // axios
-    //   .get(
-    //     `${BASE_URL}book/${title}/${curchapter}/highlight?page=${curpage + 1}`,
-    //     {
-    //       headers: {
-    //         Authorization: TOKEN,
-    //       },
-    //     }
-    //   )
-    //   .then((data) => {
-    //     setHighlightRight(data.data.index);
-    //
-    //   });
-  }, [param]);
+  //   axios
+  //     .get(`${BASE_URL}book/${title}/${curchapter}/?page=${curpage + 1}`, {
+  //       headers: {
+  //         Authorization: TOKEN,
+  //       },
+  //     })
+  //     .then((data) => {
+  //       console.log(data.data);
+  //       setRightTexts(data.data.page);
+  //       setLoading(false);
+  //     });
+
+  // }, [param]);
 
   if (isLoading) {
-
-    
-    // return <Loading/>
-
-
+    return <Loading/>
   }
 
   const bookcontents = LeftTexts + RightTexts;
-  // const lefttotalline = LeftTexts.split(".").length;
-
-  // let temp = [];
-  // for (let i = 0; i < highlightIndexRight.length; i++) {
-  //   if (i == 0) {
-  //     temp = [];
-  //   }
-  //   temp.push(highlightIndexRight[i] + lefttotalline);
-  // }
-
-  // const highlightIndex = [...highlightIndexLeft, ...temp];
 
   return (
     <div>
-      <div id="readingwrapper">
+      {/* <div id="readingwrapper">
         <div id="readingcontainer">
           <section className="open-book">
             <header>
@@ -135,7 +135,72 @@ function Read() {
             </footer>
           </section>
         </div>
+      </div> */}
+      <div id={styles.book} className={styles.book}>
+      {range.map(function (e, i) {
+        let p = `p${e}`;
+        let b = `b${e}`;
+        let f = `f${e}`;
+        return (
+          <div id={styles[p]} className={styles.paper} name='paper'>
+            <div className={styles.front}>
+              <div id={styles[f]} className={styles.frontContent}>
+                {/* <h1>Front {e}</h1> */}
+                <div>
+                  {/* 380자 */}
+                  {totalTexts.slice(SIZEOFPAGE*2*i,SIZEOFPAGE*2*i+SIZEOFPAGE)}
+                </div>
+              </div>
+            </div>
+            <div className={styles.back}>
+              <div id={styles[b]} className={styles.backContent}>
+                {/* <h1>Back {e}</h1> */}
+                {totalTexts.slice(SIZEOFPAGE*2*i+SIZEOFPAGE,SIZEOFPAGE*2*i+SIZEOFPAGE*2)}
+              </div>
+            </div>
+          </div>
+        );
+      })}
       </div>
+
+      <Button id={styles.leftButton}>
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          size="6x"
+          onClick={() => {
+            let paper = document.getElementsByName('paper');
+            if(currentLocation > 1) {
+
+              paper[currentLocation-2].classList.remove(styles.flipped)
+              paper[currentLocation-2].style.zIndex = maxLocation-(currentLocation-1);
+              setCurrentLocation(currentLocation-1)
+              // currentLocation--;
+          }
+          }}
+        />
+      </Button>
+      <Button id={styles.rightButton}>
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          size="6x"
+          onClick={() => {
+            let paper = document.getElementsByName('paper');
+
+            if(currentLocation < maxLocation) {
+
+              paper[currentLocation-1].classList.add(styles.flipped)
+              paper[currentLocation-1].style.zIndex = currentLocation
+              setCurrentLocation(currentLocation+1)
+              // currentLocation++;
+          }
+          else{
+            navigate(`/quiz/${title}/${curchapter}`);
+          }
+
+          }}
+        />
+      </Button>
+      
       <DictionaryModal show={show} setShow={setShow} dictdata={dictdata} />
       <DropdownButton id={styles.dropdownItemButton} title="엉박사 찬스">
         <Dropdown.Item
@@ -174,7 +239,7 @@ function Read() {
           돌아가기
         </Dropdown.Item>
       </DropdownButton>
-      <Button id={styles.leftButton}>
+      {/* <Button id={styles.leftButton}>
         <FontAwesomeIcon
           icon={faChevronLeft}
           size="6x"
@@ -232,7 +297,7 @@ function Read() {
             }
           }}
         />
-      </Button>
+      </Button> */}
     </div>
   );
 }

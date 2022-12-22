@@ -15,6 +15,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Writeform from "./Writeform.js"
 import Bingo from './Bingo.js'
+
 function App() {
   
   let navigate = useNavigate();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/quiz/:title/:chapter" element={<Quiz/>}/>
         <Route path="/activity/:title/:chapter" element={<Activity/>}/>
         <Route path="/feedback/:title" element={<Feedback/>}/>
+        
       </Routes>
     </div>
   );
