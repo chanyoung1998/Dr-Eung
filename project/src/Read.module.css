@@ -171,7 +171,7 @@ ol[data-list-style-type='ko'] > li:nth-child(14)::marker { content: '하. '; }
 .book {
   position: relative;
   left:50%;
-  top:10vh;
+  top:7vh;
   width: 20em;
   height: 80vh;
   
@@ -259,8 +259,10 @@ i {
 
 /* Paper stack order */
 
-@for $i from 1 to 100{
+/* @for $i from 1 to 100{
+
+
   #p#{$i}{
-    z-index:100-$i;
+    // z-index:100-$i;
   }
-}
+} */

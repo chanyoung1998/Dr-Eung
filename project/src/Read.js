@@ -8,7 +8,7 @@ import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Read.module.scss";
+import styles from "./Read.module.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import bookloading from "./img/loading_book.gif";
@@ -35,20 +35,17 @@ function Read() {
   let [show, setShow] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
-
-  
-  let [totalTexts,setTotalTexts] = useState("")
-  let [currentLocation,setCurrentLocation] = useState(1)
-  let [numOfPapers,setNumofPapers] = useState(0)
-  let [maxLocation,setMaxLocation] = useState(numOfPapers+1)
-  let [range,setRange] = useState([])
+  let [totalTexts, setTotalTexts] = useState("");
+  let [currentLocation, setCurrentLocation] = useState(1);
+  let [numOfPapers, setNumofPapers] = useState(0);
+  let [maxLocation, setMaxLocation] = useState(numOfPapers + 1);
+  let [range, setRange] = useState([]);
   // let currentLocation = 1;
   // let numOfPapers = 3;
   // let maxLocation = numOfPapers + 1;
-  
 
   const SIZEOFPAGE = 300;
-  useEffect(()=>{
+  useEffect(() => {
     axios
       .get(`${BASE_URL}book/${title}/${curchapter}/`, {
         headers: {
@@ -60,21 +57,29 @@ function Read() {
         setTotalTexts(res.data.page);
         setTotalpages(res.data.pages);
         setTotalchapters(res.data.chapters);
-        console.log(Math.ceil(res.data.page.length / SIZEOFPAGE ))
-        setNumofPapers(Math.ceil((res.data.page.length / SIZEOFPAGE)/ 2 ))
-        setMaxLocation(Math.ceil((res.data.page.length / SIZEOFPAGE)/ 2 )+1)
+        console.log(Math.ceil(res.data.page.length / SIZEOFPAGE));
+        setNumofPapers(Math.ceil(res.data.page.length / SIZEOFPAGE / 2));
+        setMaxLocation(Math.ceil(res.data.page.length / SIZEOFPAGE / 2) + 1);
         let temp = [];
-        for(let i = 1; i <= Math.ceil(Math.ceil(res.data.page.length / SIZEOFPAGE )/2) ; i++){
-          temp.push(i)
+        for (
+          let i = 1;
+          i <= Math.ceil(Math.ceil(res.data.page.length / SIZEOFPAGE) / 2);
+          i++
+        ) {
+          temp.push(i);
         }
         setRange(temp);
-        setLoading(false)
-        
+        let papers = document.getElementsByName("paper");
+
+        for (let i = 0; i < papers.length; i++) {
+          papers[i].style.zIndex = papers.length - i;
+        }
+        setLoading(false);
       })
       .catch((error) => {
         navigate(`/writing/${title}`);
       });
-  },[])
+  }, []);
 
   // useEffect(() => {
   //   axios
@@ -108,7 +113,7 @@ function Read() {
   // }, [param]);
 
   if (isLoading) {
-    return <Loading/>
+    return <Loading />;
   }
 
   const bookcontents = LeftTexts + RightTexts;
@@ -137,30 +142,36 @@ function Read() {
         </div>
       </div> */}
       <div id={styles.book} className={styles.book}>
-      {range.map(function (e, i) {
-        let p = `p${e}`;
-        let b = `b${e}`;
-        let f = `f${e}`;
-        return (
-          <div id={styles[p]} className={styles.paper} name='paper'>
-            <div className={styles.front}>
-              <div id={styles[f]} className={styles.frontContent}>
-                {/* <h1>Front {e}</h1> */}
-                <div>
-                  {/* 380자 */}
-                  {totalTexts.slice(SIZEOFPAGE*2*i,SIZEOFPAGE*2*i+SIZEOFPAGE)}
+        {range.map(function (e, i) {
+          let p = `p${e}`;
+          let b = `b${e}`;
+          let f = `f${e}`;
+          return (
+            <div  className={styles.paper} name="paper">
+              <div className={styles.front}>
+                <div id={styles[f]} className={styles.frontContent}>
+                  {/* <h1>Front {e}</h1> */}
+                  <div>
+                    {/* 380자 */}
+                    {totalTexts.slice(
+                      SIZEOFPAGE * 2 * i,
+                      SIZEOFPAGE * 2 * i + SIZEOFPAGE
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={styles.back}>
+                <div id={styles[b]} className={styles.backContent}>
+                  {/* <h1>Back {e}</h1> */}
+                  {totalTexts.slice(
+                    SIZEOFPAGE * 2 * i + SIZEOFPAGE,
+                    SIZEOFPAGE * 2 * i + SIZEOFPAGE * 2
+                  )}
                 </div>
               </div>
             </div>
-            <div className={styles.back}>
-              <div id={styles[b]} className={styles.backContent}>
-                {/* <h1>Back {e}</h1> */}
-                {totalTexts.slice(SIZEOFPAGE*2*i+SIZEOFPAGE,SIZEOFPAGE*2*i+SIZEOFPAGE*2)}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
       </div>
 
       <Button id={styles.leftButton}>
@@ -168,14 +179,17 @@ function Read() {
           icon={faChevronLeft}
           size="6x"
           onClick={() => {
-            let paper = document.getElementsByName('paper');
-            if(currentLocation > 1) {
+            let paper = document.getElementsByName("paper");
+            if (currentLocation > 1) {
+              paper[currentLocation - 2].classList.remove(styles.flipped);
+              setTimeout(() => {
+                paper[currentLocation - 2].style.zIndex =
+                  maxLocation - (currentLocation - 1);
+                setCurrentLocation(currentLocation - 1);
+              }, 100);
 
-              paper[currentLocation-2].classList.remove(styles.flipped)
-              paper[currentLocation-2].style.zIndex = maxLocation-(currentLocation-1);
-              setCurrentLocation(currentLocation-1)
               // currentLocation--;
-          }
+            }
           }}
         />
       </Button>
@@ -184,23 +198,23 @@ function Read() {
           icon={faChevronRight}
           size="6x"
           onClick={() => {
-            let paper = document.getElementsByName('paper');
+            let paper = document.getElementsByName("paper");
 
-            if(currentLocation < maxLocation) {
+            if (currentLocation < maxLocation) {
+              paper[currentLocation - 1].classList.add(styles.flipped);
+              setTimeout(() => {
+                paper[currentLocation - 1].style.zIndex = currentLocation;
+                setCurrentLocation(currentLocation + 1);
+              }, 100);
 
-              paper[currentLocation-1].classList.add(styles.flipped)
-              paper[currentLocation-1].style.zIndex = currentLocation
-              setCurrentLocation(currentLocation+1)
               // currentLocation++;
-          }
-          else{
-            navigate(`/quiz/${title}/${curchapter}`);
-          }
-
+            } else {
+              navigate(`/quiz/${title}/${curchapter}`);
+            }
           }}
         />
       </Button>
-      
+
       <DictionaryModal show={show} setShow={setShow} dictdata={dictdata} />
       <DropdownButton id={styles.dropdownItemButton} title="엉박사 찬스">
         <Dropdown.Item
