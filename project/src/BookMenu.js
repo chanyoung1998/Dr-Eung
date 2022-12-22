@@ -73,13 +73,13 @@ function BookMenu() {
   return (
     <div>
       <SearchResultModal show={show} setShow={setShow} book={searchedbook} />
-      <Container style={{ marginTop: "5%" }}>
+      <Container style={{ marginTop: "5%"}}>
         <Row>
           <Col md={{ span: 3 }}>
             <div className={`${styles.speechBubble}`}>
               {books[selectedIndex].description}
             </div>
-            <img src={owl} style={{ width: "100%", height: "60%" }} />
+            <img src={owl} style={{ width: "100%" }} />
           </Col>
           <Col md={{ span: 6 }}>
             <div>
